@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "917952229940",
+    "project_id": "anotador-domino",
+    "storage_bucket": "anotador-domino.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917952229940:android:ccbf8484daa15f1aac5061",
+        "android_client_info": {
+          "package_name": "com.jbncode.anotadordomino"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRrVqYnS0ayd09n0fi3TK_COgfOQrOLCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
