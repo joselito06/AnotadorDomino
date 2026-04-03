@@ -16,6 +16,7 @@ firebaseBom = "33.10.0"
 playServicesAds = "23.0.0"
 firebaseCrashlyticsPlugin = "2.9.9"
 googleServicesPlugin = "4.4.1"
+materialIcons = "1.7.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,8 @@ firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
 
 # Librería del SDK de anuncios de Google
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
+
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIcons" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

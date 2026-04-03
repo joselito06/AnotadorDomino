@@ -3,11 +3,20 @@ package com.jbncode.anotadordomino.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,44 +24,60 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jbncode.anotadordomino.ui.components.AnotadorDomBottomBar
-import com.jbncode.anotadordomino.ui.screen.HomeScreen
+import com.jbncode.anotadordomino.ui.screen.GameHistoryScreen
 import com.jbncode.anotadordomino.ui.screen.ScoreboardScreen
 import com.jbncode.anotadordomino.ui.screen.SetupScreen
+import com.jbncode.anotadordomino.ui.theme.kineticColors
+import com.jbncode.anotadordomino.ui.viewmodel.AppStartDestination
+import com.jbncode.anotadordomino.ui.viewmodel.MainViewModel
 
 @Composable
-fun DominoComposeApp() {
-    // El controlador que maneja los viajes entre pantallas
+fun DominoComposeApp(
+    mainViewModel: MainViewModel = hiltViewModel()
+) {
+    val startDestination by mainViewModel.startDestination.collectAsStateWithLifecycle()
+
+    // Splash mínimo mientras Room responde
+    if (startDestination is AppStartDestination.Checking) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = MaterialTheme.kineticColors.neonGreen)
+        }
+        return
+    }
+
     val navController = rememberNavController()
 
-    // Obtenemos la ruta actual para saber en qué pantalla estamos
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Lógica para ocultar el BottomBar en la pantalla del juego (Scoreboard)
-    val showBottomBar = currentRoute?.startsWith("scoreboard_screen") != true
+    // Ocultamos el BottomBar en Scoreboard
+    //val showBottomBar = currentRoute?.startsWith("scoreboard_screen") != true
+    val showBottomBar = currentRoute == Screen.Setup.route ||
+            currentRoute == Screen.Stats.route
 
-    // Scaffold principal (opcional a este nivel, pero útil para fondos generales)
     Scaffold(
         bottomBar = {
-            // Animamos la entrada/salida de la barra inferior
             AnimatedVisibility(
                 visible = showBottomBar,
-                enter = slideInVertically(initialOffsetY = { it }), // Sube desde abajo
-                exit = slideOutVertically(targetOffsetY = { it })   // Baja para ocultarse
+                enter   = slideInVertically(initialOffsetY = { it }),
+                exit    = slideOutVertically(targetOffsetY = { it })
             ) {
                 AnotadorDomBottomBar(
+                    currentRoute = currentRoute,       // ← para resaltar el ítem activo
                     onHistoryClick = {
-                        // Navegamos al historial evitando duplicar pantallas en la pila
-                        navController.navigate(Screen.Home.route) {
-                            popUpTo(Screen.Home.route) { inclusive = true }
+                        navController.navigate(Screen.History.route) {
+                            popUpTo(Screen.History.route) { inclusive = true }
                         }
                     },
-                    onPlayClick = {
-                        navController.navigate(Screen.Setup.route)
-                    },
+                    onPlayClick = { navController.navigate(Screen.Setup.route) },
                     onStatsClick = {
                         navController.navigate(Screen.Stats.route) {
-                            popUpTo(Screen.Home.route)
+                            popUpTo(Screen.Setup.route)
                         }
                     }
                 )
@@ -61,54 +86,57 @@ fun DominoComposeApp() {
     ) { innerPadding ->
 
         NavHost(
-            navController = navController,
-            startDestination = Screen.Home.route,
-            modifier = Modifier.padding(innerPadding)
+            navController    = navController,
+            startDestination = Screen.Setup.route,
+            modifier         = Modifier.padding(innerPadding)
         ) {
 
-            // 1. Pantalla de Inicio (Historial)
-            composable(route = Screen.Home.route) {
-                HomeScreen(
-                    onNavigateToGame = { gameId ->
-                        navController.navigate(Screen.Scoreboard.createRoute(gameId))
-                    }
-                )
-            }
-
-            // 2. PANTALLA ESTADÍSTICAS (Stats)
-            composable(route = Screen.Stats.route) {
-
-            }
-
-            // 3. Pantalla de Configuración (Nueva Partida)
-            composable(route = Screen.Setup.route) {
+            // 1. Home (Historial)
+            composable(Screen.Setup.route) {
                 SetupScreen(
                     onGameStarted = { gameId ->
-                        // Cuando le dan al botón verde "START MATCH"
                         navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
-                            // Borramos el Setup de la pila para que el botón "Atrás"
-                            // del celular no lo devuelva a la configuración, sino al inicio.
-                            popUpTo(Screen.Home.route)
+                            popUpTo(Screen.Setup.route)
                         }
                     }
                 )
             }
 
-            // 4. Pantalla de la Pizarra
+            composable(Screen.History.route) {
+                GameHistoryScreen()
+            }
+
+            // 2. Stats
+            composable(Screen.Stats.route) {
+                // TODO: StatsScreen()
+            }
+
+
+            // 4. Scoreboard (Pizarra)
             composable(
-                route = Screen.Scoreboard.route,
+                route     = Screen.Scoreboard.route,
                 arguments = listOf(navArgument("gameId") { type = NavType.IntType })
             ) { backStackEntry ->
-                // Extraemos el ID del juego de la ruta
                 val gameId = backStackEntry.arguments?.getInt("gameId") ?: return@composable
-
                 ScoreboardScreen(
-                    gameId = gameId,
+                    gameId         = gameId,
                     onMatchFinished = {
-                        // Cuando el juego acaba y le dan a "Volver al inicio"
+                        navController.popBackStack(Screen.Home.route, inclusive = false)
+                    },
+                    onLeave = {
                         navController.popBackStack(Screen.Home.route, inclusive = false)
                     }
                 )
+            }
+        }
+
+        // Si había partida activa/pausada → navegar directo al Scoreboard
+        LaunchedEffect(startDestination) {
+            if (startDestination is AppStartDestination.ResumeGame) {
+                val gameId = (startDestination as AppStartDestination.ResumeGame).gameId
+                navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
+                    popUpTo(Screen.Home.route) { inclusive = false }
+                }
             }
         }
     }

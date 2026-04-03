@@ -3,6 +3,8 @@ package com.jbncode.anotadordomino.ui
 sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Setup : Screen("setup")
+    object Game : Screen("game_screen")
+    object History : Screen("history_screen")
     object Stats : Screen("stats_screen")
 
     // Pasamos el ID del juego por la ruta para que la pizarra sepa qué cargar

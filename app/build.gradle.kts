@@ -80,6 +80,8 @@ dependencies {
     // Implementación de AdMob
     implementation(libs.play.services.ads)
 
+    implementation(libs.androidx.compose.material.icons.extended)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)

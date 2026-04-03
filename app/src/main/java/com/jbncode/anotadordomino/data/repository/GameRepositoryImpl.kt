@@ -9,6 +9,7 @@ import com.jbncode.anotadordomino.domain.model.GameModality
 import com.jbncode.anotadordomino.domain.model.GameStatus
 import com.jbncode.anotadordomino.domain.model.Participant
 import com.jbncode.anotadordomino.domain.model.RoundScore
+import com.jbncode.anotadordomino.domain.model.WinType
 import com.jbncode.anotadordomino.domain.repository.GameRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -53,6 +54,29 @@ class GameRepositoryImpl @Inject constructor(
         dao.deleteLastRound(gameId)
     }
 
+    override suspend fun pauseGame(gameId: Int) {
+        dao.updateGameStatus(gameId, GameStatus.PAUSED.name)
+    }
+
+    override suspend fun resumeGame(gameId: Int) {
+        dao.updateGameStatus(gameId, GameStatus.ACTIVE.name)
+    }
+
+    override suspend fun getParticipants(gameId: Int): List<Participant> {
+        return dao.getParticipants(gameId).map { entity ->
+            Participant(
+                id        = entity.id,
+                gameId    = entity.gameId,
+                name      = entity.name,
+                seatOrder = entity.seatOrder
+            )
+        }
+    }
+
+    override suspend fun getActiveGame(): Game? {
+        return dao.getActiveGame()?.toGame()
+    }
+
     override fun observeTotalScore(
         gameId: Int,
         participantId: Int
@@ -72,5 +96,28 @@ class GameRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override fun observeRoundScores(gameId: Int): Flow<List<RoundScore>> {
+        return dao.observeRoundScores(gameId).map { entities ->
+            entities.map { entity ->
+                RoundScore(
+                    id           = entity.id,
+                    gameId       = entity.gameId,
+                    winnerId     = entity.winnerId,
+                    pointsScored = entity.pointsScored,
+                    winType      = WinType.valueOf(entity.winType)
+                )
+            }
+        }
+    }
+
+    // ── Mappers privados ───────────────────────────────────────────────────
+    private fun GameEntity.toGame() = Game(
+        id          = id,
+        startTime   = startTime,
+        targetScore = targetScore,
+        modality    = GameModality.valueOf(modality),
+        status      = GameStatus.valueOf(status)
+    )
 
 }
