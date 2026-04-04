@@ -11,6 +11,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Backspace
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,6 +26,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -98,14 +103,20 @@ fun ScoreboardScreen(
 
                     ScoreboardTopBar(onBackClick = { viewModel.onBackPressed() })
 
-                    Row(
+                    ParticipantsScoreRow(
+                        participants = state.participants,
+                        modifier     = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                    /*Row(
                         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         state.participants.forEach { p ->
                             ParticipantScoreCard(p, Modifier.weight(1f))
                         }
-                    }
+                    }*/
 
                     Spacer(Modifier.height(16.dp))
 
@@ -295,7 +306,8 @@ private fun ScoreboardTopBar(onBackClick: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment     = Alignment.CenterVertically
     ) {
-        Icon(Icons.Default.ArrowBack, "Back",
+        Icon(
+            Icons.AutoMirrored.Filled.ArrowBack, "Back",
             tint     = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(28.dp).clickable(onClick = onBackClick))
         Text("DOMINO KINETIC",
@@ -317,7 +329,7 @@ private fun LeaveGameDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(Modifier.size(64.dp).clip(RoundedCornerShape(18.dp))
                     .background(colors.neonGreen.copy(alpha = 0.12f)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.ExitToApp, null, tint = colors.neonGreen, modifier = Modifier.size(32.dp))
+                    Icon(Icons.AutoMirrored.Filled.ExitToApp, null, tint = colors.neonGreen, modifier = Modifier.size(32.dp))
                 }
                 Spacer(Modifier.height(20.dp))
                 Text("Leave the match?", color = MaterialTheme.colorScheme.onSurface,
@@ -336,7 +348,7 @@ private fun LeaveGameDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
                     .border(1.5.dp, colors.neonGreen, RoundedCornerShape(14.dp))
                     .clickable(onClick = onConfirm), contentAlignment = Alignment.Center) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.ExitToApp, null, tint = colors.neonGreen, modifier = Modifier.size(18.dp))
+                        Icon(Icons.AutoMirrored.Filled.ExitToApp, null, tint = colors.neonGreen, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
                         Text("SAVE & LEAVE", color = colors.neonGreen, style = MaterialTheme.typography.labelLarge)
                     }
@@ -351,38 +363,105 @@ private fun LeaveGameDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
     }
 }
 
+// ── Participants Score Row — adaptativo por número de jugadores ────────────────
+
+@Composable
+private fun ParticipantsScoreRow(
+    participants: List<ParticipantScoreUi>,
+    modifier: Modifier = Modifier
+) {
+    val count = participants.size
+    when {
+        // 2 jugadores: cards grandes lado a lado
+        count <= 2 -> {
+            Row(modifier, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                participants.forEach { p ->
+                    ParticipantScoreCard(p, count = count, modifier = Modifier.weight(1f))
+                }
+            }
+        }
+        // 3-4 jugadores: 2 filas de 2
+        else -> {
+            Column(modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                participants.chunked(2).forEach { row ->
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        row.forEach { p ->
+                            ParticipantScoreCard(p, count = count, modifier = Modifier.weight(1f))
+                        }
+                        if (row.size == 1) Spacer(Modifier.weight(1f))
+                    }
+                }
+            }
+        }
+    }
+}
+
 // ── Participant Score Card ─────────────────────────────────────────────────────
 
 @Composable
-private fun ParticipantScoreCard(p: ParticipantScoreUi, modifier: Modifier = Modifier) {
-    val colors   = MaterialTheme.kineticColors
-    val progress = (p.totalScore.toFloat() / p.targetScore).coerceIn(0f, 1f)
-    Box(modifier.height(160.dp).clip(RoundedCornerShape(20.dp))
-        .background(MaterialTheme.colorScheme.surfaceVariant)
-        .then(if (p.isLeading) Modifier.border(2.dp,
-            Brush.verticalGradient(listOf(colors.cyanAccent, colors.cyanAccent.copy(alpha = 0.3f))),
-            RoundedCornerShape(20.dp)) else Modifier)) {
-        if (p.isLeading) Box(Modifier.width(3.dp).fillMaxHeight(progress).align(Alignment.BottomStart)
-            .background(Brush.verticalGradient(listOf(Color.Transparent, colors.neonGreen))))
-        Column(Modifier.fillMaxSize().padding(16.dp)) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(p.name.uppercase(),
-                    color = if (p.isLeading) colors.cyanAccent else MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.labelMedium)
-                if (p.isLeading) Box(Modifier.size(8.dp).clip(CircleShape).background(colors.neonGreen))
+private fun ParticipantScoreCard(
+    p: ParticipantScoreUi,
+    count: Int = 2,
+    modifier: Modifier = Modifier
+) {
+    val colors    = MaterialTheme.kineticColors
+    val progress  = (p.totalScore.toFloat() / p.targetScore).coerceIn(0f, 1f)
+    // Altura y tamaño de score adaptados: menos espacio cuando hay más jugadores
+    val cardHeight  = if (count <= 2) 160.dp else 120.dp
+    val scoreFontSp = if (count <= 2) 64.sp   else 40.sp
+    // Nombre truncado si hay 3-4 jugadores
+    val nameDisplay = if (count > 2) p.name.uppercase().take(8) else p.name.uppercase()
+
+    Box(
+        modifier
+            .height(cardHeight)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .then(if (p.isLeading) Modifier.border(2.dp,
+                Brush.verticalGradient(listOf(colors.cyanAccent, colors.cyanAccent.copy(alpha = 0.3f))),
+                RoundedCornerShape(16.dp)) else Modifier)
+    ) {
+        if (p.isLeading) Box(
+            Modifier.width(3.dp).fillMaxHeight(progress).align(Alignment.BottomStart)
+                .background(Brush.verticalGradient(listOf(Color.Transparent, colors.neonGreen)))
+        )
+        Column(Modifier.fillMaxSize().padding(12.dp)) {
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment     = Alignment.CenterVertically
+            ) {
+                Text(
+                    text     = nameDisplay,
+                    color    = if (p.isLeading) colors.cyanAccent else MaterialTheme.colorScheme.onSurfaceVariant,
+                    style    = MaterialTheme.typography.labelSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+                if (p.isLeading) Box(Modifier.size(6.dp).clip(CircleShape).background(colors.neonGreen))
             }
-            Spacer(Modifier.height(8.dp))
-            Text(p.totalScore.toString(),
-                color = if (p.isLeading) Color.White else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.ExtraBold, fontSize = 64.sp))
-            Spacer(Modifier.weight(1f))
-            LinearProgressIndicator(progress = { progress },
-                modifier = Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(2.dp)),
-                color = if (p.isLeading) colors.neonGreen else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
-                trackColor = MaterialTheme.colorScheme.surface)
             Spacer(Modifier.height(4.dp))
-            Text("GOAL: ${p.targetScore}", color = MaterialTheme.colorScheme.onSurfaceVariant,
+            Text(
+                text  = p.totalScore.toString(),
+                color = if (p.isLeading) MaterialTheme.colorScheme.onBackground
+                else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                style = MaterialTheme.typography.displayMedium.copy(
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize   = scoreFontSp
+                ),
+                maxLines = 1
+            )
+            Spacer(Modifier.weight(1f))
+            LinearProgressIndicator(
+                progress   = { progress },
+                modifier   = Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(2.dp)),
+                color      = if (p.isLeading) colors.neonGreen else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                trackColor = MaterialTheme.colorScheme.surface
+            )
+            Spacer(Modifier.height(4.dp))
+            Text("GOAL: ${p.targetScore}",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.labelSmall)
         }
     }
@@ -394,14 +473,19 @@ private fun ParticipantScoreCard(p: ParticipantScoreUi, modifier: Modifier = Mod
 private fun HandLogRow(hand: HandLogUi) {
     val colors   = MaterialTheme.kineticColors
     val isActive = hand.winType != WinType.BLOCKED
-    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp))
-        .background(MaterialTheme.colorScheme.surfaceVariant)
-        .then(if (isActive) Modifier.border(2.dp, colors.neonGreen.copy(alpha = 0.5f), RoundedCornerShape(14.dp)) else Modifier)
-        .padding(horizontal = 16.dp, vertical = 14.dp),
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(14.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .then(if (isActive) Modifier.border(2.dp, colors.neonGreen.copy(alpha = 0.5f), RoundedCornerShape(14.dp)) else Modifier)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
         Text("R${hand.roundNumber}", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
             style = MaterialTheme.typography.labelSmall, modifier = Modifier.width(24.dp))
+
         Box(Modifier.size(40.dp).clip(RoundedCornerShape(10.dp))
             .background(if (isActive) colors.neonGreen.copy(alpha = 0.15f) else MaterialTheme.colorScheme.surface),
             contentAlignment = Alignment.Center) {
@@ -409,12 +493,14 @@ private fun HandLogRow(hand: HandLogUi) {
                 null, tint = when (hand.winType) { WinType.CAPICUA -> colors.neonGreen; WinType.BLOCKED -> MaterialTheme.colorScheme.onSurfaceVariant; else -> colors.cyanAccent },
                 modifier = Modifier.size(20.dp))
         }
+
         Column(Modifier.weight(1f)) {
             Text(hand.winnerName, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.titleMedium)
             if (hand.winType != WinType.NORMAL) Text(hand.winType.name,
                 color = if (hand.winType == WinType.CAPICUA) colors.neonGreen else MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.labelSmall)
         }
+
         Text("+${hand.pointsScored}",
             color = if (isActive) colors.neonGreen else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
@@ -435,7 +521,8 @@ private fun ScoreboardActions(canUndo: Boolean, isLoading: Boolean,
             .background(if (canUndo) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
             .clickable(enabled = canUndo && !isLoading, onClick = onUndo), contentAlignment = Alignment.Center) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Undo, "Undo",
+                Icon(
+                    Icons.AutoMirrored.Filled.Undo, "Undo",
                     tint = if (canUndo) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                     modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(6.dp))
@@ -540,7 +627,7 @@ private fun NumPad(onDigit: (String) -> Unit, onDelete: () -> Unit) {
                     Box(Modifier.weight(1f).height(64.dp).clip(RoundedCornerShape(14.dp))
                         .background(if (key == "DEL") MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.25f) else MaterialTheme.colorScheme.surfaceVariant)
                         .clickable { if (key == "DEL") onDelete() else onDigit(key) }, contentAlignment = Alignment.Center) {
-                        if (key == "DEL") Icon(Icons.Default.Backspace, "Delete", tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(22.dp))
+                        if (key == "DEL") Icon(Icons.AutoMirrored.Filled.Backspace, "Delete", tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(22.dp))
                         else Text(key, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Normal))
                     }
                 }
@@ -571,7 +658,7 @@ private fun UndoConfirmDialog(lastHand: HandLogUi, onDismiss: () -> Unit, onConf
                 Spacer(Modifier.height(28.dp))
                 Box(Modifier.fillMaxWidth().height(54.dp).clip(RoundedCornerShape(14.dp)).border(1.5.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(14.dp)).clickable(onClick = onConfirm), contentAlignment = Alignment.Center) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Undo, null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(18.dp))
+                        Icon(Icons.AutoMirrored.Filled.Undo, null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
                         Text("CONFIRM UNDO", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelLarge)
                     }

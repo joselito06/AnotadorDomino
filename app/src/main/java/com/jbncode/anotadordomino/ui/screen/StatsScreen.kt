@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -23,6 +24,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Canvas
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
+import kotlin.math.cos
+import kotlin.math.sin
 
 // Datos placeholder — reemplazar con StatsViewModel cuando lo implementes
 private data class StatCard(val icon: ImageVector, val label: String, val value: String, val unit: String, val accentColor: Color)
@@ -46,7 +49,6 @@ fun StatsScreen(onSettingsClick: () -> Unit = {}) {
             .verticalScroll(scrollState)
             .padding(bottom = 100.dp)
     ) {
-        // TopBar
         KineticTopBar(onSettingsClick = onSettingsClick)
 
         // Performance core card
@@ -64,13 +66,13 @@ fun StatsScreen(onSettingsClick: () -> Unit = {}) {
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.size(160.dp)) {
                     CircularStatIndicator(progress = 0.72f, size = 160.dp, strokeWidth = 14.dp, color = colors.neonGreen)
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("72%", color = Color.White, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, fontFamily = MaterialTheme.typography.displayLarge.fontFamily)
+                        Text("72%", color = MaterialTheme.colorScheme.onBackground, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, fontFamily = MaterialTheme.typography.displayLarge.fontFamily)
                         Text("EFFICIENCY", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
                     }
                 }
 
                 Spacer(Modifier.height(20.dp))
-                Text("WIN RATE", color = Color.White, style = MaterialTheme.typography.headlineMedium)
+                Text("WIN RATE", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.headlineMedium)
                 Spacer(Modifier.height(8.dp))
                 Text("Dominating the table with precision kinetic movements across 124 professional sessions.",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -92,7 +94,7 @@ fun StatsScreen(onSettingsClick: () -> Unit = {}) {
                 Column(Modifier.weight(1f)) {
                     Text("CURRENT LEVEL", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
                     Spacer(Modifier.height(4.dp))
-                    Text("The King of Capicúa", color = Color.White, style = MaterialTheme.typography.titleLarge)
+                    Text("The King of Capicúa", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.titleLarge)
                     Spacer(Modifier.height(4.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("42", color = colors.cyanAccent, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
@@ -153,7 +155,7 @@ fun StatsScreen(onSettingsClick: () -> Unit = {}) {
                 Spacer(Modifier.width(12.dp))
                 Column {
                     Text("NEXT MILESTONE", color = colors.neonGreen, style = MaterialTheme.typography.labelSmall)
-                    Text("Capicúa Master II", color = Color.White, style = MaterialTheme.typography.titleSmall)
+                    Text("Capicúa Master II", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.titleSmall)
                     Text("Reach 50 strikes to unlock the Neon Slate Interface.",
                         color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                 }
@@ -194,7 +196,7 @@ private fun StatMiniCard(card: StatCard, modifier: Modifier = Modifier) {
             }
             Spacer(Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.Bottom) {
-                Text(card.value, color = Color.White, style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold))
+                Text(card.value, color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold))
                 Spacer(Modifier.width(4.dp))
                 Text(card.unit, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(bottom = 6.dp))
             }

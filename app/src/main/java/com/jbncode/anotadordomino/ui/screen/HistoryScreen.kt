@@ -60,7 +60,7 @@ fun HistoryScreen(
             Column {
                 Text(
                     text  = "Match History",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.headlineLarge
                 )
                 Spacer(Modifier.height(4.dp))
@@ -126,10 +126,10 @@ fun HistoryScreen(
             is HistoryUiState.Success -> {
                 LazyColumn(
                     contentPadding      = PaddingValues(
-                        start      = 16.dp,
-                        end        = 16.dp,
-                        top        = 4.dp,
-                        bottom     = 90.dp        // espacio para el BottomBar
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 4.dp,
+                        bottom = 90.dp        // espacio para el BottomBar
                     ),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -186,7 +186,7 @@ private fun MatchHistoryCard(match: MatchHistoryUi, onResume: () -> Unit) {
                     Spacer(Modifier.height(4.dp))
                     Text(
                         text  = "Game #${match.gameId}",
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 }
@@ -280,7 +280,7 @@ private fun TeamScoreRow(participants: List<ParticipantHistoryUi>) {
             )
             Text(
                 text  = participants[0].score.toString(),
-                color = if (participants[0].isWinner) Color.White
+                color = if (participants[0].isWinner) MaterialTheme.colorScheme.onBackground
                 else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                 style = MaterialTheme.typography.displaySmall.copy(
                     fontWeight = FontWeight.ExtraBold,
@@ -306,7 +306,7 @@ private fun TeamScoreRow(participants: List<ParticipantHistoryUi>) {
             )
             Text(
                 text  = participants[1].score.toString(),
-                color = if (participants[1].isWinner) Color.White
+                color = if (participants[1].isWinner) MaterialTheme.colorScheme.onBackground
                 else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                 style = MaterialTheme.typography.displaySmall.copy(
                     fontWeight = FontWeight.ExtraBold,
@@ -387,7 +387,7 @@ private fun ParticipantBox(
         Column {
             Text(label, color = accent, style = MaterialTheme.typography.labelSmall)
             Spacer(Modifier.height(2.dp))
-            Text(name, color = Color.White,
+            Text(name, color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
             Text(score.toString(), color = accent,
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold))
@@ -411,7 +411,7 @@ private fun PlayerChip(rank: Int, name: String, score: Int, accent: Color) {
             )
             Text(
                 text  = score.toString(),
-                color = if (rank == 1) accent else Color.White,
+                color = if (rank == 1) accent else MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.ExtraBold)
             )
         }

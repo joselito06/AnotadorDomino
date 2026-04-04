@@ -7,7 +7,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -43,7 +42,6 @@ fun SettingsScreen(
             .verticalScroll(scrollState)
             .padding(bottom = 40.dp)
     ) {
-        // TopBar con back
         KineticTopBar(
             onSettingsClick = {},
             showBack        = true,
@@ -80,7 +78,7 @@ fun SettingsScreen(
                 }
                 Spacer(Modifier.width(14.dp))
                 Column {
-                    Text("Pro Player", color = Color.White, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
+                    Text("Pro Player", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
                     Text("LEVEL 42 DOMINATOR", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
                     Text("• RANK #12", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
                     Spacer(Modifier.height(8.dp))
@@ -130,7 +128,7 @@ fun SettingsScreen(
                 verticalAlignment     = Alignment.CenterVertically
             ) {
                 Column(Modifier.weight(1f)) {
-                    Text("Dark / Light Mode", color = Color.White, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+                    Text("Dark / Light Mode", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
                     Text("Optimize for night-time kinetic precision",
                         color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                 }
@@ -156,7 +154,7 @@ fun SettingsScreen(
                 verticalAlignment     = Alignment.CenterVertically
             ) {
                 Column(Modifier.weight(1f)) {
-                    Text("Themes & Tile Skins", color = Color.White, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+                    Text("Themes & Tile Skins", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
                     Row {
                         Text("Active: ", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                         Text("Obsidian Neon", color = MaterialTheme.kineticColors.cyanAccent, style = MaterialTheme.typography.bodySmall)
@@ -186,7 +184,7 @@ fun SettingsScreen(
                 verticalAlignment     = Alignment.CenterVertically
             ) {
                 Column(Modifier.weight(1f)) {
-                    Text("Export Match History", color = Color.White, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+                    Text("Export Match History", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
                     Text("Download all rounds in CSV format",
                         color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                 }
@@ -228,7 +226,7 @@ fun SettingsScreen(
         AlertDialog(
             onDismissRequest = { showResetDialog = false },
             containerColor   = MaterialTheme.colorScheme.surfaceVariant,
-            title = { Text("Reset Local Data?", color = Color.White) },
+            title = { Text("Reset Local Data?", color = MaterialTheme.colorScheme.onBackground) },
             text  = { Text("This will permanently delete all local match history. This cannot be undone.",
                 color = MaterialTheme.colorScheme.onSurfaceVariant) },
             confirmButton = {
@@ -286,7 +284,7 @@ private fun SettingsToggleRow(
         verticalAlignment     = Alignment.CenterVertically
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = Color.White, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            Text(title, color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
             Text(description, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
         }
         Spacer(Modifier.width(12.dp))
@@ -308,7 +306,7 @@ private fun SettingsArrowRow(title: String, description: String) {
         verticalAlignment     = Alignment.CenterVertically
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = Color.White, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            Text(title, color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
             Text(description, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
         }
         Icon(Icons.Default.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(20.dp))
@@ -324,7 +322,7 @@ private fun SettingsActionRow(title: String, description: String, actionLabel: S
         verticalAlignment     = Alignment.CenterVertically
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = Color.White, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            Text(title, color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
             if (accentDescription) {
                 Row {
                     Text("Current Target: ", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
