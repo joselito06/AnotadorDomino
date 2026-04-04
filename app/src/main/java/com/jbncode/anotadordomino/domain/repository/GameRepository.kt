@@ -24,6 +24,14 @@ interface  GameRepository {
      * Usado al iniciar la app para detectar si hay que reanudar.
      */
     suspend fun getActiveGame(): Game?
+    /** Emite todas las partidas ordenadas más reciente primero. */
+    fun observeAllGames(): Flow<List<Game>>
+    /**
+     * Para cada gameId, devuelve el score total de cada participante.
+     * Usado en History para mostrar los puntajes finales sin observar
+     * cada partida individualmente.
+     */
+    suspend fun getScoresForGame(gameId: Int): Map<Int, Int>
 
     // Funciones reactivas
     fun observeTotalScore(gameId: Int, participantId: Int): Flow<Int>

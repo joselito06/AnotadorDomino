@@ -67,26 +67,30 @@ fun AnotadorDomBottomBar(
             )
 
             // ── FAB central (Play) ────────────────────────────────────────
+            val playSelected = currentRoute == Screen.Setup.route
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(
                     modifier = Modifier
                         .size(58.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .background(colors.neonGreen)
+                        .background(
+                            color = if (playSelected) colors.neonGreen
+                                    else MaterialTheme.colorScheme.surfaceVariant)
                         .clickable(onClick = onPlayClick),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         Icons.Default.Add,
                         contentDescription = "Play",
-                        tint     = MaterialTheme.colorScheme.background,
+                        tint     = if(playSelected) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(28.dp)
                     )
                 }
                 Spacer(Modifier.height(2.dp))
                 Text(
                     text  = "PLAY",
-                    color = colors.neonGreen,
+                    color = if (playSelected) colors.neonGreen
+                            else MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall
                 )
             }

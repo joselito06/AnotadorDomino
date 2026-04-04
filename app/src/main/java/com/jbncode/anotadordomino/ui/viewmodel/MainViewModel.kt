@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 sealed class AppStartDestination {
     object Checking : AppStartDestination()             // splash/loading inicial
-    object Home : AppStartDestination()                 // no hay partida pendiente
+    object Setup : AppStartDestination()                 // no hay partida pendiente
     data class ResumeGame(val gameId: Int) : AppStartDestination()  // hay partida activa/pausada
 }
 
@@ -34,7 +34,7 @@ class MainViewModel @Inject constructor(
             _startDestination.value = if (activeGame != null) {
                 AppStartDestination.ResumeGame(activeGame.id)
             } else {
-                AppStartDestination.Home
+                AppStartDestination.Setup
             }
         }
     }

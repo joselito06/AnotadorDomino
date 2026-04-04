@@ -81,6 +81,15 @@ class GameRepositoryImpl @Inject constructor(
         return dao.getActiveGame()?.toGame()
     }
 
+    override fun observeAllGames(): Flow<List<Game>> = dao.observeAllGames().map { list -> list.map { it.toGame() } }
+
+    override suspend fun getScoresForGame(gameId: Int): Map<Int, Int> {
+        val participants = dao.getParticipants(gameId)
+        return participants.associate { p ->
+            p.id to dao.getTotalScore(gameId, p.id)
+        }
+    }
+
     override fun observeTotalScore(
         gameId: Int,
         participantId: Int
@@ -124,7 +133,10 @@ class GameRepositoryImpl @Inject constructor(
         status      = GameStatus.valueOf(status)
     )
 
-    private fun ParticipantEntity.toParticipant() = Participant(id = id, gameId = gameId,
-        name = name, seatOrder = seatOrder)
+    private fun ParticipantEntity.toParticipant() = Participant(
+        id = id,
+        gameId = gameId,
+        name = name, seatOrder = seatOrder
+    )
 
 }

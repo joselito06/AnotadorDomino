@@ -81,13 +81,23 @@ fun DominoComposeApp(
                     currentRoute = currentRoute,       // ← para resaltar el ítem activo
                     onHistoryClick = {
                         navController.navigate(Screen.History.route) {
-                            popUpTo(Screen.History.route) { inclusive = true }
+                            popUpTo(Screen.Setup.route)
+                            launchSingleTop = true
                         }
                     },
-                    onPlayClick = { navController.navigate(Screen.Setup.route) },
+                    onPlayClick = {
+                        // Si ya estamos en Setup, no navegar de nuevo
+                        if (currentRoute != Screen.Setup.route) {
+                            navController.navigate(Screen.Setup.route) {
+                                popUpTo(Screen.Setup.route) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                        }
+                    },
                     onStatsClick = {
                         navController.navigate(Screen.Stats.route) {
                             popUpTo(Screen.Setup.route)
+                            launchSingleTop = true
                         }
                     }
                 )
@@ -101,13 +111,14 @@ fun DominoComposeApp(
             modifier         = Modifier.padding(innerPadding)
         ) {
 
-            // 1. Home (Historial)
+            // 1. Setup (pantalla principal / Play)
             composable(Screen.Setup.route) {
                 SetupScreen(
                     onSettingsClick = navigateToSettings,
                     onGameStarted = { gameId ->
                         navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
-                            popUpTo(Screen.Setup.route)
+                            popUpTo(Screen.Setup.route) {inclusive = false}
+                            launchSingleTop = true
                         }
                     }
                 )
@@ -119,6 +130,7 @@ fun DominoComposeApp(
                     onResumeGame = { gameId ->
                         navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
                             popUpTo(Screen.Setup.route)
+                            launchSingleTop = true
                         }
                     }
                 )
@@ -145,8 +157,16 @@ fun DominoComposeApp(
                 ScoreboardScreen(
                     gameId         = gameId,
                     onNavigateHome = {
-                        navController.navigate(Screen.Setup.route) {
-                            popUpTo(Screen.Setup.route) { inclusive = true }
+                        // Volver a Setup (raíz). popBackStack lo encuentra siempre.
+                        val wentBack = navController.popBackStack(
+                            route     = Screen.Setup.route,
+                            inclusive = false
+                        )
+                        if (!wentBack) {
+                            navController.navigate(Screen.Setup.route) {
+                                popUpTo(0) { inclusive = true }
+                                launchSingleTop = true
+                            }
                         }
                     }
                     /*onMatchFinished = {
@@ -165,6 +185,7 @@ fun DominoComposeApp(
                 val gameId = (startDestination as AppStartDestination.ResumeGame).gameId
                 navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
                     popUpTo(Screen.Setup.route) { inclusive = false }
+                    launchSingleTop = true
                 }
             }
         }
