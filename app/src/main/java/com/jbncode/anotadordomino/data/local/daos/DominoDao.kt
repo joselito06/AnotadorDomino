@@ -36,6 +36,10 @@ interface DominoDao {
     @Query("SELECT * FROM games WHERE status != 'FINISHED' ORDER BY id DESC LIMIT 1")
     suspend fun getActiveGame(): GameEntity?
 
+    // History — todas las partidas ordenadas por fecha
+    @Query("SELECT * FROM games ORDER BY id DESC")
+    fun observeAllGames(): Flow<List<GameEntity>>
+
     // Consultas Reactivas (Flow)
     @Query("SELECT IFNULL(SUM(pointsScored), 0) FROM rounds WHERE gameId = :gameId AND winnerId = :participantId")
     fun observeTotalScore(gameId: Int, participantId: Int): Flow<Int>

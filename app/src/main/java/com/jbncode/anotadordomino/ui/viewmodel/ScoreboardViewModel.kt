@@ -38,7 +38,9 @@ data class HandLogUi(
     val winType: WinType
 )
 
-
+sealed class ScoreboardNavEvent {
+    object NavigateHome : ScoreboardNavEvent()
+}
 
 @HiltViewModel
 class ScoreboardViewModel @Inject constructor(
@@ -70,6 +72,13 @@ class ScoreboardViewModel @Inject constructor(
     // Controla si el dialog "¿Abandonar partida?" está visible
     private val _showLeaveDialog = MutableStateFlow(false)
     val showLeaveDialog: StateFlow<Boolean> = _showLeaveDialog.asStateFlow()
+
+    // SharedFlow para navegación one-shot — evita dobles navegaciones
+    private val _navEvent = MutableSharedFlow<ScoreboardNavEvent>(extraBufferCapacity = 1)
+    val navEvent: SharedFlow<ScoreboardNavEvent> = _navEvent.asSharedFlow()
+
+    // Bandera para marcar FINISHED y emitir el evento de victoria solo una vez
+    private var finishEventSent = false
 
     // ── Init ───────────────────────────────────────────────────────────────
 
@@ -163,14 +172,21 @@ class ScoreboardViewModel @Inject constructor(
         val maxScore = scoreList.maxOfOrNull { it.totalScore } ?: 0
         val withLeading = scoreList.map { it.copy(isLeading = it.totalScore == maxScore && maxScore > 0) }
 
-        val isFinished = game.status == GameStatus.FINISHED ||
-                withLeading.any { it.totalScore >= game.targetScore }
+        val winner      = withLeading.firstOrNull { it.totalScore >= game.targetScore }
+        val isFinished = game.status == GameStatus.FINISHED || winner != null
+
+        // Marcar FINISHED en Room la primera vez que se detecta un ganador
+        if (winner != null && !finishEventSent) {
+            finishEventSent = true
+            viewModelScope.launch { repository.finishGame(gameId) }
+        }
 
         _uiState.value = ScoreboardUiState.Active(
             game         = game,
             participants = withLeading,
             handLog      = _handLog.value,
-            isFinished   = isFinished
+            isFinished   = isFinished,
+            winner       = winner
         )
     }
 
@@ -224,9 +240,10 @@ class ScoreboardViewModel @Inject constructor(
     fun onBackPressed() {
         val state = _uiState.value
         if (state is ScoreboardUiState.Active && !state.isFinished) {
-            _showLeaveDialog.value = true
+            viewModelScope.launch { _navEvent.emit(ScoreboardNavEvent.NavigateHome) }
+            return
         }
-        // Si ya terminó, dejamos que la navegación proceda normalmente
+        _showLeaveDialog.value = true
     }
 
     fun dismissLeaveDialog() {
@@ -237,11 +254,15 @@ class ScoreboardViewModel @Inject constructor(
      * El usuario confirmó que quiere salir.
      * Pausa la partida para poder reanudarla después y navega al Home.
      */
-    fun confirmLeave(onNavigateHome: () -> Unit) {
+    fun confirmLeave() {
         viewModelScope.launch {
-            repository.pauseGame(gameId)
             _showLeaveDialog.value = false
-            onNavigateHome()
+            repository.pauseGame(gameId)
+            _navEvent.emit(ScoreboardNavEvent.NavigateHome)
         }
+    }
+
+    fun onMatchFinishedAcknowledged() {
+        viewModelScope.launch { _navEvent.emit(ScoreboardNavEvent.NavigateHome) }
     }
 }

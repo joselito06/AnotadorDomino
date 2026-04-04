@@ -4,11 +4,12 @@ sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Setup : Screen("setup")
     object Game : Screen("game_screen")
-    object History : Screen("history_screen")
-    object Stats : Screen("stats_screen")
+    object History : Screen("history")
+    object Stats : Screen("stats")
+    object Settings : Screen("settings")
 
     // Pasamos el ID del juego por la ruta para que la pizarra sepa qué cargar
-    object Scoreboard : Screen("scoreboard_screen/{gameId}") {
-        fun createRoute(gameId: Int) = "scoreboard_screen/$gameId"
+    object Scoreboard : Screen("scoreboard/{gameId}") {
+        fun createRoute(gameId: Int) = "scoreboard/$gameId"
     }
 }

@@ -17,7 +17,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.UiComposable
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -34,6 +33,7 @@ import com.jbncode.anotadordomino.ui.theme.kineticColors
 @Composable
 fun SetupScreen(
     onGameStarted: (Int) -> Unit,
+    onSettingClicked: () -> Unit,
     viewModel: SetupViewModel = hiltViewModel()
 ) {
     val colors      = MaterialTheme.kineticColors
@@ -59,7 +59,7 @@ fun SetupScreen(
                 .verticalScroll(scrollState)
                 .padding(bottom = 100.dp)
         ) {
-            SetupTopBar()
+            SetupTopBar(onClickToSetting = onSettingClicked)
             SetupSeasonBanner()
             Spacer(Modifier.height(24.dp))
 
@@ -162,7 +162,7 @@ fun SetupScreen(
 // ── Top Bar ────────────────────────────────────────────────────────────────────
 
 @Composable
-private fun SetupTopBar() {
+private fun SetupTopBar(onClickToSetting: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -179,7 +179,7 @@ private fun SetupTopBar() {
             style = MaterialTheme.typography.titleLarge)
         Icon(Icons.Default.Settings, "Settings",
             tint     = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(28.dp))
+            modifier = Modifier.size(28.dp).clickable(true, onClick = { onClickToSetting() }))
     }
 }
 

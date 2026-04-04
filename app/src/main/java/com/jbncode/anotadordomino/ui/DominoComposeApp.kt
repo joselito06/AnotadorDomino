@@ -24,9 +24,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jbncode.anotadordomino.ui.components.AnotadorDomBottomBar
-import com.jbncode.anotadordomino.ui.screen.GameHistoryScreen
+import com.jbncode.anotadordomino.ui.screen.HistoryScreen
 import com.jbncode.anotadordomino.ui.screen.ScoreboardScreen
+import com.jbncode.anotadordomino.ui.screen.SettingsScreen
 import com.jbncode.anotadordomino.ui.screen.SetupScreen
+import com.jbncode.anotadordomino.ui.screen.StatsScreen
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 import com.jbncode.anotadordomino.ui.viewmodel.AppStartDestination
 import com.jbncode.anotadordomino.ui.viewmodel.MainViewModel
@@ -59,6 +61,10 @@ fun DominoComposeApp(
     //val showBottomBar = currentRoute?.startsWith("scoreboard_screen") != true
     val showBottomBar = currentRoute == Screen.Setup.route ||
             currentRoute == Screen.Stats.route
+
+    // BottomBar visible en estas rutas
+    //val showBottomBar = currentRoute in listOf(
+    //    Screen.Setup.route, Screen.History.route, Screen.Stats.route
 
     Scaffold(
         bottomBar = {
@@ -98,17 +104,32 @@ fun DominoComposeApp(
                         navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
                             popUpTo(Screen.Setup.route)
                         }
+                    },
+                    onSettingClicked = {
+                        navController.navigate(Screen.Settings.route) {
+                            popUpTo(Screen.Setup.route)
+                        }
                     }
                 )
             }
 
             composable(Screen.History.route) {
-                GameHistoryScreen()
+                HistoryScreen(
+                    onResumeGame = { gameId ->
+                        navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
+                            popUpTo(Screen.Setup.route)
+                        }
+                    }
+                )
             }
 
             // 2. Stats
             composable(Screen.Stats.route) {
-                // TODO: StatsScreen()
+                StatsScreen()
+            }
+
+            composable(Screen.Settings.route) {
+                SettingsScreen()
             }
 
 
@@ -120,12 +141,17 @@ fun DominoComposeApp(
                 val gameId = backStackEntry.arguments?.getInt("gameId") ?: return@composable
                 ScoreboardScreen(
                     gameId         = gameId,
-                    onMatchFinished = {
+                    onNavigateHome = {
+                        navController.navigate(Screen.Setup.route) {
+                            popUpTo(Screen.Setup.route) { inclusive = true }
+                        }
+                    }
+                    /*onMatchFinished = {
                         navController.popBackStack(Screen.Home.route, inclusive = false)
                     },
                     onLeave = {
                         navController.popBackStack(Screen.Home.route, inclusive = false)
-                    }
+                    }*/
                 )
             }
         }
@@ -135,7 +161,7 @@ fun DominoComposeApp(
             if (startDestination is AppStartDestination.ResumeGame) {
                 val gameId = (startDestination as AppStartDestination.ResumeGame).gameId
                 navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
-                    popUpTo(Screen.Home.route) { inclusive = false }
+                    popUpTo(Screen.Setup.route) { inclusive = false }
                 }
             }
         }

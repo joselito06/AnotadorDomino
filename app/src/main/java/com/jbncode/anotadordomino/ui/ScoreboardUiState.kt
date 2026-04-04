@@ -15,6 +15,7 @@ open class ScoreboardUiState {
         val game: Game,
         val participants: List<ParticipantScoreUi>,
         val handLog: List<HandLogUi>,
-        val isFinished: Boolean
+        val isFinished: Boolean,
+        val winner: ParticipantScoreUi? = null
     ) : ScoreboardUiState()
 }

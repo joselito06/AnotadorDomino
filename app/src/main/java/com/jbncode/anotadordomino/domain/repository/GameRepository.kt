@@ -15,6 +15,7 @@ interface  GameRepository {
 
     /** Marca la partida como ACTIVE al reanudarla. */
     suspend fun resumeGame(gameId: Int)
+    suspend fun finishGame(gameId: Int)
     suspend fun getParticipants(gameId: Int): List<Participant>
 
     /**

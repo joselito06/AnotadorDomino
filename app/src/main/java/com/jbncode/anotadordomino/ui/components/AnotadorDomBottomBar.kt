@@ -31,7 +31,7 @@ import com.jbncode.anotadordomino.ui.theme.kineticColors
  */
 @Composable
 fun AnotadorDomBottomBar(
-    currentRoute: String? = null,
+    currentRoute: String?,
     onHistoryClick: () -> Unit,
     onPlayClick: () -> Unit,
     onStatsClick: () -> Unit,
@@ -122,6 +122,12 @@ private fun BottomNavItem(
             .padding(horizontal = 12.dp, vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (selected) {
+            Box(Modifier.width(24.dp).height(3.dp).clip(RoundedCornerShape(2.dp)).background(colors.neonGreen))
+            Spacer(Modifier.height(2.dp))
+        } else {
+            Spacer(Modifier.height(5.dp))
+        }
         Icon(icon, contentDescription = label, tint = tint, modifier = Modifier.size(24.dp))
         Spacer(Modifier.height(2.dp))
         Text(text = label, color = tint, style = MaterialTheme.typography.labelSmall)

@@ -62,6 +62,10 @@ class GameRepositoryImpl @Inject constructor(
         dao.updateGameStatus(gameId, GameStatus.ACTIVE.name)
     }
 
+    override suspend fun finishGame(gameId: Int) {
+        dao.updateGameStatus(gameId, GameStatus.FINISHED.name)
+    }
+
     override suspend fun getParticipants(gameId: Int): List<Participant> {
         return dao.getParticipants(gameId).map { entity ->
             Participant(
@@ -119,5 +123,8 @@ class GameRepositoryImpl @Inject constructor(
         modality    = GameModality.valueOf(modality),
         status      = GameStatus.valueOf(status)
     )
+
+    private fun ParticipantEntity.toParticipant() = Participant(id = id, gameId = gameId,
+        name = name, seatOrder = seatOrder)
 
 }
