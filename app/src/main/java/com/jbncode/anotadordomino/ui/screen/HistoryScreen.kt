@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jbncode.anotadordomino.domain.model.GameModality
 import com.jbncode.anotadordomino.domain.model.GameStatus
+import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 import java.text.SimpleDateFormat
 import java.util.*
@@ -56,6 +57,7 @@ private val placeholderHistory = listOf(
 
 @Composable
 fun HistoryScreen(
+    onSettingsClick: () -> Unit = {},
     onResumeGame: (Int) -> Unit = {}
     // Cuando implementes el ViewModel: viewModel: HistoryViewModel = hiltViewModel()
 ) {
@@ -67,14 +69,7 @@ fun HistoryScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
         // TopBar
-        Row(
-            Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 20.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(Icons.Default.Menu, "Menu", tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(28.dp))
-            Text("DOMINO KINETIC", color = colors.cyanAccent, style = MaterialTheme.typography.titleLarge)
-            Icon(Icons.Default.Settings, "Settings", tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(28.dp))
-        }
+        KineticTopBar(onSettingsClick = onSettingsClick)
 
         // Header
         Row(
@@ -94,7 +89,7 @@ fun HistoryScreen(
 
         // List
         LazyColumn(
-            contentPadding      = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+            contentPadding      = PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 90.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             itemsIndexed(placeholderHistory) { _, match ->

@@ -19,12 +19,20 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.components.RecruitPlayerDialog
 import com.jbncode.anotadordomino.ui.theme.kineticColors
-import com.jbncode.anotadordomino.ui.viewmodel.PlayerUiState
 
 // ── Modelo de UI (solo para preview/placeholder) ───────────────────────────────
 // Cuando conectes el ViewModel, reemplaza samplePlayers por el StateFlow real.
+data class PlayerUi(val name: String, val wins: Int)
+
+private val samplePlayers = listOf(
+    PlayerUi("Marcus", 42),
+    PlayerUi("Elena",  38),
+    PlayerUi("Santi",  11),
+    PlayerUi("Chloe",  29),
+)
 
 // ── Screen ─────────────────────────────────────────────────────────────────────
 
@@ -38,6 +46,7 @@ import com.jbncode.anotadordomino.ui.viewmodel.PlayerUiState
  */
 @Composable
 fun HomeScreen(
+    onSettingsClick: () -> Unit = {},
     onNavigateToGame: (Int) -> Unit = {},
     onNewPlayer: () -> Unit = {}
 ) {
@@ -58,7 +67,7 @@ fun HomeScreen(
                 .verticalScroll(scrollState)
                 .padding(bottom = 100.dp)
         ) {
-            TopBar()
+            KineticTopBar(onSettingsClick = onSettingsClick)
             SeasonBanner()
             Spacer(Modifier.height(24.dp))
 
@@ -108,7 +117,7 @@ fun HomeScreen(
             }
             Spacer(Modifier.height(12.dp))
             PlayersGrid(
-                players  = emptyList<PlayerUiState>(),
+                players  = samplePlayers,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
             Spacer(Modifier.height(24.dp))
@@ -126,39 +135,6 @@ fun HomeScreen(
         if (showDialog) {
             RecruitPlayerDialog(onDismiss = { showDialog = false })
         }
-    }
-}
-
-// ── Top Bar ────────────────────────────────────────────────────────────────────
-
-@Composable
-private fun TopBar() {
-    val colors = MaterialTheme.kineticColors
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .statusBarsPadding()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment     = Alignment.CenterVertically
-    ) {
-        Icon(
-            Icons.Default.Menu,
-            contentDescription = "Menu",
-            tint     = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(28.dp)
-        )
-        Text(
-            text  = "DOMINO KINETIC",
-            color = colors.cyanAccent,
-            style = MaterialTheme.typography.titleLarge
-        )
-        Icon(
-            Icons.Default.Settings,
-            contentDescription = "Settings",
-            tint     = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(28.dp)
-        )
     }
 }
 
@@ -347,7 +323,7 @@ private fun HomeNewButton(onClick: () -> Unit) {
 // ── Players Grid ───────────────────────────────────────────────────────────────
 
 @Composable
-private fun PlayersGrid(players: List<PlayerUiState>, modifier: Modifier = Modifier) {
+private fun PlayersGrid(players: List<PlayerUi>, modifier: Modifier = Modifier) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         players.chunked(2).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -361,7 +337,7 @@ private fun PlayersGrid(players: List<PlayerUiState>, modifier: Modifier = Modif
 }
 
 @Composable
-private fun PlayerCard(player: PlayerUiState, modifier: Modifier = Modifier) {
+private fun PlayerCard(player: PlayerUi, modifier: Modifier = Modifier) {
     val colors = MaterialTheme.kineticColors
     Row(
         modifier = modifier

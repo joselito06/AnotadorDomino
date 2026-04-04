@@ -19,10 +19,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 
 @Composable
 fun SettingsScreen(
+    onBackClick: () -> Unit = {},
     isDarkTheme: Boolean = true,
     onThemeToggle: (Boolean) -> Unit = {}
 ) {
@@ -42,23 +44,12 @@ fun SettingsScreen(
             .padding(bottom = 40.dp)
     ) {
         // TopBar con back
-        Row(
-            Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 16.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment     = Alignment.CenterVertically
-        ) {
-            Icon(
-                Icons.AutoMirrored.Filled.ArrowBack, "Back",
-                tint = colors.cyanAccent, modifier = Modifier.size(26.dp))
-            Text("DOMINO KINETIC", color = colors.cyanAccent, style = MaterialTheme.typography.titleLarge)
-            Row {
-                Icon(Icons.Default.Search, "Search",
-                    tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(24.dp))
-                Spacer(Modifier.width(12.dp))
-                Icon(Icons.Default.MoreVert, "More",
-                    tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(24.dp))
-            }
-        }
+        KineticTopBar(
+            onSettingsClick = {},
+            showBack        = true,
+            onBackClick     = onBackClick,
+            title           = "SETTINGS"
+        )
 
         // Profile card
         Box(

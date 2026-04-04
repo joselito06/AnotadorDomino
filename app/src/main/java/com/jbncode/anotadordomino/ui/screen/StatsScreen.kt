@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -22,15 +21,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Canvas
+import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
-import kotlin.math.cos
-import kotlin.math.sin
 
 // Datos placeholder — reemplazar con StatsViewModel cuando lo implementes
 private data class StatCard(val icon: ImageVector, val label: String, val value: String, val unit: String, val accentColor: Color)
 
 @Composable
-fun StatsScreen() {
+fun StatsScreen(onSettingsClick: () -> Unit = {}) {
     val colors = MaterialTheme.kineticColors
     val scrollState = rememberScrollState()
 
@@ -49,14 +47,7 @@ fun StatsScreen() {
             .padding(bottom = 100.dp)
     ) {
         // TopBar
-        Row(
-            Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 20.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(Icons.Default.Menu, "Menu", tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(28.dp))
-            Text("DOMINO KINETIC", color = colors.cyanAccent, style = MaterialTheme.typography.titleLarge)
-            Icon(Icons.Default.Settings, "Settings", tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(28.dp))
-        }
+        KineticTopBar(onSettingsClick = onSettingsClick)
 
         // Performance core card
         Box(

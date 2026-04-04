@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.components.RecruitPlayerDialog
 import com.jbncode.anotadordomino.ui.viewmodel.PlayerUiState
 import com.jbncode.anotadordomino.ui.viewmodel.SetupViewModel
@@ -32,8 +33,8 @@ import com.jbncode.anotadordomino.ui.theme.kineticColors
 
 @Composable
 fun SetupScreen(
+    onSettingsClick: () -> Unit = {},
     onGameStarted: (Int) -> Unit,
-    onSettingClicked: () -> Unit,
     viewModel: SetupViewModel = hiltViewModel()
 ) {
     val colors      = MaterialTheme.kineticColors
@@ -59,7 +60,7 @@ fun SetupScreen(
                 .verticalScroll(scrollState)
                 .padding(bottom = 100.dp)
         ) {
-            SetupTopBar(onClickToSetting = onSettingClicked)
+            KineticTopBar(onSettingsClick = onSettingsClick)
             SetupSeasonBanner()
             Spacer(Modifier.height(24.dp))
 
@@ -156,30 +157,6 @@ fun SetupScreen(
                 }
             )
         }
-    }
-}
-
-// ── Top Bar ────────────────────────────────────────────────────────────────────
-
-@Composable
-private fun SetupTopBar(onClickToSetting: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .statusBarsPadding()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment     = Alignment.CenterVertically
-    ) {
-        Icon(Icons.Default.Menu, "Menu",
-            tint     = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(28.dp))
-        Text("DOMINO KINETIC",
-            color = MaterialTheme.kineticColors.cyanAccent,
-            style = MaterialTheme.typography.titleLarge)
-        Icon(Icons.Default.Settings, "Settings",
-            tint     = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(28.dp).clickable(true, onClick = { onClickToSetting() }))
     }
 }
 

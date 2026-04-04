@@ -60,11 +60,15 @@ fun DominoComposeApp(
     // Ocultamos el BottomBar en Scoreboard
     //val showBottomBar = currentRoute?.startsWith("scoreboard_screen") != true
     val showBottomBar = currentRoute == Screen.Setup.route ||
-            currentRoute == Screen.Stats.route
+            currentRoute == Screen.Stats.route || currentRoute == Screen.History.route
+
 
     // BottomBar visible en estas rutas
     //val showBottomBar = currentRoute in listOf(
     //    Screen.Setup.route, Screen.History.route, Screen.Stats.route
+
+    // Acción global de Settings — disponible desde cualquier pantalla del BottomBar
+    val navigateToSettings = { navController.navigate(Screen.Settings.route) }
 
     Scaffold(
         bottomBar = {
@@ -100,13 +104,9 @@ fun DominoComposeApp(
             // 1. Home (Historial)
             composable(Screen.Setup.route) {
                 SetupScreen(
+                    onSettingsClick = navigateToSettings,
                     onGameStarted = { gameId ->
                         navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
-                            popUpTo(Screen.Setup.route)
-                        }
-                    },
-                    onSettingClicked = {
-                        navController.navigate(Screen.Settings.route) {
                             popUpTo(Screen.Setup.route)
                         }
                     }
@@ -115,6 +115,7 @@ fun DominoComposeApp(
 
             composable(Screen.History.route) {
                 HistoryScreen(
+                    onSettingsClick = navigateToSettings,
                     onResumeGame = { gameId ->
                         navController.navigate(Screen.Scoreboard.createRoute(gameId)) {
                             popUpTo(Screen.Setup.route)
@@ -125,11 +126,13 @@ fun DominoComposeApp(
 
             // 2. Stats
             composable(Screen.Stats.route) {
-                StatsScreen()
+                StatsScreen(onSettingsClick = navigateToSettings)
             }
 
             composable(Screen.Settings.route) {
-                SettingsScreen()
+                SettingsScreen(
+                    onBackClick = { navController.popBackStack() }
+                )
             }
 
 
