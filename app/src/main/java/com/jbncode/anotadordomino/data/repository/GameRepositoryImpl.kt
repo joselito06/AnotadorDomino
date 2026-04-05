@@ -6,6 +6,7 @@ import com.jbncode.anotadordomino.data.local.entities.ParticipantEntity
 import com.jbncode.anotadordomino.data.local.entities.RoundEntity
 import com.jbncode.anotadordomino.domain.model.Game
 import com.jbncode.anotadordomino.domain.model.GameModality
+import com.jbncode.anotadordomino.domain.model.GameStats
 import com.jbncode.anotadordomino.domain.model.GameStatus
 import com.jbncode.anotadordomino.domain.model.Participant
 import com.jbncode.anotadordomino.domain.model.RoundScore
@@ -66,6 +67,12 @@ class GameRepositoryImpl @Inject constructor(
         dao.updateGameStatus(gameId, GameStatus.FINISHED.name)
     }
 
+    override suspend fun deleteAllData() {
+        dao.deleteAllRounds()
+        dao.deleteAllParticipants()
+        dao.deleteAllGames()
+    }
+
     override suspend fun getParticipants(gameId: Int): List<Participant> {
         return dao.getParticipants(gameId).map { entity ->
             Participant(
@@ -88,6 +95,29 @@ class GameRepositoryImpl @Inject constructor(
         return participants.associate { p ->
             p.id to dao.getTotalScore(gameId, p.id)
         }
+    }
+
+    override suspend fun getGameStats(): GameStats {
+        val now      = System.currentTimeMillis()
+        val from7    = now - (7L * 24 * 60 * 60 * 1000)
+        val dayData  = dao.getGamesPerDayLast7(from7)
+
+        // Construir array de 7 posiciones (índice 0 = 7 días atrás, 6 = hoy)
+        val todayEpoch = now / 86_400_000L
+        val activity   = (0..6).map { offset ->
+            val targetDay = todayEpoch - (6 - offset)
+            dayData.firstOrNull { it.dayEpoch == targetDay }?.gamesCount ?: 0
+        }
+
+        return GameStats(
+            totalGames       = dao.countFinishedGames(),
+            finishedGames    = dao.countFinishedGames(),
+            totalRounds      = dao.countTotalRounds(),
+            recordHighScore  = dao.getRecordHighScore(),
+            capicuaCount     = dao.countCapicuaRounds(),
+            blockedCount     = dao.countBlockedRounds(),
+            last7DaysActivity = activity
+        )
     }
 
     override fun observeTotalScore(

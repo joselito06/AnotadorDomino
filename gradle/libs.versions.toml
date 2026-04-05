@@ -17,6 +17,7 @@ playServicesAds = "23.0.0"
 firebaseCrashlyticsPlugin = "2.9.9"
 googleServicesPlugin = "4.4.1"
 materialIcons = "1.7.5"
+datastorePreferences = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,6 +58,8 @@ firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
 
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIcons" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

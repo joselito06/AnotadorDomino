@@ -26,6 +26,15 @@ interface DominoDao {
     @Query("UPDATE games SET status = :status WHERE id = :gameId")
     suspend fun updateGameStatus(gameId: Int, status: String)
 
+    @Query("DELETE FROM rounds")
+    suspend fun deleteAllRounds()
+
+    @Query("DELETE FROM participants")
+    suspend fun deleteAllParticipants()
+
+    @Query("DELETE FROM games")
+    suspend fun deleteAllGames()
+
     @Query("SELECT * FROM participants WHERE gameId = :gameId ORDER BY seatOrder ASC")
     suspend fun getParticipants(gameId: Int): List<ParticipantEntity>
 
@@ -38,6 +47,56 @@ interface DominoDao {
 
     @Query("SELECT IFNULL(SUM(pointsScored), 0) FROM rounds WHERE gameId = :gameId AND winnerId = :participantId")
     suspend fun getTotalScore(gameId: Int, participantId: Int): Int
+
+    /** Total de partidas FINISHED */
+    @Query("SELECT COUNT(*) FROM games WHERE status = 'FINISHED'")
+    suspend fun countFinishedGames(): Int
+
+    /** Partidas ganadas: juegos donde el participante con mayor score tiene el winnerId */
+    @Query("""
+        SELECT COUNT(*) FROM games g
+        WHERE g.status = 'FINISHED'
+        AND (
+            SELECT r.winnerId FROM rounds r
+            WHERE r.gameId = g.id
+            GROUP BY r.winnerId
+            ORDER BY SUM(r.pointsScored) DESC
+            LIMIT 1
+        ) = :participantId
+    """)
+    suspend fun countWinsForParticipant(participantId: Int): Int
+
+    /** Record high: mayor puntaje individual en una sola partida */
+    @Query("""
+        SELECT IFNULL(MAX(total), 0) FROM (
+            SELECT SUM(pointsScored) as total
+            FROM rounds
+            GROUP BY gameId, winnerId
+        )
+    """)
+    suspend fun getRecordHighScore(): Int
+
+    /** Total de rondas CAPICUA */
+    @Query("SELECT COUNT(*) FROM rounds WHERE winType = 'CAPICUA'")
+    suspend fun countCapicuaRounds(): Int
+
+    /** Total de rondas BLOCKED (tranque) */
+    @Query("SELECT COUNT(*) FROM rounds WHERE winType = 'BLOCKED'")
+    suspend fun countBlockedRounds(): Int
+
+    /** Total de rondas jugadas en todas las partidas */
+    @Query("SELECT COUNT(*) FROM rounds")
+    suspend fun countTotalRounds(): Int
+
+    /** Partidas jugadas en los últimos 7 días agrupadas por día */
+    @Query("""
+        SELECT (startTime / 86400000) as dayEpoch, COUNT(*) as gamesCount
+        FROM games
+        WHERE startTime >= :fromEpoch
+        GROUP BY dayEpoch
+        ORDER BY dayEpoch ASC
+    """)
+    suspend fun getGamesPerDayLast7(fromEpoch: Long): List<DayCount>
 
     // History — todas las partidas ordenadas por fecha
     @Query("SELECT * FROM games ORDER BY id DESC")
@@ -53,3 +112,6 @@ interface DominoDao {
     @Query("SELECT * FROM rounds WHERE gameId = :gameId ORDER BY id DESC")
     fun observeRoundScores(gameId: Int): Flow<List<RoundEntity>>
 }
+
+/** Helper para query de momentum */
+data class DayCount(val dayEpoch: Long, val gamesCount: Int)

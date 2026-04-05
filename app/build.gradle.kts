@@ -82,6 +82,8 @@ dependencies {
 
     implementation(libs.androidx.compose.material.icons.extended)
 
+    implementation(libs.datastore.preferences)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
