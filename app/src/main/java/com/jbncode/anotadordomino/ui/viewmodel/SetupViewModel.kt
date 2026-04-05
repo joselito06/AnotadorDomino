@@ -2,6 +2,7 @@ package com.jbncode.anotadordomino.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jbncode.anotadordomino.domain.model.AvatarType
 import com.jbncode.anotadordomino.domain.model.Game
 import com.jbncode.anotadordomino.domain.model.GameModality
 import com.jbncode.anotadordomino.domain.model.GameStatus
@@ -17,7 +18,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class PlayerUiState(val name: String, val wins: Int = 0)
+data class PlayerUiState(
+    val name: String,
+    val wins: Int = 0,
+    val avatarType: AvatarType = AvatarType.PRESET_STAR,
+    /** URI de la foto elegida desde galería (solo válido cuando avatarType == GALLERY) */
+    val photoUri: String? = null
+)
 data class PlayerLimits(val min: Int, val max: Int)
 
 @HiltViewModel
@@ -105,14 +112,22 @@ class SetupViewModel @Inject constructor(
      * Agrega un jugador a la lista de Quick Add.
      * No persiste en DB todavía; se usa al construir los [Participant] en [startGame].
      */
-    fun addQuickPlayer(name: String) {
+    fun addQuickPlayer(
+        name: String,
+        avatarType: AvatarType = AvatarType.PRESET_STAR,
+        photoUri: String? = null
+    ) {
         val trimmed = name.trim()
         if (trimmed.isBlank()) return
         // Rechaza si ya se alcanzó el límite
         if (!canAddPlayer.value) return
         // Evita duplicados (mismo nombre, case-insensitive)
         if (_quickPlayers.value.any { it.name.equals(trimmed, ignoreCase = true) }) return
-        _quickPlayers.value = _quickPlayers.value + PlayerUiState(name = trimmed)
+        _quickPlayers.value = _quickPlayers.value + PlayerUiState(
+            name = trimmed,
+            avatarType = avatarType,
+            photoUri   = photoUri
+        )
     }
 
     /**

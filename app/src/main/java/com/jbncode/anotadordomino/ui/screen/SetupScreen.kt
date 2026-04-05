@@ -1,9 +1,11 @@
 package com.jbncode.anotadordomino.ui.screen
 
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,10 +23,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.jbncode.anotadordomino.domain.model.AvatarType
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.components.RecruitPlayerDialog
 import com.jbncode.anotadordomino.ui.viewmodel.PlayerUiState
@@ -151,8 +158,8 @@ fun SetupScreen(
         if (showDialog) {
             RecruitPlayerDialog(
                 onDismiss  = { showDialog = false },
-                onAddPlayer = { name ->
-                    viewModel.addQuickPlayer(name)
+                onAddPlayer = { name, avatarType, photoUri ->
+                    viewModel.addQuickPlayer(name, avatarType, photoUri)
                     showDialog = false
                 }
             )
@@ -386,6 +393,28 @@ private fun SetupPlayerCard(
     modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.kineticColors
+    val context = LocalContext.current
+
+    // Icono según el tipo de avatar preset
+    val presetIcon = when (player.avatarType) {
+        AvatarType.PRESET_STAR    -> Icons.Default.Star
+        AvatarType.PRESET_CROWN   -> Icons.Default.EmojiEvents
+        AvatarType.PRESET_BOLT    -> Icons.Default.FlashOn
+        AvatarType.PRESET_FIRE    -> Icons.Default.Whatshot
+        AvatarType.PRESET_DIAMOND -> Icons.Default.Diamond
+        AvatarType.PRESET_SHIELD  -> Icons.Default.Shield
+        AvatarType.GALLERY        -> null
+    }
+    val presetTint = when (player.avatarType) {
+        AvatarType.PRESET_STAR    -> colors.neonGreen
+        AvatarType.PRESET_CROWN   -> Color(0xFFD4A800)
+        AvatarType.PRESET_BOLT    -> colors.cyanAccent
+        AvatarType.PRESET_FIRE    -> Color(0xFFFF5C3A)
+        AvatarType.PRESET_DIAMOND -> Color(0xFF7B61FF)
+        AvatarType.PRESET_SHIELD  -> colors.cyanAccent
+        AvatarType.GALLERY        -> colors.cyanAccent
+    }
+
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(14.dp))
@@ -400,9 +429,23 @@ private fun SetupPlayerCard(
                 .background(colors.cyanAccent.copy(alpha = 0.2f)),
             contentAlignment = Alignment.Center
         ) {
-            Icon(Icons.Default.Person, null,
-                tint     = colors.cyanAccent,
-                modifier = Modifier.size(22.dp))
+            if (player.avatarType == AvatarType.GALLERY && player.photoUri != null) {
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        ImageRequest.Builder(context)
+                            .data(Uri.parse(player.photoUri))
+                            .crossfade(true).build()
+                    ),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier     = Modifier.fillMaxSize().clip(CircleShape)
+                )
+            }else if(presetIcon != null){
+                Icon(presetIcon, null,
+                    tint     = presetTint,
+                    modifier = Modifier.size(22.dp))
+            }
+
         }
         Spacer(Modifier.width(8.dp))
         Column(Modifier.weight(1f)) {

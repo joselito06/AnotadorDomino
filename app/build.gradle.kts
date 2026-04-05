@@ -84,6 +84,8 @@ dependencies {
 
     implementation(libs.datastore.preferences)
 
+    implementation(libs.io.coil.compose)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
