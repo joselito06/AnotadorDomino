@@ -23,19 +23,20 @@ data class ParticipantScoreUi(
     val name: String,
     val totalScore: Int,
     val targetScore: Int,
-    val isLeading: Boolean      // tiene el puntaje más alto
+    val isLeading: Boolean,
+    val avatarType: String  = "PRESET_STAR",
+    val photoUri: String?   = null
 )
 
-/**
- * Representa una ronda en el log de manos.
- */
 data class HandLogUi(
-    val roundNumber: Int,       // número correlativo (1, 2, 3…)
-    val roundScoreId: Int,      // ID en Room — necesario para undo
+    val roundNumber: Int,
+    val roundScoreId: Int,
     val winnerName: String,
     val winnerId: Int,
     val pointsScored: Int,
-    val winType: WinType
+    val winType: WinType,
+    val avatarType: String = "PRESET_STAR",
+    val photoUri: String?  = null
 )
 
 sealed class ScoreboardNavEvent {
@@ -138,14 +139,16 @@ class ScoreboardViewModel @Inject constructor(
             repository.observeRoundScores(gameId).collect { rounds ->
                 _handLog.value = rounds.mapIndexed { index, round ->
                     val winnerName = participants
-                        .firstOrNull { it.id == round.winnerId }?.name ?: "?"
+                        .firstOrNull { it.id == round.winnerId }
                     HandLogUi(
                         roundNumber  = rounds.size - index,   // más reciente = R más alto
                         roundScoreId = round.id,
-                        winnerName   = winnerName,
+                        winnerName   = winnerName?.name ?: "?",
                         winnerId     = round.winnerId,
                         pointsScored = round.pointsScored,
-                        winType      = round.winType
+                        winType      = round.winType,
+                        avatarType   = winnerName?.avatarType ?: "PRESET_STAR",
+                        photoUri     = winnerName?.photoUri
                     )
                 }
                 // Reconstruir estado con el log actualizado
@@ -166,7 +169,9 @@ class ScoreboardViewModel @Inject constructor(
                 name          = p.name,
                 totalScore    = scores[p.id] ?: 0,
                 targetScore   = game.targetScore,
-                isLeading     = false   // se calcula abajo
+                isLeading     = false,   // se calcula abajo
+                avatarType    = p.avatarType,
+                photoUri      = p.photoUri
             )
         }
         val maxScore = scoreList.maxOfOrNull { it.totalScore } ?: 0

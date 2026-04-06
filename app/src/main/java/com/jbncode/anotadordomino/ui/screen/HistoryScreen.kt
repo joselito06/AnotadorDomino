@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jbncode.anotadordomino.domain.model.GameModality
 import com.jbncode.anotadordomino.domain.model.GameStatus
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
+import com.jbncode.anotadordomino.ui.components.AvatarDisplay
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 import com.jbncode.anotadordomino.ui.viewmodel.HistoryUiState
 import com.jbncode.anotadordomino.ui.viewmodel.HistoryViewModel
@@ -126,10 +127,10 @@ fun HistoryScreen(
             is HistoryUiState.Success -> {
                 LazyColumn(
                     contentPadding      = PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 4.dp,
-                        bottom = 90.dp        // espacio para el BottomBar
+                        start      = 16.dp,
+                        end        = 16.dp,
+                        top        = 4.dp,
+                        bottom     = 90.dp        // espacio para el BottomBar
                     ),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -271,13 +272,18 @@ private fun TeamScoreRow(participants: List<ParticipantHistoryUi>) {
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Equipo A (siempre el de seatOrder=1)
+        // Equipo A
         Column(Modifier.weight(1f)) {
-            Text(
-                text  = participants[0].name,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelSmall
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                AvatarDisplay(avatarType = participants[0].avatarType,
+                    photoUri = participants[0].photoUri, size = 20.dp)
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    text  = participants[0].name,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.labelSmall
+                )
+            }
             Text(
                 text  = participants[0].score.toString(),
                 color = if (participants[0].isWinner) MaterialTheme.colorScheme.onBackground
@@ -299,11 +305,17 @@ private fun TeamScoreRow(participants: List<ParticipantHistoryUi>) {
 
         // Equipo B
         Column(Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-            Text(
-                text  = participants[1].name,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelSmall
-            )
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End) {
+                Text(
+                    text  = participants[1].name,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.labelSmall
+                )
+                Spacer(Modifier.width(4.dp))
+                AvatarDisplay(avatarType = participants[1].avatarType,
+                    photoUri = participants[1].photoUri, size = 20.dp)
+            }
             Text(
                 text  = participants[1].score.toString(),
                 color = if (participants[1].isWinner) MaterialTheme.colorScheme.onBackground
@@ -339,18 +351,22 @@ private fun IndividualScoreRow(
         if (winner != null && runnerUp != null) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 ParticipantBox(
-                    label  = if (status == GameStatus.FINISHED) "WINNER" else "LEADING",
-                    name   = winner.name,
-                    score  = winner.score,
-                    accent = colors.neonGreen,
-                    modifier = Modifier.weight(1f)
+                    label      = if (status == GameStatus.FINISHED) "WINNER" else "LEADING",
+                    name       = winner.name,
+                    score      = winner.score,
+                    accent     = colors.neonGreen,
+                    avatarType = winner.avatarType,
+                    photoUri   = winner.photoUri,
+                    modifier   = Modifier.weight(1f)
                 )
                 ParticipantBox(
-                    label  = "RUNNER UP",
-                    name   = runnerUp.name,
-                    score  = runnerUp.score,
-                    accent = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.weight(1f)
+                    label      = "RUNNER UP",
+                    name       = runnerUp.name,
+                    score      = runnerUp.score,
+                    accent     = MaterialTheme.colorScheme.onSurfaceVariant,
+                    avatarType = runnerUp.avatarType,
+                    photoUri   = runnerUp.photoUri,
+                    modifier   = Modifier.weight(1f)
                 )
             }
         }
@@ -363,10 +379,12 @@ private fun IndividualScoreRow(
         ) {
             sorted.forEachIndexed { i, p ->
                 PlayerChip(
-                    rank   = i + 1,
-                    name   = p.name,
-                    score  = p.score,
-                    accent = accentList.getOrElse(i) { accentList.last() }
+                    rank       = i + 1,
+                    name       = p.name,
+                    score      = p.score,
+                    accent     = accentList.getOrElse(i) { accentList.last() },
+                    avatarType = p.avatarType,
+                    photoUri   = p.photoUri
                 )
             }
         }
@@ -376,6 +394,7 @@ private fun IndividualScoreRow(
 @Composable
 private fun ParticipantBox(
     label: String, name: String, score: Int, accent: Color,
+    avatarType: String = "PRESET_STAR", photoUri: String? = null,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -386,9 +405,13 @@ private fun ParticipantBox(
     ) {
         Column {
             Text(label, color = accent, style = MaterialTheme.typography.labelSmall)
-            Spacer(Modifier.height(2.dp))
-            Text(name, color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            Spacer(Modifier.height(6.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                AvatarDisplay(avatarType = avatarType, photoUri = photoUri, size = 28.dp)
+                Spacer(Modifier.width(6.dp))
+                Text(name, color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            }
             Text(score.toString(), color = accent,
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold))
         }
@@ -396,16 +419,19 @@ private fun ParticipantBox(
 }
 
 @Composable
-private fun PlayerChip(rank: Int, name: String, score: Int, accent: Color) {
+private fun PlayerChip(rank: Int, name: String, score: Int, accent: Color,
+                       avatarType: String = "PRESET_STAR", photoUri: String? = null) {
     Box(
         Modifier
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 12.dp, vertical = 10.dp)
+            .padding(horizontal = 10.dp, vertical = 10.dp)
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            AvatarDisplay(avatarType = avatarType, photoUri = photoUri, size = 32.dp)
+            Spacer(Modifier.height(4.dp))
             Text(
-                text  = "#$rank ${name.take(6)}",
+                text  = name.take(7),
                 color = accent,
                 style = MaterialTheme.typography.labelSmall
             )

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.jbncode.anotadordomino.domain.model.Game
 import com.jbncode.anotadordomino.domain.model.GameModality
 import com.jbncode.anotadordomino.domain.model.GameStatus
-import com.jbncode.anotadordomino.domain.model.Participant
 import com.jbncode.anotadordomino.domain.repository.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +22,9 @@ data class ParticipantHistoryUi(
     val id: Int,
     val name: String,
     val score: Int,
-    val isWinner: Boolean
+    val isWinner: Boolean,
+    val avatarType: String = "PRESET_STAR",
+    val photoUri: String?  = null
 )
 
 data class MatchHistoryUi(
@@ -80,14 +81,15 @@ class HistoryViewModel @Inject constructor(
         val participantUis = participants.map { p ->
             val score = scores[p.id] ?: 0
             ParticipantHistoryUi(
-                id       = p.id,
-                name     = p.name,
-                score    = score,
-                // Ganador: quien llegó al targetScore, o el de mayor score si la partida está activa
-                isWinner = when (game.status) {
+                id         = p.id,
+                name       = p.name,
+                score      = score,
+                isWinner   = when (game.status) {
                     GameStatus.FINISHED -> score >= game.targetScore || score == maxScore
                     else                -> score == maxScore && maxScore > 0
-                }
+                },
+                avatarType = p.avatarType,
+                photoUri   = p.photoUri
             )
         }
 

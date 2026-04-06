@@ -1,5 +1,6 @@
 package com.jbncode.anotadordomino.ui.components
 
+import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -9,9 +10,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -49,12 +52,20 @@ private data class AvatarPreset(
 private fun avatarPresets(): List<AvatarPreset> {
     val colors = MaterialTheme.kineticColors
     return listOf(
-        AvatarPreset(AvatarType.PRESET_STAR,    Icons.Default.Star,         Color(0xFF1A1A2E), colors.neonGreen),
-        AvatarPreset(AvatarType.PRESET_CROWN,   Icons.Default.EmojiEvents,  Color(0xFF1A1500), Color(0xFFD4A800)),
-        AvatarPreset(AvatarType.PRESET_BOLT,    Icons.Default.FlashOn,      Color(0xFF0D1A2A), colors.cyanAccent),
-        AvatarPreset(AvatarType.PRESET_FIRE,    Icons.Default.Whatshot,     Color(0xFF2A0D0D), Color(0xFFFF5C3A)),
-        AvatarPreset(AvatarType.PRESET_DIAMOND, Icons.Default.Diamond,      Color(0xFF0D1A2A), Color(0xFF7B61FF)),
-        AvatarPreset(AvatarType.PRESET_SHIELD,  Icons.Default.Shield,       Color(0xFF1A1A1A), colors.cyanAccent.copy(alpha = 0.8f)),
+        // ── Símbolos de domino ─────────────────────────────────────────────
+        AvatarPreset(AvatarType.PRESET_STAR,    Icons.Default.Star,             Color(0xFF1A1A2E), colors.neonGreen),
+        AvatarPreset(AvatarType.PRESET_CROWN,   Icons.Default.EmojiEvents,      Color(0xFF1A1500), Color(0xFFD4A800)),
+        AvatarPreset(AvatarType.PRESET_BOLT,    Icons.Default.FlashOn,          Color(0xFF0D1A2A), colors.cyanAccent),
+        AvatarPreset(AvatarType.PRESET_FIRE,    Icons.Default.Whatshot,         Color(0xFF2A0D0D), Color(0xFFFF5C3A)),
+        AvatarPreset(AvatarType.PRESET_DIAMOND, Icons.Default.Diamond,          Color(0xFF0D1A2A), Color(0xFF7B61FF)),
+        AvatarPreset(AvatarType.PRESET_SHIELD,  Icons.Default.Shield,           Color(0xFF1A1A1A), colors.cyanAccent.copy(alpha = 0.8f)),
+        // ── Personajes del juego ───────────────────────────────────────────
+        AvatarPreset(AvatarType.PRESET_KING,    Icons.Default.AccountCircle,    Color(0xFF1A0D00), Color(0xFFFFAA00)),
+        AvatarPreset(AvatarType.PRESET_NINJA,   Icons.Default.SelfImprovement,  Color(0xFF0A0A0A), Color(0xFF00E5FF)),
+        AvatarPreset(AvatarType.PRESET_ROBOT,   Icons.Default.SmartToy,         Color(0xFF0D1A12), colors.neonGreen),
+        AvatarPreset(AvatarType.PRESET_WIZARD,  Icons.Default.AutoAwesome,      Color(0xFF1A001A), Color(0xFFCC44FF)),
+        AvatarPreset(AvatarType.PRESET_PIRATE,  Icons.Default.SportsKabaddi,    Color(0xFF1A0D00), Color(0xFFFF6B35)),
+        AvatarPreset(AvatarType.PRESET_ALIEN,   Icons.Default.BubbleChart,      Color(0xFF001A0D), Color(0xFF44FF88)),
     )
 }
 
@@ -85,9 +96,13 @@ fun RecruitPlayerDialog(
 
     // Launcher para el picker de galería
     val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.OpenDocument()
     ) { uri: Uri? ->
         if (uri != null) {
+            context.contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
             galleryUri   = uri
             selectedType = AvatarType.GALLERY
         }
@@ -97,14 +112,23 @@ fun RecruitPlayerDialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
+        val scrollState = rememberScrollState()
+
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.92f)
+                .fillMaxHeight(0.90f)
                 .clip(RoundedCornerShape(24.dp))
                 .background(colors.dialogBackground)
-                .padding(24.dp)
         ) {
-            Column {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState)
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
                 // ── Header ────────────────────────────────────────────────
                 Row(
@@ -119,7 +143,9 @@ fun RecruitPlayerDialog(
                             style = MaterialTheme.typography.headlineLarge)
                     }
                     Box(
-                        Modifier.size(40.dp).clip(CircleShape)
+                        Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.surfaceVariant)
                             .clickable(onClick = onDismiss),
                         contentAlignment = Alignment.Center
@@ -175,7 +201,7 @@ fun RecruitPlayerDialog(
                         if (type != AvatarType.GALLERY) galleryUri = null
                     },
                     onPickGallery = {
-                        galleryLauncher.launch("image/*")
+                        galleryLauncher.launch(arrayOf("image/*"))
                     }
                 )
 
@@ -238,7 +264,9 @@ private fun AvatarPreview(
         contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -260,7 +288,9 @@ private fun AvatarPreview(
                             ),
                             contentDescription = "Avatar",
                             contentScale = ContentScale.Crop,
-                            modifier     = Modifier.fillMaxSize().clip(CircleShape)
+                            modifier     = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
                         )
                     }
                     preset != null -> {
@@ -404,7 +434,9 @@ private fun GalleryCell(
                     ),
                     contentDescription = "Gallery photo",
                     contentScale = ContentScale.Crop,
-                    modifier     = Modifier.fillMaxSize().clip(RoundedCornerShape(14.dp))
+                    modifier     = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(14.dp))
                 )
             }
             else -> {
@@ -515,7 +547,10 @@ private fun StatusCard() {
                     style = MaterialTheme.typography.bodySmall)
             }
             Spacer(Modifier.width(16.dp))
-            Box(Modifier.width(1.dp).height(48.dp).background(MaterialTheme.colorScheme.outline))
+            Box(Modifier
+                .width(1.dp)
+                .height(48.dp)
+                .background(MaterialTheme.colorScheme.outline))
             Spacer(Modifier.width(16.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("RANK", color = MaterialTheme.colorScheme.onSurfaceVariant,

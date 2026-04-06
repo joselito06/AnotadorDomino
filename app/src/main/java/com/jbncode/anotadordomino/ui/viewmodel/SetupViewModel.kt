@@ -180,29 +180,13 @@ class SetupViewModel @Inject constructor(
      */
     private fun buildParticipants(): List<Participant> =
         _quickPlayers.value.mapIndexed { index, player ->
-            Participant(name = player.name, seatOrder = index + 1, gameId = 0)
+            Participant(
+                name = player.name,
+                seatOrder = index + 1,
+                gameId = 0,
+                avatarType = player.avatarType.name,
+                photoUri = player.photoUri
+            )
         }
-    /*private fun buildParticipants(): List<Participant> {
-        val players = _quickPlayers.value
 
-        return if (players.isNotEmpty()) {
-            players.mapIndexed { index, player ->
-                Participant(
-                    name      = player.name,
-                    seatOrder = index + 1,
-                    gameId    = 0
-                )
-            }
-        } else {
-            // Defaults según modalidad
-            val defaultNames = if (_isPairsMode.value)
-                listOf("Nosotros", "Ellos")
-            else
-                listOf("Jugador 1", "Jugador 2")
-
-            defaultNames.mapIndexed { index, name ->
-                Participant(name = name, seatOrder = index + 1, gameId = 0)
-            }
-        }
-    }*/
 }

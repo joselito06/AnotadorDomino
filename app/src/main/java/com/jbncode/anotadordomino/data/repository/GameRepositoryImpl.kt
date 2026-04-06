@@ -35,7 +35,9 @@ class GameRepositoryImpl @Inject constructor(
             ParticipantEntity(
                 gameId = it.gameId,
                 name = it.name,
-                seatOrder = it.seatOrder
+                seatOrder = it.seatOrder,
+                avatarType = it.avatarType,
+                photoUri = it.photoUri
             )
         }
         dao.insertParticipants(entities)
@@ -74,14 +76,7 @@ class GameRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getParticipants(gameId: Int): List<Participant> {
-        return dao.getParticipants(gameId).map { entity ->
-            Participant(
-                id        = entity.id,
-                gameId    = entity.gameId,
-                name      = entity.name,
-                seatOrder = entity.seatOrder
-            )
-        }
+        return dao.getParticipants(gameId).map { it.toParticipant() }
     }
 
     override suspend fun getActiveGame(): Game? {
@@ -166,7 +161,10 @@ class GameRepositoryImpl @Inject constructor(
     private fun ParticipantEntity.toParticipant() = Participant(
         id = id,
         gameId = gameId,
-        name = name, seatOrder = seatOrder
+        name = name,
+        seatOrder = seatOrder,
+        avatarType = avatarType,
+        photoUri = photoUri
     )
 
 }

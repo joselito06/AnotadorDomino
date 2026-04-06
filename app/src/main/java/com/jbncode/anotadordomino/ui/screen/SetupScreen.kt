@@ -403,7 +403,14 @@ private fun SetupPlayerCard(
         AvatarType.PRESET_FIRE    -> Icons.Default.Whatshot
         AvatarType.PRESET_DIAMOND -> Icons.Default.Diamond
         AvatarType.PRESET_SHIELD  -> Icons.Default.Shield
+        AvatarType.PRESET_KING    -> Icons.Default.AccountCircle
+        AvatarType.PRESET_NINJA   -> Icons.Default.SelfImprovement
+        AvatarType.PRESET_ROBOT   -> Icons.Default.SmartToy
+        AvatarType.PRESET_WIZARD  -> Icons.Default.AutoAwesome
+        AvatarType.PRESET_PIRATE  -> Icons.Default.SportsKabaddi
+        AvatarType.PRESET_ALIEN   -> Icons.Default.BubbleChart
         AvatarType.GALLERY        -> null
+
     }
     val presetTint = when (player.avatarType) {
         AvatarType.PRESET_STAR    -> colors.neonGreen
@@ -412,7 +419,14 @@ private fun SetupPlayerCard(
         AvatarType.PRESET_FIRE    -> Color(0xFFFF5C3A)
         AvatarType.PRESET_DIAMOND -> Color(0xFF7B61FF)
         AvatarType.PRESET_SHIELD  -> colors.cyanAccent
+        AvatarType.PRESET_KING    -> Color(0xFFFFAA00)
+        AvatarType.PRESET_NINJA   -> Color(0xFF00E5FF)
+        AvatarType.PRESET_ROBOT   -> colors.neonGreen
+        AvatarType.PRESET_WIZARD  -> Color(0xFFCC44FF)
+        AvatarType.PRESET_PIRATE  -> Color(0xFFFF6B35)
+        AvatarType.PRESET_ALIEN   -> Color(0xFF44FF88)
         AvatarType.GALLERY        -> colors.cyanAccent
+
     }
 
     Row(
