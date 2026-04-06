@@ -38,4 +38,9 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    // NUEVO: Función para limpiar el estado y evitar re-navegaciones
+    fun onNavigationConsumed() {
+        _startDestination.value = AppStartDestination.Setup
+    }
 }

@@ -187,6 +187,7 @@ fun DominoComposeApp(
                     popUpTo(Screen.Setup.route) { inclusive = false }
                     launchSingleTop = true
                 }
+                mainViewModel.onNavigationConsumed()
             }
         }
     }

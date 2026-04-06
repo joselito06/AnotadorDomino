@@ -40,6 +40,7 @@ import com.jbncode.anotadordomino.ui.viewmodel.ScoreboardNavEvent
 import com.jbncode.anotadordomino.ui.viewmodel.ScoreboardViewModel
 import com.jbncode.anotadordomino.ui.components.AvatarDisplay
 import com.jbncode.anotadordomino.ui.components.AvatarSquare
+import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,8 +102,11 @@ fun ScoreboardScreen(
 
             Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                 Column(Modifier.fillMaxSize()) {
-
-                    ScoreboardTopBar(onBackClick = { viewModel.onBackPressed() })
+                    KineticTopBar(
+                        onSettingsClick = {},
+                        showBack = true,
+                        onBackClick = { viewModel.onBackPressed() })
+                    //ScoreboardTopBar(onBackClick = { viewModel.onBackPressed() })
 
                     ParticipantsScoreRow(
                         participants = state.participants,
