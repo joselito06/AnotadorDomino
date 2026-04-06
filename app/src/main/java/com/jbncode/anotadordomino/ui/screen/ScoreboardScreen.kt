@@ -2,6 +2,7 @@ package com.jbncode.anotadordomino.ui.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,6 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -179,7 +182,7 @@ fun ScoreboardScreen(
     }
 }
 
-// ── Winner Screen ──────────────────────────────────────────────────────────────
+// ── Winner Screen — confetti + modern design ──────────────────────────────────
 
 @Composable
 private fun WinnerScreen(
@@ -188,98 +191,378 @@ private fun WinnerScreen(
     onGoHome: () -> Unit
 ) {
     val colors = MaterialTheme.kineticColors
+
+    // ── Entry animation ────────────────────────────────────────────────────
+    var visible by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { visible = true }
+
+    val contentAlpha    by animateFloatAsState(
+        targetValue    = if (visible) 1f else 0f,
+        animationSpec  = tween(600, easing = FastOutSlowInEasing), label = "alpha"
+    )
+    val contentOffsetY  by animateFloatAsState(
+        targetValue    = if (visible) 0f else 80f,
+        animationSpec  = tween(600, easing = FastOutSlowInEasing), label = "offsetY"
+    )
+
+    // ── Pulsing glow for trophy ────────────────────────────────────────────
     val pulse  = rememberInfiniteTransition(label = "pulse")
-    val scale  by pulse.animateFloat(0.95f, 1.05f, label = "scale",
-        animationSpec = infiniteRepeatable(tween(800, easing = FastOutSlowInEasing), RepeatMode.Reverse))
+    val glow   by pulse.animateFloat(
+        0f, 1f, label = "glow",
+        animationSpec = infiniteRepeatable(tween(1200, easing = FastOutSlowInEasing), RepeatMode.Reverse)
+    )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(listOf(Color(0xFF0A1A0A), MaterialTheme.colorScheme.background))
-            ),
+            .background(Color(0xFF080808)),
         contentAlignment = Alignment.Center
     ) {
+        // ── Confetti layer ─────────────────────────────────────────────────
+        ConfettiCanvas()
+
+        // ── Radial glow background ─────────────────────────────────────────
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.radialGradient(
+                        colors = listOf(
+                            colors.neonGreen.copy(alpha = 0.08f + glow * 0.06f),
+                            Color.Transparent
+                        ),
+                        radius = 900f
+                    )
+                )
+        )
+
+        // ── Main content ───────────────────────────────────────────────────
         Column(
-            modifier = Modifier.padding(32.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+                .graphicsLayer {
+                    alpha         = contentAlpha
+                    translationY  = contentOffsetY
+                },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Trophy icon con glow
-            Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .shadow(40.dp, CircleShape,
-                        ambientColor = colors.neonGreen.copy(alpha = 0.6f),
-                        spotColor    = colors.neonGreen)
-                    .clip(CircleShape)
-                    .background(colors.neonGreen.copy(alpha = 0.15f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("🏆", fontSize = 48.sp)
+            // Label top
+            Text(
+                "K I N E T I C   M A S T E R S",
+                color = colors.cyanAccent.copy(alpha = 0.7f),
+                style = MaterialTheme.typography.labelSmall,
+                letterSpacing = 3.sp
+            )
+
+            Spacer(Modifier.height(24.dp))
+
+            // Trophy with layered glow rings
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.size(140.dp)) {
+                // Outer glow ring
+                Box(
+                    modifier = Modifier
+                        .size(140.dp)
+                        .clip(CircleShape)
+                        .background(
+                            Brush.radialGradient(
+                                listOf(
+                                    colors.neonGreen.copy(alpha = 0.15f + glow * 0.1f),
+                                    Color.Transparent
+                                )
+                            )
+                        )
+                )
+                // Mid ring
+                Box(
+                    modifier = Modifier
+                        .size(110.dp)
+                        .clip(CircleShape)
+                        .background(
+                            Brush.radialGradient(
+                                listOf(
+                                    colors.neonGreen.copy(alpha = 0.2f + glow * 0.15f),
+                                    Color.Transparent
+                                )
+                            )
+                        )
+                )
+                // Trophy circle
+                Box(
+                    modifier = Modifier
+                        .size(88.dp)
+                        .shadow(
+                            elevation    = (30 + glow * 20).dp,
+                            shape        = CircleShape,
+                            ambientColor = colors.neonGreen.copy(alpha = 0.6f),
+                            spotColor    = colors.neonGreen
+                        )
+                        .clip(CircleShape)
+                        .background(
+                            Brush.radialGradient(
+                                listOf(Color(0xFF1A3A1A), Color(0xFF0A1A0A))
+                            )
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("🏆", fontSize = 42.sp)
+                }
             }
 
             Spacer(Modifier.height(28.dp))
 
-            Text("MATCH OVER",
-                color = colors.cyanAccent,
-                style = MaterialTheme.typography.labelMedium)
+            // Winner avatar + name block
+            AvatarDisplay(
+                avatarType = winner.avatarType,
+                photoUri   = winner.photoUri,
+                size       = 64.dp
+            )
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(12.dp))
 
-            Text(winner.name,
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
-                textAlign = TextAlign.Center)
+            Text(
+                text      = winner.name.uppercase(),
+                color     = Color.White,
+                style     = MaterialTheme.typography.displaySmall.copy(
+                    fontWeight    = FontWeight.ExtraBold,
+                    letterSpacing = 2.sp
+                ),
+                textAlign = TextAlign.Center
+            )
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
 
-            Text("WINS!",
-                color = colors.neonGreen,
-                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold))
-
-            Spacer(Modifier.height(16.dp))
-
-            // Score final
+            // "WINS!" with gradient text effect via Box
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(horizontal = 28.dp, vertical = 12.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(
+                        Brush.horizontalGradient(
+                            listOf(colors.neonGreen, colors.cyanAccent)
+                        )
+                    )
+                    .padding(horizontal = 20.dp, vertical = 4.dp)
             ) {
-                Text("${winner.totalScore} pts",
-                    color = colors.neonGreen,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold))
+                Text(
+                    "WINS THE MATCH",
+                    color = Color(0xFF080808),
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(28.dp))
 
-            Text("${handLog.size} rounds played",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodySmall)
+            // Stats row
+            Row(
+                modifier              = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                WinnerStatChip(
+                    label = "FINAL SCORE",
+                    value = "${winner.totalScore}",
+                    unit  = "pts",
+                    color = colors.neonGreen,
+                    modifier = Modifier.weight(1f)
+                )
+                WinnerStatChip(
+                    label = "ROUNDS",
+                    value = "${handLog.size}",
+                    unit  = "played",
+                    color = colors.cyanAccent,
+                    modifier = Modifier.weight(1f)
+                )
+                WinnerStatChip(
+                    label = "GOAL",
+                    value = "${winner.targetScore}",
+                    unit  = "pts",
+                    color = Color(0xFF7B61FF),
+                    modifier = Modifier.weight(1f)
+                )
+            }
 
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(36.dp))
 
-            // Botón Home
+            // CTA Button
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(58.dp)
-                    .shadow(20.dp, RoundedCornerShape(16.dp),
+                    .shadow(
+                        elevation    = (16 + glow * 12).dp,
+                        shape        = RoundedCornerShape(18.dp),
                         spotColor    = colors.neonGreen,
-                        ambientColor = colors.neonGreen.copy(alpha = 0.5f))
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(colors.neonGreen)
+                        ambientColor = colors.neonGreen.copy(alpha = 0.5f)
+                    )
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(
+                        Brush.horizontalGradient(
+                            listOf(colors.neonGreen, Color(0xFF80C000))
+                        )
+                    )
                     .clickable(onClick = onGoHome),
                 contentAlignment = Alignment.Center
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Home, null,
-                        tint = MaterialTheme.colorScheme.background,
-                        modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text("BACK TO HOME",
-                        color = MaterialTheme.colorScheme.background,
-                        style = MaterialTheme.typography.titleMedium)
+                    Icon(
+                        Icons.Default.Home, null,
+                        tint     = Color(0xFF080808),
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(Modifier.width(10.dp))
+                    Text(
+                        "BACK TO HOME",
+                        color = Color(0xFF080808),
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            Text(
+                "Tap to return to the main screen",
+                color = Color.White.copy(alpha = 0.3f),
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+    }
+}
+
+// ── Winner stat chip ───────────────────────────────────────────────────────────
+
+@Composable
+private fun WinnerStatChip(
+    label: String, value: String, unit: String,
+    color: Color, modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(14.dp))
+            .background(Color.White.copy(alpha = 0.06f))
+            .padding(vertical = 12.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(label, color = color.copy(alpha = 0.8f),
+                style = MaterialTheme.typography.labelSmall)
+            Spacer(Modifier.height(2.dp))
+            Text(value, color = color,
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold))
+            Text(unit, color = Color.White.copy(alpha = 0.4f),
+                style = MaterialTheme.typography.labelSmall)
+        }
+    }
+}
+
+// ── Confetti Canvas ────────────────────────────────────────────────────────────
+
+private data class ConfettiParticle(
+    val x: Float,            // posición X inicial (0..1 relativo al ancho)
+    val speed: Float,        // velocidad de caída
+    val size: Float,         // tamaño del confeti en dp
+    val color: Int,          // color como ARGB Int
+    val rotation: Float,     // rotación inicial
+    val rotationSpeed: Float,// velocidad de rotación
+    val swingAmp: Float,     // amplitud de oscilación horizontal
+    val swingFreq: Float,    // frecuencia de oscilación
+    val shape: Int           // 0=rect, 1=circle, 2=line
+)
+
+@Composable
+private fun ConfettiCanvas() {
+    // Colores del confeti — paleta de la app + celebración
+    val confettiColors = listOf(
+        0xFFB6F000.toInt(), // neon green
+        0xFF5CF0E0.toInt(), // cyan
+        0xFFFFD700.toInt(), // gold
+        0xFFFF5C3A.toInt(), // orange-red
+        0xFFCC44FF.toInt(), // purple
+        0xFF00E5FF.toInt(), // electric blue
+        0xFFFF44AA.toInt(), // pink
+        0xFFFFFFFF.toInt(), // white
+    )
+
+    // Generar partículas una sola vez
+    val particles = remember {
+        (0..80).map {
+            ConfettiParticle(
+                x             = kotlin.random.Random.nextFloat(),
+                speed         = 0.8f + kotlin.random.Random.nextFloat() * 1.6f,
+                size          = 4f  + kotlin.random.Random.nextFloat() * 8f,
+                color         = confettiColors[kotlin.random.Random.nextInt(confettiColors.size)],
+                rotation      = kotlin.random.Random.nextFloat() * 360f,
+                rotationSpeed = (kotlin.random.Random.nextFloat() - 0.5f) * 4f,
+                swingAmp      = 20f + kotlin.random.Random.nextFloat() * 40f,
+                swingFreq     = 0.5f + kotlin.random.Random.nextFloat() * 1.5f,
+                shape         = kotlin.random.Random.nextInt(3)
+            )
+        }
+    }
+
+    // Tiempo global que avanza infinitamente
+    val infiniteTransition = rememberInfiniteTransition(label = "confetti")
+    val time by infiniteTransition.animateFloat(
+        initialValue  = 0f,
+        targetValue   = 1f,
+        label         = "time",
+        animationSpec = infiniteRepeatable(tween(4000, easing = LinearEasing))
+    )
+
+    Canvas(modifier = Modifier.fillMaxSize()) {
+        val w = size.width
+        val h = size.height
+
+        particles.forEach { p ->
+            // Y progresa de -10% a 110% de la pantalla (loop)
+            // Cada partícula tiene un offset de fase distinto (p.x como seed)
+            val phase     = p.x               // offset de fase para que no empiecen todas juntas
+            val progress  = ((time + phase) % 1f)   // 0..1
+            val yPos      = -0.1f * h + progress * 1.2f * h
+
+            // Oscilación horizontal sinusoidal
+            val xSwing    = kotlin.math.sin(progress * kotlin.math.PI * 2 * p.swingFreq).toFloat()
+            val xPos      = p.x * w + xSwing * p.swingAmp
+
+            // Rotación acumulada
+            val rot       = p.rotation + progress * 360f * p.rotationSpeed
+
+            // Fade in al entrar y fade out al salir
+            val alpha     = when {
+                progress < 0.05f -> progress / 0.05f
+                progress > 0.90f -> (1f - progress) / 0.10f
+                else             -> 1f
+            }
+
+            val paintColor = androidx.compose.ui.graphics.Color(
+                red   = ((p.color shr 16) and 0xFF) / 255f,
+                green = ((p.color shr 8)  and 0xFF) / 255f,
+                blue  = (p.color          and 0xFF) / 255f,
+                alpha = alpha * 0.85f
+            )
+
+            withTransform({
+                translate(xPos, yPos)
+                rotate(rot, pivot = androidx.compose.ui.geometry.Offset.Zero)
+            }) {
+                val sz = p.size.dp.toPx()
+                when (p.shape) {
+                    0 -> drawRect(     // rectángulo
+                        color  = paintColor,
+                        topLeft = androidx.compose.ui.geometry.Offset(-sz / 2f, -sz / 4f),
+                        size   = androidx.compose.ui.geometry.Size(sz, sz / 2f)
+                    )
+                    1 -> drawCircle(   // círculo
+                        color  = paintColor,
+                        radius = sz / 2.5f
+                    )
+                    else -> drawLine(  // línea / serpentina
+                        color       = paintColor,
+                        start       = androidx.compose.ui.geometry.Offset(-sz / 2f, 0f),
+                        end         = androidx.compose.ui.geometry.Offset(sz / 2f, 0f),
+                        strokeWidth = 2.5f
+                    )
                 }
             }
         }
