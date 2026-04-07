@@ -175,7 +175,7 @@ private fun SetupSeasonBanner() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(100.dp)
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(
