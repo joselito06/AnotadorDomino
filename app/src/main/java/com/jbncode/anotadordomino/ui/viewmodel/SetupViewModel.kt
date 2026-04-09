@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +27,9 @@ data class PlayerUiState(
     val photoUri: String? = null
 )
 data class PlayerLimits(val min: Int, val max: Int)
+
+// NUEVO: Enum para saber en qué paso del tutorial estamos
+enum class SetupTutorialStep { ADD_PLAYERS, START_MATCH }
 
 @HiltViewModel
 class SetupViewModel @Inject constructor(
@@ -70,6 +74,11 @@ class SetupViewModel @Inject constructor(
             val n = players.size
             if (isPairs) n == 2 else n in 2..4
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    val tutorialStep: StateFlow<SetupTutorialStep> =
+        canStartGame.map { canStart ->
+            if (canStart) SetupTutorialStep.START_MATCH else SetupTutorialStep.ADD_PLAYERS
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SetupTutorialStep.ADD_PLAYERS)
 
     /**
      * Habilita el botón "+ NEW".

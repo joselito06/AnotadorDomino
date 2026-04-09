@@ -4,6 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,11 +28,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -94,6 +104,9 @@ fun RecruitPlayerDialog(
     var selectedType  by remember { mutableStateOf(AvatarType.PRESET_STAR) }
     var galleryUri    by remember { mutableStateOf<Uri?>(null) }
 
+    var inputBounds by remember { mutableStateOf(Rect.Zero) }
+    var addBtnBounds by remember { mutableStateOf(Rect.Zero) }
+
     // Launcher para el picker de galería
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
@@ -117,7 +130,7 @@ fun RecruitPlayerDialog(
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.92f)
-                .fillMaxHeight(0.90f)
+                //.fillMaxHeight(0.90f)
                 .clip(RoundedCornerShape(24.dp))
                 .background(colors.dialogBackground)
         ) {
@@ -171,7 +184,11 @@ fun RecruitPlayerDialog(
                 Text("IDENTITY TAG", color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelMedium)
                 Spacer(Modifier.height(8.dp))
-                IdentityTagInput(value = playerName, onValueChange = { playerName = it })
+                IdentityTagInput(
+                    value = playerName,
+                    onValueChange = { playerName = it },
+                    modifier = Modifier.onGloballyPositioned { inputBounds = it.boundsInRoot() }
+                )
 
                 Spacer(Modifier.height(20.dp))
 
@@ -218,6 +235,7 @@ fun RecruitPlayerDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
+                        .onGloballyPositioned { addBtnBounds = it.boundsInRoot() }
                         .clip(RoundedCornerShape(16.dp))
                         .background(if (canAdd) colors.neonGreen else colors.neonGreen.copy(alpha = 0.35f))
                         .clickable(enabled = canAdd) {
@@ -239,6 +257,11 @@ fun RecruitPlayerDialog(
                     }
                 }
             }
+            DialogTutorialOverlay(
+                name = playerName,
+                inputBounds = inputBounds,
+                addBtnBounds = addBtnBounds
+            )
         }
     }
 }
@@ -476,10 +499,11 @@ private fun BoxScope.CheckBadge() {
 // ── Identity Tag Input ─────────────────────────────────────────────────────────
 
 @Composable
-private fun IdentityTagInput(value: String, onValueChange: (String) -> Unit) {
+private fun IdentityTagInput(value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
     val colors = MaterialTheme.kineticColors
+
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(14.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
@@ -558,6 +582,53 @@ private fun StatusCard() {
                 Text("N/A", color = colors.cyanAccent,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
             }
+        }
+    }
+}
+
+@Composable
+fun DialogTutorialOverlay(
+    name: String,
+    inputBounds: Rect,
+    addBtnBounds: Rect
+) {
+    val density = LocalDensity.current
+    val colors = MaterialTheme.kineticColors
+
+    val infiniteTransition = rememberInfiniteTransition(label = "dialog_tutorial")
+    val bounce by infiniteTransition.animateFloat(
+        initialValue = 0f, targetValue = 10f,
+        animationSpec = infiniteRepeatable(tween(600, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "bounce"
+    )
+
+    Box(Modifier.fillMaxSize()) {
+        if (name.isBlank() && inputBounds != Rect.Zero) {
+            // PASO 1: Si NO hay nombre -> Señalamos el TextField apuntando hacia abajo
+            val arrowX = with(density) { inputBounds.center.x.toDp() - 86.dp }
+            val arrowY = with(density) { inputBounds.top.toDp() - 40.dp }
+
+            Icon(
+                Icons.Default.ArrowDownward,
+                contentDescription = null,
+                tint = colors.cyanAccent,
+                modifier = Modifier
+                    .offset(x = arrowX, y = arrowY + bounce.dp)
+                    .size(32.dp)
+            )
+        } else if (name.isNotBlank() && addBtnBounds != Rect.Zero) {
+            // PASO 2: Si YA HAY nombre -> Señalamos el botón simulando un toque
+            val fingerX = with(density) { addBtnBounds.center.x.toDp() - 16.dp }
+            val fingerY = with(density) { addBtnBounds.bottom.toDp() + 2.dp }
+
+            Icon(
+                Icons.Default.TouchApp,
+                contentDescription = null,
+                tint = colors.neonGreen,
+                modifier = Modifier
+                    .offset(x = fingerX, y = fingerY - bounce.dp) // - bounce para que suba y tape el borde
+                    .size(32.dp)
+            )
         }
     }
 }
