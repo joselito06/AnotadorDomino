@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name">Anotador Dominó</string>
 
+    <string name="bottom_bar_history">HISTORIAL</string>
+    <string name="bottom_bar_play">JUGAR</string>
+    <string name="bottom_bar_stats">ESTADÍSTICAS</string>
+
     <!-- Setup Screen  -->
     <string name="setup_season_label">TEMPORADA ACTUAL</string>
     <string name="setup_season_name">MAESTROS CINÉTICOS</string>

@@ -334,7 +334,7 @@ private fun AvatarPreview(
 
             Column {
                 Text(
-                    text  = if (playerName.isBlank()) stringResource(R.string.dialog_player_name_default) else playerName,
+                    text  = playerName.ifBlank { stringResource(R.string.dialog_player_name_default) },
                     color = if (playerName.isBlank()) MaterialTheme.colorScheme.onSurfaceVariant
                     else MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
@@ -363,7 +363,7 @@ private fun AvatarGrid(
     onSelectPreset: (AvatarType) -> Unit,
     onPickGallery: () -> Unit
 ) {
-    val colors = MaterialTheme.kineticColors
+    //val colors = MaterialTheme.kineticColors
     // 6 presets + 1 celda de galería = 7 celdas en grid de 4 columnas = 2 filas
     val allItems: List<Any> = presets + "GALLERY_CELL"  // String como marker
 

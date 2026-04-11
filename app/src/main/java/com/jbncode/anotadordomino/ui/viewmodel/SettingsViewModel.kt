@@ -5,23 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.jbncode.anotadordomino.data.repository.SettingsRepository
 import com.jbncode.anotadordomino.domain.repository.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-data class SettingsUiState(
+/*data class SettingsUiState(
     val isDarkMode: Boolean      = true,
     val capicuaEnabled: Boolean  = true,
     val tranqueEnabled: Boolean  = false,
     val isResetting: Boolean     = false,
     val resetSuccess: Boolean    = false
-)
+)*/
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -48,17 +46,11 @@ class SettingsViewModel @Inject constructor(
     val appLanguage: StateFlow<String> = settingsRepository.appLanguage
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), "en")
 
-    var onNavigateToRestartScreen: (() -> Unit)? = null
-
     // ── Actions ────────────────────────────────────────────────────────────
 
     fun setLanguage(langTag: String) {
         viewModelScope.launch {
             settingsRepository.setLanguage(langTag)
-
-            /*withContext(Dispatchers.Main){
-                onNavigateToRestartScreen?.invoke()
-            }*/
         }
     }
 

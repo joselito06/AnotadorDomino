@@ -1,6 +1,5 @@
 package com.jbncode.anotadordomino.ui.components
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

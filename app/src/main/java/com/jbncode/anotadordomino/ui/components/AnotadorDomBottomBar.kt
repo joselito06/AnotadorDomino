@@ -16,7 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.ui.Screen
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 
@@ -61,7 +63,7 @@ fun AnotadorDomBottomBar(
             // ── History ───────────────────────────────────────────────────
             BottomNavItem(
                 icon     = Icons.Default.History,
-                label    = "HISTORY",
+                label    = stringResource(R.string.bottom_bar_history),
                 selected = currentRoute == Screen.History.route,
                 onClick  = onHistoryClick
             )
@@ -88,7 +90,7 @@ fun AnotadorDomBottomBar(
                 }
                 Spacer(Modifier.height(2.dp))
                 Text(
-                    text  = "PLAY",
+                    text  = stringResource(R.string.bottom_bar_play),
                     color = if (playSelected) colors.neonGreen
                             else MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall
@@ -98,7 +100,7 @@ fun AnotadorDomBottomBar(
             // ── Stats ─────────────────────────────────────────────────────
             BottomNavItem(
                 icon     = Icons.Default.BarChart,
-                label    = "STATS",
+                label    = stringResource(R.string.bottom_bar_stats),
                 selected = currentRoute == Screen.Stats.route,
                 onClick  = onStatsClick
             )

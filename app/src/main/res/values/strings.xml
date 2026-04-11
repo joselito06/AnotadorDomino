@@ -2,6 +2,10 @@
     <!-- Setup Screen  -->
     <string name="app_name">Anotador Domino</string>
 
+    <string name="bottom_bar_history">HISTORY</string>
+    <string name="bottom_bar_play">PLAY</string>
+    <string name="bottom_bar_stats">STATS</string>
+
     <string name="setup_season_label">CURRENT SEASON</string>
     <string name="setup_season_name">KINETIC MASTERS</string>
     <string name="setup_game_mode">GAME MODE</string>

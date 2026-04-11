@@ -28,7 +28,7 @@ data class PlayerUiState(
     /** URI de la foto elegida desde galería (solo válido cuando avatarType == GALLERY) */
     val photoUri: String? = null
 )
-data class PlayerLimits(val min: Int, val max: Int)
+//data class PlayerLimits(val min: Int, val max: Int)
 
 // NUEVO: Enum para saber en qué paso del tutorial estamos
 enum class SetupTutorialStep { ADD_PLAYERS, START_MATCH }
@@ -60,11 +60,11 @@ class SetupViewModel @Inject constructor(
     // ── Derived state (combine isPairsMode + quickPlayers) ─────────────────
 
     /** Límites calculados según la modalidad activa. */
-    val playerLimits: StateFlow<PlayerLimits> =
+    /*val playerLimits: StateFlow<PlayerLimits> =
         _isPairsMode.combine(_quickPlayers) { isPairs, _ ->
             if (isPairs) PlayerLimits(min = 2, max = 2)
             else         PlayerLimits(min = 2, max = 4)
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PlayerLimits(2, 2))
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PlayerLimits(2, 2))*/
 
     /**
      * Habilita el botón START MATCH.

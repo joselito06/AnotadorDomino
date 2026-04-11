@@ -35,10 +35,9 @@ import com.jbncode.anotadordomino.ui.viewmodel.SettingsViewModel
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit = {},
-    onRestarting: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val colors      = MaterialTheme.kineticColors
+    //val colors      = MaterialTheme.kineticColors
     val scrollState = rememberScrollState()
 
     // Collect all settings state
@@ -51,8 +50,6 @@ fun SettingsScreen(
     var showResetDialog by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
 
-    val context = LocalContext.current
-    val currentLocale = AppCompatDelegate.getApplicationLocales().toLanguageTags()
     val appLanguage by viewModel.appLanguage.collectAsStateWithLifecycle()
     val activeLangName = supportedLanguages.find { it.tag == appLanguage }?.nativeName ?: "English"
 
