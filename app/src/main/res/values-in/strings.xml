@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anotador Domino</string>
+
+    <string name="bottom_bar_history">RIWAYAT</string>
+    <string name="bottom_bar_play">MAIN</string>
+    <string name="bottom_bar_stats">STATISTIK</string>
+
+    <string name="setup_season_label">MUSIM SAAT INI</string>
+    <string name="setup_season_name">MASTER DOMINO</string>
+    <string name="setup_game_mode">MODE PERMAINAN</string>
+    <string name="setup_mode_pairs">PASANGAN</string>
+    <string name="setup_mode_individual">INDIVIDU</string>
+    <string name="setup_point_goal">TARGET POIN</string>
+    <string name="setup_quick_add_players">TAMBAH PEMAIN CEPAT</string>
+    <string name="setup_btn_new">BARU</string>
+    <string name="setup_empty_players">Belum ada pemain — ketuk + BARU</string>
+    <string name="setup_btn_start_match">MULAI PERTANDINGAN</string>
+    <string name="setup_wins_label">MENANG: %1$d</string>
+
+    <string name="setup_tutorial_add_players">Tambahkan pemain di sini!</string>
+    <string name="setup_tutorial_scroll">Siap! Geser ke bawah\nuntuk memulai pertandingan</string>
+
+    <string name="setup_hint_add_teams">Tambahkan 2 tim untuk memulai</string>
+    <string name="setup_hint_add_1_team">Tambahkan 1 tim lagi untuk memulai</string>
+    <string name="setup_hint_ready_teams">✓ Siap! 2 tim telah diatur</string>
+    <string name="setup_hint_add_players">Tambahkan 2 hingga 4 pemain untuk memulai</string>
+    <string name="setup_hint_add_1_player">Tambahkan setidaknya 1 pemain lagi</string>
+    <string name="setup_hint_ready_add_more">✓ Siap! Anda dapat menambah %1$d lagi</string>
+    <string name="setup_hint_max_players">Batas pemain tercapai (4)</string>
+
+    <string name="dialog_recruit_label">REKRUT</string>
+    <string name="dialog_recruit_title">Pemain Baru</string>
+    <string name="dialog_player_name_default">Nama Pemain</string>
+    <string name="dialog_custom_photo">Foto kustom</string>
+    <string name="dialog_select_avatar">Pilih avatar</string>
+    <string name="dialog_identity_tag">TAG IDENTITAS</string>
+    <string name="dialog_enter_name">Masukkan nama...</string>
+    <string name="dialog_visual_signature">TANDA TANGAN VISUAL</string>
+    <string name="dialog_options_count">%1$d OPSI</string>
+    <string name="dialog_photo_label">FOTO</string>
+    <string name="dialog_status_label">STATUS</string>
+    <string name="dialog_status_desc">Penantang baru terdeteksi. Menetapkan peringkat kinetik awal...</string>
+    <string name="dialog_rank_label">PERINGKAT</string>
+    <string name="dialog_rank_na">N/A</string>
+    <string name="dialog_btn_add">TAMBAH PEMAIN</string>
+
+    <string name="settings_title">PENGATURAN</string>
+
+    <string name="settings_general_rules">ATURAN UMUM</string>
+    <string name="settings_capicua_points">Poin Capicua</string>
+    <string name="settings_capicua_desc">Dapatkan poin ganda ketika pertandingan berakhir dengan batu yang sama di kedua ujungnya</string>
+    <string name="settings_tranque_penalties">Penalti Tranque</string>
+    <string name="settings_tranque_desc">Pengurangan poin otomatis karena menyebabkan permainan terkunci di papan</string>
+
+    <string name="settings_appearance">TAMPILAN VISUAL</string>
+    <string name="settings_dark_mode">Mode Gelap / Terang</string>
+    <string name="settings_dark_mode_desc">Dioptimalkan untuk presisi kinetik malam hari</string>
+    <string name="settings_themes">Tema &amp; Desain Batu</string>
+    <string name="settings_themes_active">Aktif: </string>
+
+    <string name="settings_localization">BAHASA &amp; LOKASI</string>
+    <string name="settings_language">BAHASA APLIKASI</string>
+
+    <string name="settings_data_management">MANAJEMEN DATA</string>
+    <string name="settings_export_history">Ekspor Riwayat</string>
+    <string name="settings_export_desc">Unduh semua putaran dalam format CSV</string>
+    <string name="settings_reset_data">Hapus Data Lokal</string>
+    <string name="settings_reset_desc">Tidak dapat dibatalkan. Menghapus semua riwayat pertandingan lokal.</string>
+
+    <string name="settings_dialog_reset_title">Hapus Semua Data?</string>
+    <string name="settings_dialog_reset_body">Ini akan menghapus secara PERMANEN semua riwayat pertandingan, skor, dan putaran. Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="settings_dialog_reset_confirm">HAPUS</string>
+    <string name="settings_dialog_reset_cancel">BATAL</string>
+
+    <string name="settings_profile_pro">PRO</string>
+    <string name="settings_profile_default_name">Master Domino</string>
+    <string name="settings_profile_local_player">PEMAIN LOKAL</string>
+
+    <string name="settings_footer_app_name">ANOTADOR DOMINO</string>
+    <string name="settings_footer_version">VERSI %1$s</string>
+
+    <string name="settings_export_success">Riwayat berhasil diekspor</string>
+    <string name="settings_export_error">Terjadi kesalahan saat menyimpan file</string>
+    <string name="settings_reset_success">Semua data berhasil dihapus</string>
+
+    <string name="settings_dialog_close">TUTUP</string>
+    <string name="settings_themes_obsidian_neon">Neon Obsidian</string>
+
+    <string name="history_title">Riwayat Pertandingan</string>
+    <string name="history_sessions">%1$d SESI</string>
+    <string name="history_no_matches_title">Belum ada pertandingan</string>
+    <string name="history_no_matches_desc">Mulai permainan baru dan riwayat Anda akan muncul di sini.</string>
+    <string name="history_game_number">Permainan #%1$d</string>
+    <string name="history_resume_session">LANJUTKAN SESI</string>
+    <string name="history_status_active">AKTIF</string>
+    <string name="history_status_finished">SELESAI</string>
+    <string name="history_status_paused">DITUNDA</string>
+    <string name="history_winner">PEMENANG</string>
+    <string name="history_leading">MEMIMPIN</string>
+    <string name="history_runner_up">JUARA DUA</string>
+
+    <string name="stats_no_stats_title">Belum ada statistik</string>
+    <string name="stats_no_stats_desc">Mainkan pertandingan pertama Anda dan statistik Anda akan muncul di sini.</string>
+    <string name="stats_performance_core">INTI PERFORMA</string>
+    <string name="stats_efficiency">EFISIENSI</string>
+    <string name="stats_win_rate">TINGKAT KEMENANGAN</string>
+    <string name="stats_win_rate_desc">Mendominasi meja dengan gerakan kinetik presisi di %1$d sesi profesional.</string>
+    <string name="stats_current_level">LEVEL SAAT INI</string>
+    <string name="stats_capicuas">CAPICÚA</string>
+    <string name="stats_record_high">REKOR TERTINGGI</string>
+    <string name="stats_total_rounds">TOTAL PUTARAN</string>
+    <string name="stats_tranques">TRANQUE</string>
+    <string name="stats_unit_pts">PTS</string>
+    <string name="stats_unit_rds">PTR</string>
+    <string name="stats_unit_win">MNG</string>
+    <string name="stats_unit_x">X</string>
+    <string name="stats_momentum">MOMENTUM 7 HARI</string>
+    <string name="stats_next_milestone">PENCAPAIAN BERIKUTNYA</string>
+    <string name="stats_momentum_today">HARI INI</string>
+
+    <string name="stats_level_novice">Penantang Pemula</string>
+    <string name="stats_level_apprentice">Magang Domino</string>
+    <string name="stats_level_warrior">Pejuang Domino</string>
+    <string name="stats_level_king">Raja Capicúa</string>
+    <string name="stats_level_master">Master Domino</string>
+    <string name="stats_level_grandmaster">Grandmaster Domino</string>
+    <string name="stats_level_grandmaster_done">Grandmaster ✓</string>
+    <string name="stats_milestone_play_5">Mainkan 5 pertandingan untuk membuka peringkat ini.</string>
+    <string name="stats_milestone_play_more">Mainkan %1$d pertandingan lagi untuk naik peringkat.</string>
+    <string name="stats_milestone_max">Anda telah mencapai peringkat tertinggi!</string>
+
+    <string name="scoreboard_log_hands">CATATAN TANGAN</string>
+    <string name="scoreboard_rounds_count">%1$d PUTARAN</string>
+    <string name="scoreboard_no_hands">Belum ada tangan yang dimainkan.\nKetuk TAMBAH POIN untuk memulai.</string>
+    <string name="scoreboard_kinetic_masters">M A S T E R   D O M I N O</string>
+    <string name="scoreboard_wins_match">MEMENANGKAN PERTANDINGAN</string>
+    <string name="scoreboard_final_score">SKOR AKHIR</string>
+    <string name="scoreboard_unit_pts_lower">pts</string>
+    <string name="scoreboard_rounds">PUTARAN</string>
+    <string name="scoreboard_played">dimainkan</string>
+    <string name="scoreboard_goal">TARGET</string>
+    <string name="scoreboard_back_home">KEMBALI KE BERANDA</string>
+    <string name="scoreboard_return_hint">Ketuk untuk kembali ke layar utama</string>
+    <string name="scoreboard_title">MASTER DOMINO</string>
+
+    <string name="scoreboard_undo">BATALKAN</string>
+    <string name="scoreboard_add_points">TAMBAH POIN</string>
+    <string name="scoreboard_award_points">BERIKAN POIN KEPADA:</string>
+    <string name="scoreboard_capicua">CAPICUA</string>
+    <string name="scoreboard_entering_value">MEMASUKKAN NILAI TANGAN</string>
+    <string name="scoreboard_pts_x2">pts ×2</string>
+    <string name="scoreboard_confirm_points">KONFIRMASI POIN</string>
+
+    <string name="dialog_leave_title">Tinggalkan pertandingan?</string>
+    <string name="dialog_leave_paused">PERMAINAN AKAN DITUNDA</string>
+    <string name="dialog_leave_desc">Progres Anda disimpan. Anda dapat melanjutkan pertandingan ini kapan saja dari layar utama.</string>
+    <string name="dialog_leave_save">SIMPAN &amp; KELUAR</string>
+    <string name="dialog_leave_keep_playing">TERUS BERMAIN</string>
+
+    <string name="dialog_undo_title">Batalkan tangan terakhir?</string>
+    <string name="dialog_undo_points">(+%1$d UNTUK %2$s)</string>
+    <string name="dialog_undo_desc">Tindakan ini akan mengembalikan skor ke keadaan sebelumnya. Tidak dapat dibatalkan setelah dikonfirmasi.</string>
+    <string name="dialog_undo_confirm">KONFIRMASI BATAL</string>
+    <string name="dialog_undo_cancel">BATAL</string>
+</resources>

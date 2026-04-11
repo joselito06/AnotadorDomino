@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anotador Domino</string>
+
+    <string name="bottom_bar_history">السجل</string>
+    <string name="bottom_bar_play">لعب</string>
+    <string name="bottom_bar_stats">الإحصائيات</string>
+
+    <string name="setup_season_label">الموسم الحالي</string>
+    <string name="setup_season_name">أسياد الدومينو</string>
+    <string name="setup_game_mode">وضع اللعب</string>
+    <string name="setup_mode_pairs">فرق</string>
+    <string name="setup_mode_individual">فردي</string>
+    <string name="setup_point_goal">النقاط المستهدفة</string>
+    <string name="setup_quick_add_players">إضافة لاعبين</string>
+    <string name="setup_btn_new">جديد</string>
+    <string name="setup_empty_players">لا يوجد لاعبين حتى الآن — اضغط + جديد</string>
+    <string name="setup_btn_start_match">بدء المباراة</string>
+    <string name="setup_wins_label">الانتصارات: %1$d</string>
+
+    <string name="setup_tutorial_add_players">أضف اللاعبين هنا!</string>
+    <string name="setup_tutorial_scroll">جاهز! اسحب للأسفل\nلبدء المباراة</string>
+
+    <string name="setup_hint_add_teams">أضف فريقين للبدء</string>
+    <string name="setup_hint_add_1_team">أضف فريقًا واحدًا للبدء</string>
+    <string name="setup_hint_ready_teams">✓ جاهز! تم إعداد فريقين</string>
+    <string name="setup_hint_add_players">أضف من 2 إلى 4 لاعبين للبدء</string>
+    <string name="setup_hint_add_1_player">أضف لاعبًا واحدًا على الأقل</string>
+    <string name="setup_hint_ready_add_more">✓ جاهز! يمكنك إضافة %1$d آخرين</string>
+    <string name="setup_hint_max_players">تم الوصول للحد الأقصى (4)</string>
+
+    <string name="dialog_recruit_label">تجنيد</string>
+    <string name="dialog_recruit_title">لاعب جديد</string>
+    <string name="dialog_player_name_default">اسم اللاعب</string>
+    <string name="dialog_custom_photo">صورة مخصصة</string>
+    <string name="dialog_select_avatar">اختر صورة رمزية</string>
+    <string name="dialog_identity_tag">بطاقة الهوية</string>
+    <string name="dialog_enter_name">أدخل اسماً...</string>
+    <string name="dialog_visual_signature">التوقيع المرئي</string>
+    <string name="dialog_options_count">%1$d خيارات</string>
+    <string name="dialog_photo_label">صورة</string>
+    <string name="dialog_status_label">الحالة</string>
+    <string name="dialog_status_desc">تم اكتشاف متنافس جديد. جاري تعيين التصنيف الحركي الأولي...</string>
+    <string name="dialog_rank_label">الرتبة</string>
+    <string name="dialog_rank_na">غير متوفر</string>
+    <string name="dialog_btn_add">إضافة لاعب</string>
+
+    <string name="settings_title">الإعدادات</string>
+
+    <string name="settings_general_rules">القواعد العامة</string>
+    <string name="settings_capicua_points">نقاط كابيكوا</string>
+    <string name="settings_capicua_desc">احصل على ضعف النقاط عندما تنتهي المباراة بنفس القطعة في كلا الطرفين</string>
+    <string name="settings_tranque_penalties">عقوبات الإغلاق (Tranque)</string>
+    <string name="settings_tranque_desc">خصم تلقائي للنقاط عند التسبب في إغلاق اللعبة</string>
+
+    <string name="settings_appearance">المظهر المرئي</string>
+    <string name="settings_dark_mode">الوضع الداكن / الفاتح</string>
+    <string name="settings_dark_mode_desc">مُحسّن للدقة الحركية الليلية</string>
+    <string name="settings_themes">السمات وأشكال القطع</string>
+    <string name="settings_themes_active">النشط: </string>
+
+    <string name="settings_localization">اللغة والمنطقة</string>
+    <string name="settings_language">لغة التطبيق</string>
+
+    <string name="settings_data_management">إدارة البيانات</string>
+    <string name="settings_export_history">تصدير السجل</string>
+    <string name="settings_export_desc">تنزيل جميع الجولات بصيغة CSV</string>
+    <string name="settings_reset_data">مسح البيانات المحلية</string>
+    <string name="settings_reset_desc">لا يمكن التراجع عنه. يحذف كل سجل المباريات المحلي.</string>
+
+    <string name="settings_dialog_reset_title">مسح جميع البيانات؟</string>
+    <string name="settings_dialog_reset_body">سيؤدي هذا إلى حذف كل سجل المباريات والنقاط والجولات نهائياً. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="settings_dialog_reset_confirm">مسح</string>
+    <string name="settings_dialog_reset_cancel">إلغاء</string>
+
+    <string name="settings_profile_pro">احترافي</string>
+    <string name="settings_profile_default_name">سيد الدومينو</string>
+    <string name="settings_profile_local_player">لاعب محلي</string>
+
+    <string name="settings_footer_app_name">ANOTADOR DOMINO</string>
+    <string name="settings_footer_version">الإصدار %1$s</string>
+
+    <string name="settings_export_success">تم تصدير السجل بنجاح</string>
+    <string name="settings_export_error">خطأ في حفظ الملف</string>
+    <string name="settings_reset_success">تم حذف جميع البيانات بنجاح</string>
+
+    <string name="settings_dialog_close">إغلاق</string>
+    <string name="settings_themes_obsidian_neon">نيون أوبسيديان</string>
+
+    <string name="history_title">سجل المباريات</string>
+    <string name="history_sessions">%1$d جلسات</string>
+    <string name="history_no_matches_title">لا توجد مباريات بعد</string>
+    <string name="history_no_matches_desc">ابدأ لعبة جديدة وسيظهر سجلك هنا.</string>
+    <string name="history_game_number">المباراة رقم %1$d</string>
+    <string name="history_resume_session">استئناف الجلسة</string>
+    <string name="history_status_active">نشطة</string>
+    <string name="history_status_finished">منتهية</string>
+    <string name="history_status_paused">متوقفة مؤقتاً</string>
+    <string name="history_winner">الفائز</string>
+    <string name="history_leading">في الصدارة</string>
+    <string name="history_runner_up">المركز الثاني</string>
+
+    <string name="stats_no_stats_title">لا توجد إحصائيات بعد</string>
+    <string name="stats_no_stats_desc">العب مباراتك الأولى وستظهر إحصائياتك هنا.</string>
+    <string name="stats_performance_core">نواة الأداء</string>
+    <string name="stats_efficiency">الكفاءة</string>
+    <string name="stats_win_rate">معدل الفوز</string>
+    <string name="stats_win_rate_desc">السيطرة على الطاولة بحركات حركية دقيقة عبر %1$d جلسات احترافية.</string>
+    <string name="stats_current_level">المستوى الحالي</string>
+    <string name="stats_capicuas">كابيكوا</string>
+    <string name="stats_record_high">رقم قياسي</string>
+    <string name="stats_total_rounds">إجمالي الجولات</string>
+    <string name="stats_tranques">الإغلاقات (Tranques)</string>
+    <string name="stats_unit_pts">نقاط</string>
+    <string name="stats_unit_rds">جولات</string>
+    <string name="stats_unit_win">فوز</string>
+    <string name="stats_unit_x">X</string>
+    <string name="stats_momentum">زخم 7 أيام</string>
+    <string name="stats_next_milestone">الإنجاز التالي</string>
+    <string name="stats_momentum_today">اليوم</string>
+
+    <string name="stats_level_novice">متحدي مبتدئ</string>
+    <string name="stats_level_apprentice">متدرب دومينو</string>
+    <string name="stats_level_warrior">محارب دومينو</string>
+    <string name="stats_level_king">ملك الكابيكوا</string>
+    <string name="stats_level_master">سيد الدومينو</string>
+    <string name="stats_level_grandmaster">المعلم الأكبر للدومينو</string>
+    <string name="stats_level_grandmaster_done">المعلم الأكبر ✓</string>
+    <string name="stats_milestone_play_5">العب 5 مباريات لفتح هذه الرتبة.</string>
+    <string name="stats_milestone_play_more">العب %1$d مباريات إضافية للترقية.</string>
+    <string name="stats_milestone_max">لقد وصلت إلى أعلى رتبة!</string>
+
+    <string name="scoreboard_log_hands">سجل الأيدي</string>
+    <string name="scoreboard_rounds_count">%1$d جولات</string>
+    <string name="scoreboard_no_hands">لم تُلعب أي أيدي بعد.\nاضغط على إضافة نقاط للبدء.</string>
+    <string name="scoreboard_kinetic_masters">أ س ي ا د   ا ل د و م ي ن و</string>
+    <string name="scoreboard_wins_match">يفوز بالمباراة</string>
+    <string name="scoreboard_final_score">النتيجة النهائية</string>
+    <string name="scoreboard_unit_pts_lower">نقطة</string>
+    <string name="scoreboard_rounds">جولات</string>
+    <string name="scoreboard_played">لُعبت</string>
+    <string name="scoreboard_goal">الهدف</string>
+    <string name="scoreboard_back_home">العودة للرئيسية</string>
+    <string name="scoreboard_return_hint">اضغط للعودة إلى الشاشة الرئيسية</string>
+    <string name="scoreboard_title">سيد الدومينو</string>
+
+    <string name="scoreboard_undo">تراجع</string>
+    <string name="scoreboard_add_points">إضافة نقاط</string>
+    <string name="scoreboard_award_points">منح النقاط إلى:</string>
+    <string name="scoreboard_capicua">كابيكوا</string>
+    <string name="scoreboard_entering_value">إدخال قيمة اليد</string>
+    <string name="scoreboard_pts_x2">نقاط ×2</string>
+    <string name="scoreboard_confirm_points">تأكيد النقاط</string>
+
+    <string name="dialog_leave_title">مغادرة المباراة؟</string>
+    <string name="dialog_leave_paused">سيتم إيقاف المباراة مؤقتاً</string>
+    <string name="dialog_leave_desc">تم حفظ تقدمك. يمكنك استئناف هذه المباراة في أي وقت من الشاشة الرئيسية.</string>
+    <string name="dialog_leave_save">حفظ ومغادرة</string>
+    <string name="dialog_leave_keep_playing">متابعة اللعب</string>
+
+    <string name="dialog_undo_title">تراجع عن اليد الأخيرة؟</string>
+    <string name="dialog_undo_points">(+%1$d لـ %2$s)</string>
+    <string name="dialog_undo_desc">سيؤدي هذا الإجراء إلى إعادة النتيجة للحالة السابقة. لا يمكن التراجع بمجرد التأكيد.</string>
+    <string name="dialog_undo_confirm">تأكيد التراجع</string>
+    <string name="dialog_undo_cancel">إلغاء</string>
+</resources>

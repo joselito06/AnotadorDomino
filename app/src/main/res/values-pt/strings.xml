@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anotador Domino</string>
+
+    <string name="bottom_bar_history">HISTÓRICO</string>
+    <string name="bottom_bar_play">JOGAR</string>
+    <string name="bottom_bar_stats">ESTATÍSTICAS</string>
+
+    <string name="setup_season_label">TEMPORADA ATUAL</string>
+    <string name="setup_season_name">MESTRES DO DOMINÓ</string>
+    <string name="setup_game_mode">MODO DE JOGO</string>
+    <string name="setup_mode_pairs">DUPLAS</string>
+    <string name="setup_mode_individual">INDIVIDUAL</string>
+    <string name="setup_point_goal">PONTUAÇÃO ALVO</string>
+    <string name="setup_quick_add_players">ADICIONAR JOGADORES</string>
+    <string name="setup_btn_new">NOVO</string>
+    <string name="setup_empty_players">Nenhum jogador ainda — toque em + NOVO</string>
+    <string name="setup_btn_start_match">INICIAR PARTIDA</string>
+    <string name="setup_wins_label">VITÓRIAS: %1$d</string>
+
+    <string name="setup_tutorial_add_players">Adicione jogadores aqui!</string>
+    <string name="setup_tutorial_scroll">Pronto! Deslize para baixo\npara iniciar a partida</string>
+
+    <string name="setup_hint_add_teams">Adicione 2 equipes para começar</string>
+    <string name="setup_hint_add_1_team">Adicione mais 1 equipe para começar</string>
+    <string name="setup_hint_ready_teams">✓ Pronto! 2 equipes preparadas</string>
+    <string name="setup_hint_add_players">Adicione de 2 a 4 jogadores para começar</string>
+    <string name="setup_hint_add_1_player">Adicione pelo menos mais 1 jogador</string>
+    <string name="setup_hint_ready_add_more">✓ Pronto! Você pode adicionar mais %1$d</string>
+    <string name="setup_hint_max_players">Limite de jogadores atingido (4)</string>
+
+    <string name="dialog_recruit_label">RECRUTAR</string>
+    <string name="dialog_recruit_title">Novo Jogador</string>
+    <string name="dialog_player_name_default">Nome do Jogador</string>
+    <string name="dialog_custom_photo">Foto personalizada</string>
+    <string name="dialog_select_avatar">Selecionar avatar</string>
+    <string name="dialog_identity_tag">TAG DE IDENTIDADE</string>
+    <string name="dialog_enter_name">Digite um nome...</string>
+    <string name="dialog_visual_signature">ASSINATURA VISUAL</string>
+    <string name="dialog_options_count">%1$d OPÇÕES</string>
+    <string name="dialog_photo_label">FOTO</string>
+    <string name="dialog_status_label">STATUS</string>
+    <string name="dialog_status_desc">Novo desafiante detectado. Atribuindo rank cinético inicial...</string>
+    <string name="dialog_rank_label">RANK</string>
+    <string name="dialog_rank_na">N/A</string>
+    <string name="dialog_btn_add">ADICIONAR JOGADOR</string>
+
+    <string name="settings_title">CONFIGURAÇÕES</string>
+
+    <string name="settings_general_rules">REGRAS GERAIS</string>
+    <string name="settings_capicua_points">Pontos por Capicua</string>
+    <string name="settings_capicua_desc">Ganhe o dobro de pontos quando a partida terminar com a mesma pedra em ambas as pontas</string>
+    <string name="settings_tranque_penalties">Penalidade por Tranque</string>
+    <string name="settings_tranque_desc">Dedução automática de pontos por causar um jogo trancado no tabuleiro</string>
+
+    <string name="settings_appearance">APARÊNCIA VISUAL</string>
+    <string name="settings_dark_mode">Modo Escuro / Claro</string>
+    <string name="settings_dark_mode_desc">Otimizado para precisão cinética noturna</string>
+    <string name="settings_themes">Temas e Pedras</string>
+    <string name="settings_themes_active">Ativo: </string>
+
+    <string name="settings_localization">IDIOMA E REGIÃO</string>
+    <string name="settings_language">IDIOMA DO APP</string>
+
+    <string name="settings_data_management">GERENCIAMENTO DE DADOS</string>
+    <string name="settings_export_history">Exportar Histórico</string>
+    <string name="settings_export_desc">Baixar todas as rodadas em formato CSV</string>
+    <string name="settings_reset_data">Apagar Dados Locais</string>
+    <string name="settings_reset_desc">Irreversível. Exclui todo o histórico local de partidas.</string>
+
+    <string name="settings_dialog_reset_title">Apagar todos os dados?</string>
+    <string name="settings_dialog_reset_body">Isso excluirá permanentemente TODO o histórico de partidas, pontuações e rodadas. Esta ação não pode ser desfeita.</string>
+    <string name="settings_dialog_reset_confirm">APAGAR</string>
+    <string name="settings_dialog_reset_cancel">CANCELAR</string>
+
+    <string name="settings_profile_pro">PRO</string>
+    <string name="settings_profile_default_name">Mestre do Dominó</string>
+    <string name="settings_profile_local_player">JOGADOR LOCAL</string>
+
+    <string name="settings_footer_app_name">ANOTADOR DOMINO</string>
+    <string name="settings_footer_version">VERSÃO %1$s</string>
+
+    <string name="settings_export_success">Histórico exportado com sucesso</string>
+    <string name="settings_export_error">Erro ao salvar o arquivo</string>
+    <string name="settings_reset_success">Todos os dados excluídos com sucesso</string>
+
+    <string name="settings_dialog_close">FECHAR</string>
+    <string name="settings_themes_obsidian_neon">Neon Obsidiana</string>
+
+    <string name="history_title">Histórico de Partidas</string>
+    <string name="history_sessions">%1$d SESSÕES</string>
+    <string name="history_no_matches_title">Nenhuma partida ainda</string>
+    <string name="history_no_matches_desc">Inicie um novo jogo e seu histórico aparecerá aqui.</string>
+    <string name="history_game_number">Partida #%1$d</string>
+    <string name="history_resume_session">RETOMAR SESSÃO</string>
+    <string name="history_status_active">ATIVA</string>
+    <string name="history_status_finished">FINALIZADA</string>
+    <string name="history_status_paused">PAUSADA</string>
+    <string name="history_winner">VENCEDOR</string>
+    <string name="history_leading">LIDERANDO</string>
+    <string name="history_runner_up">SEGUNDO LUGAR</string>
+
+    <string name="stats_no_stats_title">Nenhuma estatística ainda</string>
+    <string name="stats_no_stats_desc">Jogue sua primeira partida e suas estatísticas aparecerão aqui.</string>
+    <string name="stats_performance_core">NÚCLEO DE DESEMPENHO</string>
+    <string name="stats_efficiency">EFICIÊNCIA</string>
+    <string name="stats_win_rate">TAXA DE VITÓRIAS</string>
+    <string name="stats_win_rate_desc">Dominando a mesa com movimentos cinéticos de precisão ao longo de %1$d sessões profissionais.</string>
+    <string name="stats_current_level">NÍVEL ATUAL</string>
+    <string name="stats_capicuas">CAPICUAS</string>
+    <string name="stats_record_high">RECORDE MÁXIMO</string>
+    <string name="stats_total_rounds">RODADAS TOTAIS</string>
+    <string name="stats_tranques">TRANQUES</string>
+    <string name="stats_unit_pts">PTS</string>
+    <string name="stats_unit_rds">ROD</string>
+    <string name="stats_unit_win">VIT</string>
+    <string name="stats_unit_x">X</string>
+    <string name="stats_momentum">IMPULSO DE 7 DIAS</string>
+    <string name="stats_next_milestone">PRÓXIMA CONQUISTA</string>
+    <string name="stats_momentum_today">HOJE</string>
+
+    <string name="stats_level_novice">Desafiante Novato</string>
+    <string name="stats_level_apprentice">Aprendiz de Dominó</string>
+    <string name="stats_level_warrior">Guerreiro do Dominó</string>
+    <string name="stats_level_king">Rei da Capicua</string>
+    <string name="stats_level_master">Mestre do Dominó</string>
+    <string name="stats_level_grandmaster">Grão-mestre do Dominó</string>
+    <string name="stats_level_grandmaster_done">Grão-mestre ✓</string>
+    <string name="stats_milestone_play_5">Jogue 5 partidas para desbloquear este rank.</string>
+    <string name="stats_milestone_play_more">Jogue mais %1$d partidas para subir de rank.</string>
+    <string name="stats_milestone_max">Você alcançou o rank mais alto!</string>
+
+    <string name="scoreboard_log_hands">REGISTRO DE MÃOS</string>
+    <string name="scoreboard_rounds_count">%1$d RODADAS</string>
+    <string name="scoreboard_no_hands">Nenhuma mão jogada ainda.\nToque em ADICIONAR PONTOS para iniciar.</string>
+    <string name="scoreboard_kinetic_masters">M E S T R E S   D O   D O M I N Ó</string>
+    <string name="scoreboard_wins_match">VENCE A PARTIDA</string>
+    <string name="scoreboard_final_score">PONTUAÇÃO FINAL</string>
+    <string name="scoreboard_unit_pts_lower">pts</string>
+    <string name="scoreboard_rounds">RODADAS</string>
+    <string name="scoreboard_played">jogadas</string>
+    <string name="scoreboard_goal">META</string>
+    <string name="scoreboard_back_home">VOLTAR AO INÍCIO</string>
+    <string name="scoreboard_return_hint">Toque para voltar à tela principal</string>
+    <string name="scoreboard_title">MESTRE DO DOMINÓ</string>
+
+    <string name="scoreboard_undo">DESFAZER</string>
+    <string name="scoreboard_add_points">ADICIONAR PONTOS</string>
+    <string name="scoreboard_award_points">ATRIBUIR PONTOS A:</string>
+    <string name="scoreboard_capicua">CAPICUA</string>
+    <string name="scoreboard_entering_value">INSERINDO VALOR DA MÃO</string>
+    <string name="scoreboard_pts_x2">pts ×2</string>
+    <string name="scoreboard_confirm_points">CONFIRMAR PONTOS</string>
+
+    <string name="dialog_leave_title">Abandonar a partida?</string>
+    <string name="dialog_leave_paused">A PARTIDA SERÁ PAUSADA</string>
+    <string name="dialog_leave_desc">Seu progresso está salvo. Você pode retomar esta partida a qualquer momento na tela inicial.</string>
+    <string name="dialog_leave_save">SALVAR E SAIR</string>
+    <string name="dialog_leave_keep_playing">CONTINUAR JOGANDO</string>
+
+    <string name="dialog_undo_title">Desfazer a última mão?</string>
+    <string name="dialog_undo_points">(+%1$d PARA %2$s)</string>
+    <string name="dialog_undo_desc">Esta ação reverterá a pontuação para o estado anterior. Não pode ser desfeita após a confirmação.</string>
+    <string name="dialog_undo_confirm">CONFIRMAR DESFAZER</string>
+    <string name="dialog_undo_cancel">CANCELAR</string>
+</resources>

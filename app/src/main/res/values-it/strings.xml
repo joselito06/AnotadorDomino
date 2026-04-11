@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anotador Domino</string>
+
+    <string name="bottom_bar_history">CRONOLOGIA</string>
+    <string name="bottom_bar_play">GIOCA</string>
+    <string name="bottom_bar_stats">STATISTICHE</string>
+
+    <string name="setup_season_label">STAGIONE ATTUALE</string>
+    <string name="setup_season_name">MAESTRI DEL DOMINO</string>
+    <string name="setup_game_mode">MODALITÀ DI GIOCO</string>
+    <string name="setup_mode_pairs">A COPPIE</string>
+    <string name="setup_mode_individual">INDIVIDUALE</string>
+    <string name="setup_point_goal">PUNTEGGIO OBIETTIVO</string>
+    <string name="setup_quick_add_players">AGGIUNGI GIOCATORI</string>
+    <string name="setup_btn_new">NUOVO</string>
+    <string name="setup_empty_players">Nessun giocatore — tocca + NUOVO</string>
+    <string name="setup_btn_start_match">INIZIA PARTITA</string>
+    <string name="setup_wins_label">VITTORIE: %1$d</string>
+
+    <string name="setup_tutorial_add_players">Aggiungi i giocatori qui!</string>
+    <string name="setup_tutorial_scroll">Pronto! Scorri verso il basso\nper iniziare la partita</string>
+
+    <string name="setup_hint_add_teams">Aggiungi 2 squadre per iniziare</string>
+    <string name="setup_hint_add_1_team">Aggiungi 1 squadra per iniziare</string>
+    <string name="setup_hint_ready_teams">✓ Pronto! 2 squadre impostate</string>
+    <string name="setup_hint_add_players">Aggiungi da 2 a 4 giocatori per iniziare</string>
+    <string name="setup_hint_add_1_player">Aggiungi almeno 1 giocatore in più</string>
+    <string name="setup_hint_ready_add_more">✓ Pronto! Puoi aggiungerne altri %1$d</string>
+    <string name="setup_hint_max_players">Limite di giocatori raggiunto (4)</string>
+
+    <string name="dialog_recruit_label">RECLUTA</string>
+    <string name="dialog_recruit_title">Nuovo Giocatore</string>
+    <string name="dialog_player_name_default">Nome del Giocatore</string>
+    <string name="dialog_custom_photo">Foto personalizzata</string>
+    <string name="dialog_select_avatar">Seleziona avatar</string>
+    <string name="dialog_identity_tag">TAG IDENTITÀ</string>
+    <string name="dialog_enter_name">Inserisci un nome...</string>
+    <string name="dialog_visual_signature">FIRMA VISIVA</string>
+    <string name="dialog_options_count">%1$d OPZIONI</string>
+    <string name="dialog_photo_label">FOTO</string>
+    <string name="dialog_status_label">STATO</string>
+    <string name="dialog_status_desc">Nuovo sfidante rilevato. Assegnazione del grado cinetico iniziale...</string>
+    <string name="dialog_rank_label">RANGO</string>
+    <string name="dialog_rank_na">N/D</string>
+    <string name="dialog_btn_add">AGGIUNGI GIOCATORE</string>
+
+    <string name="settings_title">IMPOSTAZIONI</string>
+
+    <string name="settings_general_rules">REGOLE GENERALI</string>
+    <string name="settings_capicua_points">Punti Capicúa</string>
+    <string name="settings_capicua_desc">Guadagna il doppio dei punti quando la partita finisce con la stessa tessera su entrambe le estremità</string>
+    <string name="settings_tranque_penalties">Penalità per Tranque</string>
+    <string name="settings_tranque_desc">Detrazione automatica dei punti per aver causato un blocco del gioco</string>
+
+    <string name="settings_appearance">ASPETTO VISIVO</string>
+    <string name="settings_dark_mode">Modalità Scura / Chiara</string>
+    <string name="settings_dark_mode_desc">Ottimizzato per la precisione cinetica notturna</string>
+    <string name="settings_themes">Temi e Tessere</string>
+    <string name="settings_themes_active">Attivo: </string>
+
+    <string name="settings_localization">LINGUA E REGIONE</string>
+    <string name="settings_language">LINGUA DELL\'APP</string>
+
+    <string name="settings_data_management">GESTIONE DATI</string>
+    <string name="settings_export_history">Esporta Cronologia</string>
+    <string name="settings_export_desc">Scarica tutti i round in formato CSV</string>
+    <string name="settings_reset_data">Cancella Dati Locali</string>
+    <string name="settings_reset_desc">Irreversibile. Elimina tutta la cronologia locale delle partite.</string>
+
+    <string name="settings_dialog_reset_title">Cancellare tutti i dati?</string>
+    <string name="settings_dialog_reset_body">Questo eliminerà in modo PERMANENTE tutta la cronologia delle partite, i punteggi e i round. Questa azione non può essere annullata.</string>
+    <string name="settings_dialog_reset_confirm">CANCELLA</string>
+    <string name="settings_dialog_reset_cancel">ANNULLA</string>
+
+    <string name="settings_profile_pro">PRO</string>
+    <string name="settings_profile_default_name">Maestro del Domino</string>
+    <string name="settings_profile_local_player">GIOCATORE LOCALE</string>
+
+    <string name="settings_footer_app_name">ANOTADOR DOMINO</string>
+    <string name="settings_footer_version">VERSIONE %1$s</string>
+
+    <string name="settings_export_success">Cronologia esportata con successo</string>
+    <string name="settings_export_error">Errore durante il salvataggio del file</string>
+    <string name="settings_reset_success">Tutti i dati sono stati eliminati con successo</string>
+
+    <string name="settings_dialog_close">CHIUDI</string>
+    <string name="settings_themes_obsidian_neon">Neon Ossidiana</string>
+
+    <string name="history_title">Cronologia Partite</string>
+    <string name="history_sessions">%1$d SESSIONI</string>
+    <string name="history_no_matches_title">Nessuna partita ancora</string>
+    <string name="history_no_matches_desc">Inizia un nuovo gioco e la tua cronologia apparirà qui.</string>
+    <string name="history_game_number">Partita #%1$d</string>
+    <string name="history_resume_session">RIPRENDI SESSIONE</string>
+    <string name="history_status_active">ATTIVA</string>
+    <string name="history_status_finished">TERMINATA</string>
+    <string name="history_status_paused">IN PAUSA</string>
+    <string name="history_winner">VINCITORE</string>
+    <string name="history_leading">IN TESTA</string>
+    <string name="history_runner_up">SECONDO POSTO</string>
+
+    <string name="stats_no_stats_title">Nessuna statistica ancora</string>
+    <string name="stats_no_stats_desc">Gioca la tua prima partita e le tue statistiche appariranno qui.</string>
+    <string name="stats_performance_core">NUCLEO DI PRESTAZIONI</string>
+    <string name="stats_efficiency">EFFICIENZA</string>
+    <string name="stats_win_rate">TASSO DI VITTORIA</string>
+    <string name="stats_win_rate_desc">Dominando il tavolo con movimenti cinetici di precisione attraverso %1$d sessioni professionali.</string>
+    <string name="stats_current_level">LIVELLO ATTUALE</string>
+    <string name="stats_capicuas">CAPICÚA</string>
+    <string name="stats_record_high">RECORD MASSIMO</string>
+    <string name="stats_total_rounds">ROUND TOTALI</string>
+    <string name="stats_tranques">TRANQUE</string>
+    <string name="stats_unit_pts">PTS</string>
+    <string name="stats_unit_rds">RND</string>
+    <string name="stats_unit_win">VIT</string>
+    <string name="stats_unit_x">X</string>
+    <string name="stats_momentum">SLANCIO A 7 GIORNI</string>
+    <string name="stats_next_milestone">PROSSIMO TRAGUARDO</string>
+    <string name="stats_momentum_today">OGGI</string>
+
+    <string name="stats_level_novice">Sfidante Principiante</string>
+    <string name="stats_level_apprentice">Apprendista del Domino</string>
+    <string name="stats_level_warrior">Guerriero del Domino</string>
+    <string name="stats_level_king">Re della Capicúa</string>
+    <string name="stats_level_master">Maestro del Domino</string>
+    <string name="stats_level_grandmaster">Gran Maestro del Domino</string>
+    <string name="stats_level_grandmaster_done">Gran Maestro ✓</string>
+    <string name="stats_milestone_play_5">Gioca 5 partite per sbloccare questo grado.</string>
+    <string name="stats_milestone_play_more">Gioca altre %1$d partite per salire di grado.</string>
+    <string name="stats_milestone_max">Hai raggiunto il grado più alto!</string>
+
+    <string name="scoreboard_log_hands">REGISTRO DELLE MANI</string>
+    <string name="scoreboard_rounds_count">%1$d ROUND</string>
+    <string name="scoreboard_no_hands">Nessuna mano giocata ancora.\nTocca AGGIUNGI PUNTI per iniziare.</string>
+    <string name="scoreboard_kinetic_masters">M A E S T R I   D E L   D O M I N O</string>
+    <string name="scoreboard_wins_match">VINCE LA PARTITA</string>
+    <string name="scoreboard_final_score">PUNTEGGIO FINALE</string>
+    <string name="scoreboard_unit_pts_lower">pts</string>
+    <string name="scoreboard_rounds">ROUND</string>
+    <string name="scoreboard_played">giocati</string>
+    <string name="scoreboard_goal">OBIETTIVO</string>
+    <string name="scoreboard_back_home">TORNA ALLA HOME</string>
+    <string name="scoreboard_return_hint">Tocca per tornare alla schermata principale</string>
+    <string name="scoreboard_title">MAESTRO DEL DOMINO</string>
+
+    <string name="scoreboard_undo">ANNULLA</string>
+    <string name="scoreboard_add_points">AGGIUNGI PUNTI</string>
+    <string name="scoreboard_award_points">ASSEGNA PUNTI A:</string>
+    <string name="scoreboard_capicua">CAPICÚA</string>
+    <string name="scoreboard_entering_value">INSERIMENTO VALORE DELLA MANO</string>
+    <string name="scoreboard_pts_x2">pts ×2</string>
+    <string name="scoreboard_confirm_points">CONFERMA PUNTI</string>
+
+    <string name="dialog_leave_title">Abbandonare la partita?</string>
+    <string name="dialog_leave_paused">LA PARTITA SARÀ IN PAUSA</string>
+    <string name="dialog_leave_desc">Il tuo progresso è stato salvato. Puoi riprendere questa partita in qualsiasi momento dalla schermata principale.</string>
+    <string name="dialog_leave_save">SALVA ED ESCI</string>
+    <string name="dialog_leave_keep_playing">CONTINUA A GIOCARE</string>
+
+    <string name="dialog_undo_title">Annullare l\'ultima mano?</string>
+    <string name="dialog_undo_points">(+%1$d PER %2$s)</string>
+    <string name="dialog_undo_desc">Questa azione riporterà il punteggio allo stato precedente. Non può essere annullata una volta confermata.</string>
+    <string name="dialog_undo_confirm">CONFERMA ANNULLAMENTO</string>
+    <string name="dialog_undo_cancel">ANNULLA</string>
+</resources>
