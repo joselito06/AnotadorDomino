@@ -8,7 +8,7 @@
 
     <!-- Setup Screen  -->
     <string name="setup_season_label">TEMPORADA ACTUAL</string>
-    <string name="setup_season_name">MAESTROS CINÉTICOS</string>
+    <string name="setup_season_name">MAESTROS DOMINÓ</string>
     <string name="setup_game_mode">MODO DE JUEGO</string>
     <string name="setup_mode_pairs">PAREJAS</string>
     <string name="setup_mode_individual">INDIVIDUAL</string>
@@ -75,6 +75,21 @@
     <string name="settings_dialog_reset_confirm">BORRAR</string>
     <string name="settings_dialog_reset_cancel">CANCELAR</string>
 
+    <string name="settings_profile_pro">PRO</string>
+    <string name="settings_profile_default_name">Maestro Dominó</string>
+    <string name="settings_profile_local_player">JUGADOR LOCAL</string>
+
+    <string name="settings_footer_app_name">ANOTADOR DOMINÓ</string>
+    <string name="settings_footer_version">VERSIÓN %1$s</string>
+
+    <string name="settings_export_success">Historial exportado con éxito</string>
+    <string name="settings_export_error">Error al guardar el archivo</string>
+    <string name="settings_reset_success">Todos los datos eliminados con éxito</string>
+
+    <string name="settings_dialog_close">CERRAR</string>
+    <string name="settings_themes_obsidian_neon">Neón Obsidiana</string>
+
+    <!-- History Screen  -->
     <string name="history_title">Historial de Partidas</string>
     <string name="history_sessions">%1$d SESIONES</string>
     <string name="history_no_matches_title">No hay partidas aún</string>
@@ -108,11 +123,11 @@
     <string name="stats_momentum_today">HOY</string>
 
     <string name="stats_level_novice">Retador Novato</string>
-    <string name="stats_level_apprentice">Aprendiz Cinético</string>
+    <string name="stats_level_apprentice">Aprendiz Dominó</string>
     <string name="stats_level_warrior">Guerrero del Dominó</string>
     <string name="stats_level_king">Rey de la Capicúa</string>
-    <string name="stats_level_master">Maestro Cinético</string>
-    <string name="stats_level_grandmaster">Gran Maestro Cinético</string>
+    <string name="stats_level_master">Maestro Dominó</string>
+    <string name="stats_level_grandmaster">Gran Maestro Dominó</string>
     <string name="stats_level_grandmaster_done">Gran Maestro ✓</string>
     <string name="stats_milestone_play_5">Juega 5 partidas para desbloquear este rango.</string>
     <string name="stats_milestone_play_more">Juega %1$d partidas más para subir de rango.</string>
@@ -121,7 +136,7 @@
     <string name="scoreboard_log_hands">REGISTRO DE MANOS</string>
     <string name="scoreboard_rounds_count">%1$d RONDAS</string>
     <string name="scoreboard_no_hands">Aún no se han jugado manos.\nToca AÑADIR PUNTOS para iniciar.</string>
-    <string name="scoreboard_kinetic_masters">M A E S T R O S   C I N É T I C O S</string>
+    <string name="scoreboard_kinetic_masters">M A E S T R O S   D O M I N Ó</string>
     <string name="scoreboard_wins_match">GANA LA PARTIDA</string>
     <string name="scoreboard_final_score">PUNTUACIÓN FINAL</string>
     <string name="scoreboard_unit_pts_lower">pts</string>
@@ -130,7 +145,7 @@
     <string name="scoreboard_goal">META</string>
     <string name="scoreboard_back_home">VOLVER AL INICIO</string>
     <string name="scoreboard_return_hint">Toca para volver a la pantalla principal</string>
-    <string name="scoreboard_title">DOMINÓ CINÉTICO</string>
+    <string name="scoreboard_title">MAESTRO DOMINÓ</string>
 
     <string name="scoreboard_undo">DESHACER</string>
     <string name="scoreboard_add_points">AÑADIR PUNTOS</string>

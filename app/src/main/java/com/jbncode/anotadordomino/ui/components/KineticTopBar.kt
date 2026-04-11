@@ -79,7 +79,7 @@ fun KineticTopBar(
             )
         } else {
             Text(
-                text       = "ANOTADOR DOMINO",
+                text       = "ANOTADOR DOMINÓ",
                 color      = colors.cyanAccent,
                 fontSize   = 16.sp,
                 fontWeight = FontWeight.ExtraBold,

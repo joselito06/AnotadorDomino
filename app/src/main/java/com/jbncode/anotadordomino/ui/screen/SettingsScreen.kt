@@ -1,6 +1,8 @@
 package com.jbncode.anotadordomino.ui.screen
 
-import androidx.appcompat.app.AppCompatDelegate
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,7 +30,9 @@ import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.domain.model.supportedLanguages
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
+import com.jbncode.anotadordomino.ui.util.UiText
 import com.jbncode.anotadordomino.ui.viewmodel.SettingsViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 // ── Screen ─────────────────────────────────────────────────────────────────────
 
@@ -47,26 +51,51 @@ fun SettingsScreen(
     val isResetting    by viewModel.isResetting.collectAsStateWithLifecycle()
     val resetSuccess   by viewModel.resetSuccess.collectAsStateWithLifecycle()
 
+    val isExporting    by viewModel.isExporting.collectAsStateWithLifecycle()
+
     var showResetDialog by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
     val appLanguage by viewModel.appLanguage.collectAsStateWithLifecycle()
     val activeLangName = supportedLanguages.find { it.tag == appLanguage }?.nativeName ?: "English"
 
     // Snackbar cuando el reset termina
     val snackbarHostState = remember { SnackbarHostState() }
-    LaunchedEffect(resetSuccess) {
-        if (resetSuccess) {
-            snackbarHostState.showSnackbar("All data deleted successfully")
-            viewModel.resetSuccessAcknowledged()
+
+    var pendingCsvData by remember { mutableStateOf<String?>(null) }
+    val createDocumentLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri ->
+        uri?.let { destinationUri ->
+            pendingCsvData?.let { data ->
+                try {
+                    context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
+                        outputStream.write(data.toByteArray())
+                    }
+                    Toast.makeText(context, UiText.StringResource(R.string.settings_export_success).asString(context), Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Toast.makeText(context, UiText.StringResource(R.string.settings_export_error).asString(context), Toast.LENGTH_LONG).show()
+                } finally {
+                    pendingCsvData = null
+                }
+            }
         }
     }
 
-    /*LaunchedEffect(viewModel) {
-        viewModel.onNavigateToRestartScreen = {
-            onRestarting()
+    LaunchedEffect(Unit) {
+        viewModel.exportCsvEvent.collectLatest { csvContent ->
+            pendingCsvData = csvContent
+            createDocumentLauncher.launch("Domino_Kinetic_History.csv")
         }
-    }*/
+    }
+
+    LaunchedEffect(resetSuccess) {
+        if (resetSuccess) {
+            snackbarHostState.showSnackbar(UiText.StringResource(R.string.settings_reset_success).asString(context))
+            viewModel.resetSuccessAcknowledged()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -211,7 +240,7 @@ fun SettingsScreen(
                 // Export (placeholder — puedes implementar con CSV writer)
                 Row(
                     Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp)
-                        .clickable { /* TODO: export CSV */ },
+                        .clickable(enabled = !isExporting) { viewModel.exportMatchHistory() },
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment     = Alignment.CenterVertically
                 ) {
@@ -223,9 +252,17 @@ fun SettingsScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodySmall)
                     }
-                    Icon(Icons.Default.Download, null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(22.dp))
+                    if (isExporting) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Icon(Icons.Default.Download, null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(22.dp))
+                    }
                 }
                 SettingsDivider()
                 // Reset — destructivo
@@ -268,13 +305,13 @@ fun SettingsScreen(
 
             // Footer
             Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("ANOTADOR DOMINO",
+                Text(stringResource(R.string.settings_footer_app_name),
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.25f),
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight    = FontWeight.ExtraBold,
                         letterSpacing = 4.sp))
                 Spacer(Modifier.height(4.dp))
-                Text("VERSION 2.4.0",
+                Text(UiText.StringResource(R.string.settings_footer_version, "1.0.0").asString(),
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f),
                     style = MaterialTheme.typography.labelSmall)
             }
@@ -364,7 +401,7 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showLanguageDialog = false }) {
-                    Text("CLOSE", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.settings_dialog_close), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         )
@@ -397,16 +434,16 @@ private fun ProfileCard() {
                         .background(colors.neonGreen)
                         .padding(horizontal = 6.dp, vertical = 2.dp)
                 ) {
-                    Text("PRO", color = MaterialTheme.colorScheme.background,
+                    Text(stringResource(R.string.settings_profile_pro), color = MaterialTheme.colorScheme.background,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 9.sp, fontWeight = FontWeight.ExtraBold))
                 }
             }
             Spacer(Modifier.width(14.dp))
             Column {
-                Text("Domino Kinetic", color = MaterialTheme.colorScheme.onBackground,
+                Text(stringResource(R.string.settings_profile_default_name), color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
-                Text("LOCAL PLAYER", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Text(stringResource(R.string.settings_profile_local_player), color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall)
                 Spacer(Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {

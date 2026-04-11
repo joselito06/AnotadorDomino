@@ -609,7 +609,7 @@ fun DialogTutorialOverlay(
     Box(Modifier.fillMaxSize()) {
         if (name.isBlank() && inputBounds != Rect.Zero) {
             // PASO 1: Si NO hay nombre -> Señalamos el TextField apuntando hacia abajo
-            val arrowX = with(density) { inputBounds.center.x.toDp() - 86.dp }
+            val arrowX = with(density) { inputBounds.center.x.toDp() - 130.dp }
             val arrowY = with(density) { inputBounds.top.toDp() - 40.dp }
 
             Icon(

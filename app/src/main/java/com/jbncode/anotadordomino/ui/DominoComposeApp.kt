@@ -25,7 +25,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jbncode.anotadordomino.ui.components.AnotadorDomBottomBar
 import com.jbncode.anotadordomino.ui.screen.HistoryScreen
-import com.jbncode.anotadordomino.ui.screen.RestartingScreen
 import com.jbncode.anotadordomino.ui.screen.ScoreboardScreen
 import com.jbncode.anotadordomino.ui.screen.SettingsScreen
 import com.jbncode.anotadordomino.ui.screen.SetupScreen
@@ -144,13 +143,7 @@ fun DominoComposeApp(
 
             composable(Screen.Settings.route) {
                 SettingsScreen(
-                    onBackClick = { navController.popBackStack() },
-                    onRestarting = {
-                        navController.navigate(Screen.RestartingScreen.route) { // Usa tu constante de ruta
-                            popUpTo(navController.graph.startDestinationId) { inclusive = true } // Limpia backstack
-                            launchSingleTop = true
-                        }
-                    }
+                    onBackClick = { navController.popBackStack() }
                 )
             }
 
@@ -185,9 +178,6 @@ fun DominoComposeApp(
                 )
             }
 
-            composable(Screen.RestartingScreen.route){
-                RestartingScreen()
-            }
         }
 
         // Si había partida activa/pausada → navegar directo al Scoreboard

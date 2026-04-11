@@ -7,7 +7,7 @@
     <string name="bottom_bar_stats">STATS</string>
 
     <string name="setup_season_label">CURRENT SEASON</string>
-    <string name="setup_season_name">KINETIC MASTERS</string>
+    <string name="setup_season_name">DOMINO MASTERS</string>
     <string name="setup_game_mode">GAME MODE</string>
     <string name="setup_mode_pairs">PAIRS</string>
     <string name="setup_mode_individual">INDIVIDUAL</string>
@@ -73,6 +73,21 @@
     <string name="settings_dialog_reset_confirm">RESET</string>
     <string name="settings_dialog_reset_cancel">CANCEL</string>
 
+    <string name="settings_profile_pro">PRO</string>
+    <string name="settings_profile_default_name">Domino Master</string>
+    <string name="settings_profile_local_player">LOCAL PLAYER</string>
+
+    <string name="settings_footer_app_name">ANOTADOR DOMINO</string>
+    <string name="settings_footer_version">VERSION %1$s</string>
+
+    <string name="settings_export_success">Match history exported successfully</string>
+    <string name="settings_export_error">Error saving the file</string>
+    <string name="settings_reset_success">All data deleted successfully</string>
+
+    <string name="settings_dialog_close">CLOSE</string>
+    <string name="settings_themes_obsidian_neon">Obsidian Neon</string>
+
+    <!-- History Screen  -->
     <string name="history_title">Match History</string>
     <string name="history_sessions">%1$d SESSIONS</string>
     <string name="history_no_matches_title">No matches yet</string>
@@ -106,11 +121,11 @@
     <string name="stats_momentum_today">TODAY</string>
 
     <string name="stats_level_novice">Novice Challenger</string>
-    <string name="stats_level_apprentice">Apprentice Kinetic</string>
+    <string name="stats_level_apprentice">Apprentice Domino</string>
     <string name="stats_level_warrior">Domino Warrior</string>
     <string name="stats_level_king">The King of Capicúa</string>
-    <string name="stats_level_master">Kinetic Master</string>
-    <string name="stats_level_grandmaster">Grandmaster Kinetic</string>
+    <string name="stats_level_master">Domino Master</string>
+    <string name="stats_level_grandmaster">Grandmaster Domino</string>
     <string name="stats_level_grandmaster_done">Grandmaster ✓</string>
     <string name="stats_milestone_play_5">Play 5 matches to unlock this rank.</string>
     <string name="stats_milestone_play_more">Play %1$d more matches to rank up.</string>
@@ -119,7 +134,7 @@
     <string name="scoreboard_log_hands">LOG OF HANDS</string>
     <string name="scoreboard_rounds_count">%1$d ROUNDS</string>
     <string name="scoreboard_no_hands">No hands played yet.\nTap ADD POINTS to start.</string>
-    <string name="scoreboard_kinetic_masters">K I N E T I C   M A S T E R S</string>
+    <string name="scoreboard_kinetic_masters">D O M I N O   M A S T E R S</string>
     <string name="scoreboard_wins_match">WINS THE MATCH</string>
     <string name="scoreboard_final_score">FINAL SCORE</string>
     <string name="scoreboard_unit_pts_lower">pts</string>
@@ -128,7 +143,7 @@
     <string name="scoreboard_goal">GOAL</string>
     <string name="scoreboard_back_home">BACK TO HOME</string>
     <string name="scoreboard_return_hint">Tap to return to the main screen</string>
-    <string name="scoreboard_title">DOMINO KINETIC</string>
+    <string name="scoreboard_title">DOMINO MASTER</string>
 
     <string name="scoreboard_undo">UNDO</string>
     <string name="scoreboard_add_points">ADD POINTS</string>
