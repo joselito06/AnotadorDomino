@@ -2,7 +2,7 @@ package com.jbncode.anotadordomino.ui
 
 sealed class Screen(val route: String) {
     object Setup : Screen("setup")
-    object Game : Screen("game_screen")
+    object RestartingScreen : Screen("restarting")
     object History : Screen("history")
     object Stats : Screen("stats")
     object Settings : Screen("settings")

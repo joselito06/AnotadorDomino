@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anotador Dominó</string>
+
+    <!-- Setup Screen  -->
+    <string name="setup_season_label">TEMPORADA ACTUAL</string>
+    <string name="setup_season_name">MAESTROS CINÉTICOS</string>
+    <string name="setup_game_mode">MODO DE JUEGO</string>
+    <string name="setup_mode_pairs">PAREJAS</string>
+    <string name="setup_mode_individual">INDIVIDUAL</string>
+    <string name="setup_point_goal">PUNTUACIÓN META</string>
+    <string name="setup_quick_add_players">AÑADIR JUGADORES</string>
+    <string name="setup_btn_new">NUEVO</string>
+    <string name="setup_empty_players">Sin jugadores aún — toca + NUEVO</string>
+    <string name="setup_btn_start_match">INICIAR PARTIDA</string>
+    <string name="setup_wins_label">VICTORIAS: %1$d</string>
+
+    <string name="setup_tutorial_add_players">¡Agrega jugadores aquí!</string>
+    <string name="setup_tutorial_scroll">¡Listo! Desliza hacia abajo\npara iniciar la partida</string>
+
+    <string name="setup_hint_add_teams">Agrega 2 equipos para iniciar</string>
+    <string name="setup_hint_add_1_team">Agrega 1 equipo más para iniciar</string>
+    <string name="setup_hint_ready_teams">✓ ¡Listo! 2 equipos preparados</string>
+    <string name="setup_hint_add_players">Agrega de 2 a 4 jugadores para iniciar</string>
+    <string name="setup_hint_add_1_player">Agrega al menos 1 jugador más</string>
+    <string name="setup_hint_ready_add_more">✓ ¡Listo! Puedes agregar %1$d más</string>
+    <string name="setup_hint_max_players">Límite de jugadores alcanzado (4)</string>
+
+    <string name="dialog_recruit_label">RECLUTAR</string>
+    <string name="dialog_recruit_title">Nuevo Jugador</string>
+    <string name="dialog_player_name_default">Nombre del Jugador</string>
+    <string name="dialog_custom_photo">Foto personalizada</string>
+    <string name="dialog_select_avatar">Seleccionar avatar</string>
+    <string name="dialog_identity_tag">ETIQUETA DE IDENTIDAD</string>
+    <string name="dialog_enter_name">Ingresa un nombre...</string>
+    <string name="dialog_visual_signature">FIRMA VISUAL</string>
+    <string name="dialog_options_count">%1$d OPCIONES</string>
+    <string name="dialog_photo_label">FOTO</string>
+    <string name="dialog_status_label">ESTADO</string>
+    <string name="dialog_status_desc">Nuevo retador detectado. Asignando rango cinético inicial...</string>
+    <string name="dialog_rank_label">RANGO</string>
+    <string name="dialog_rank_na">N/A</string>
+    <string name="dialog_btn_add">AGREGAR JUGADOR</string>
+
+    <!-- Settings Screen  -->
+    <string name="settings_title">CONFIGURACIÓN</string>
+
+    <string name="settings_general_rules">REGLAS GENERALES</string>
+    <string name="settings_capicua_points">Puntos por Capicúa</string>
+    <string name="settings_capicua_desc">Gana el doble de puntos al terminar la partida con la misma ficha en ambos extremos</string>
+    <string name="settings_tranque_penalties">Penalización por Tranque</string>
+    <string name="settings_tranque_desc">Deducción automática de puntos por causar un trancazo en el tablero</string>
+
+    <string name="settings_appearance">ASPECTO VISUAL</string>
+    <string name="settings_dark_mode">Modo Oscuro / Claro</string>
+    <string name="settings_dark_mode_desc">Optimizado para precisión cinética nocturna</string>
+    <string name="settings_themes">Temas y Fichas</string>
+    <string name="settings_themes_active">Activo: </string>
+
+    <string name="settings_localization">IDIOMA Y REGIÓN</string>
+    <string name="settings_language">IDIOMA DE LA APP</string>
+
+    <string name="settings_data_management">GESTIÓN DE DATOS</string>
+    <string name="settings_export_history">Exportar Historial</string>
+    <string name="settings_export_desc">Descargar todas las rondas en formato CSV</string>
+    <string name="settings_reset_data">Borrar Datos Locales</string>
+    <string name="settings_reset_desc">Irreversible. Elimina todo el historial local de partidas.</string>
+
+    <string name="settings_dialog_reset_title">¿Borrar todos los datos?</string>
+    <string name="settings_dialog_reset_body">Esto eliminará permanentemente TODO el historial de partidas, puntuaciones y rondas. Esta acción no se puede deshacer.</string>
+    <string name="settings_dialog_reset_confirm">BORRAR</string>
+    <string name="settings_dialog_reset_cancel">CANCELAR</string>
+</resources>

@@ -2,12 +2,14 @@ package com.jbncode.anotadordomino.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.domain.model.AvatarType
 import com.jbncode.anotadordomino.domain.model.Game
 import com.jbncode.anotadordomino.domain.model.GameModality
 import com.jbncode.anotadordomino.domain.model.GameStatus
 import com.jbncode.anotadordomino.domain.model.Participant
 import com.jbncode.anotadordomino.domain.usecase.CreateGameUseCase
+import com.jbncode.anotadordomino.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -93,20 +95,20 @@ class SetupViewModel @Inject constructor(
     /**
      * Texto de ayuda contextual bajo el grid de jugadores.
      */
-    val playerHint: StateFlow<String> =
+    val playerHint: StateFlow<UiText> =
         _isPairsMode.combine(_quickPlayers) { isPairs, players ->
             val n = players.size
             when {
-                isPairs  && n == 0 -> "Add 2 teams to start"
-                isPairs  && n == 1 -> "Add 1 more team to start"
-                isPairs  && n >= 2 -> "✓ Ready! 2 teams set"
-                !isPairs && n == 0 -> "Add 2 to 4 players to start"
-                !isPairs && n == 1 -> "Add at least 1 more player"
-                !isPairs && n in 2..3 -> "✓ Ready! You can add ${4 - n} more"
-                !isPairs && n >= 4 -> "Max players reached (4)"
-                else -> ""
+                isPairs  && n == 0 -> UiText.StringResource(R.string.setup_hint_add_teams)
+                isPairs  && n == 1 -> UiText.StringResource(R.string.setup_hint_add_1_team)
+                isPairs  && n >= 2 -> UiText.StringResource(R.string.setup_hint_ready_teams)
+                !isPairs && n == 0 -> UiText.StringResource(R.string.setup_hint_add_players)
+                !isPairs && n == 1 -> UiText.StringResource(R.string.setup_hint_add_1_player)
+                !isPairs && n in 2..3 -> UiText.StringResource(R.string.setup_hint_ready_add_more, 4 - n)
+                !isPairs && n >= 4 -> UiText.StringResource(R.string.setup_hint_max_players)
+                else -> UiText.DynamicString("")
             }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), "Add 2 teams to start")
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UiText.StringResource(R.string.setup_hint_add_teams))
 
     fun updateTargetScore(score: Float) {
         _targetScore.value = score.toInt()

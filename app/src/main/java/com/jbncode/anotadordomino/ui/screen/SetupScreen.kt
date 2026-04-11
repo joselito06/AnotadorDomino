@@ -1,6 +1,5 @@
 package com.jbncode.anotadordomino.ui.screen
 
-import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
@@ -30,12 +29,14 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.domain.model.AvatarType
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.components.RecruitPlayerDialog
@@ -44,6 +45,7 @@ import com.jbncode.anotadordomino.ui.viewmodel.SetupViewModel
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 import com.jbncode.anotadordomino.ui.viewmodel.SetupTutorialStep
 import androidx.core.net.toUri
+import com.jbncode.anotadordomino.ui.util.UiText
 
 @Composable
 fun SetupScreen(
@@ -83,7 +85,7 @@ fun SetupScreen(
             SetupSeasonBanner()
             Spacer(Modifier.height(24.dp))
 
-            SetupSectionLabel("GAME MODE", Modifier.padding(horizontal = 20.dp))
+            SetupSectionLabel(stringResource(R.string.setup_game_mode), Modifier.padding(horizontal = 20.dp))
             Spacer(Modifier.height(10.dp))
             SetupGameModeToggle(
                 isPairs  = isPairsMode,
@@ -97,7 +99,7 @@ fun SetupScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment     = Alignment.CenterVertically
             ) {
-                SetupSectionLabel("POINT GOAL")
+                SetupSectionLabel(stringResource(R.string.setup_point_goal))
                 Text(
                     text  = targetScore.toString(),
                     color = colors.neonGreen,
@@ -119,7 +121,7 @@ fun SetupScreen(
                 verticalAlignment     = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    SetupSectionLabel("QUICK ADD PLAYERS")
+                    SetupSectionLabel(stringResource(R.string.setup_quick_add_players))
                     Spacer(Modifier.width(8.dp))
                     // Contador: ej. "2/2" o "1/4"
                     val limits = if (isPairsMode) "/${2}" else "/${4}"
@@ -147,14 +149,14 @@ fun SetupScreen(
             // Hint contextual animado
             Spacer(Modifier.height(8.dp))
             AnimatedVisibility(
-                visible  = hint.isNotBlank(),
+                visible  = hint.asString().isNotBlank(),
                 enter    = fadeIn(),
                 exit     = fadeOut(),
                 modifier = Modifier.padding(horizontal = 22.dp)
             ) {
                 Text(
-                    text      = hint,
-                    color     = if (hint.startsWith("✓")) colors.neonGreen
+                    text      = hint.asString(),
+                    color     = if (hint.asString().startsWith("✓")) colors.neonGreen
                     else MaterialTheme.colorScheme.onSurfaceVariant,
                     style     = MaterialTheme.typography.labelSmall,
                     textAlign = TextAlign.Start
@@ -258,7 +260,7 @@ fun TutorialOverlay(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(Icons.Default.KeyboardArrowDown, null, tint = colors.cyanAccent, modifier = Modifier.size(40.dp))
                         Spacer(Modifier.height(4.dp))
-                        TutorialTooltip("¡Listo! Desliza hacia abajo\npara iniciar la partida")
+                        TutorialTooltip(stringResource(R.string.setup_tutorial_scroll))
                     }
                 }
             }
@@ -307,10 +309,10 @@ private fun SetupSeasonBanner() {
             )
         ))
         Column(Modifier.align(Alignment.BottomStart).padding(20.dp)) {
-            Text("CURRENT SEASON", color = colors.neonGreen,
+            Text(stringResource(R.string.setup_season_label), color = colors.neonGreen,
                 style = MaterialTheme.typography.labelMedium)
             Spacer(Modifier.height(4.dp))
-            Text("KINETIC MASTERS", color = Color.White,
+            Text(stringResource(R.string.setup_season_name), color = Color.White,
                 style = MaterialTheme.typography.headlineLarge)
         }
     }
@@ -337,7 +339,7 @@ private fun SetupGameModeToggle(
     modifier: Modifier = Modifier
 ) {
     val colors  = MaterialTheme.kineticColors
-    val options = listOf(Icons.Default.Group to "PAIRS", Icons.Default.Person to "INDIVIDUAL")
+    val options = listOf(Icons.Default.Group to stringResource(R.string.setup_mode_pairs), Icons.Default.Person to stringResource(R.string.setup_mode_individual))
 
     Box(
         modifier = modifier
@@ -452,7 +454,7 @@ private fun SetupNewButton(enabled: Boolean, modifier: Modifier = Modifier, onCl
                 else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                 modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(4.dp))
-            Text("NEW",
+            Text(stringResource(R.string.setup_btn_new),
                 color = if (enabled) MaterialTheme.colorScheme.onSurface
                 else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                 style = MaterialTheme.typography.labelMedium)
@@ -478,7 +480,7 @@ private fun SetupPlayersGrid(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text  = "No players yet — tap + NEW",
+                text  = stringResource(R.string.setup_empty_players),
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f),
                 style = MaterialTheme.typography.bodySmall
             )
@@ -582,7 +584,7 @@ private fun SetupPlayerCard(
             Text(player.name,
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleSmall)
-            Text("WINS: ${player.wins}",
+            Text(UiText.StringResource(R.string.setup_wins_label, player.wins).asString(),// "WINS: ${player.wins}",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.labelSmall)
         }
@@ -651,7 +653,7 @@ private fun SetupStartMatchButton(
             )
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("START MATCH",
+                Text(stringResource(R.string.setup_btn_start_match),
                     color = if (enabled) MaterialTheme.colorScheme.background
                     else MaterialTheme.colorScheme.background.copy(alpha = 0.35f),
                     style = MaterialTheme.typography.titleLarge)

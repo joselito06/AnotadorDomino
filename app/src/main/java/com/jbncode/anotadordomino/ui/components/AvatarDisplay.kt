@@ -65,7 +65,7 @@ fun avatarConfigFor(avatarType: String): AvatarConfig {
  * @param photoUri    URI de foto como String, nullable
  * @param size        Tamaño del círculo del avatar
  * @param iconSize    Tamaño del ícono dentro (default = size * 0.55)
- * @param shape       Forma del clip (default CircleShape)
+ * @param modifier       Forma del clip (default CircleShape)
  */
 @Composable
 fun AvatarDisplay(

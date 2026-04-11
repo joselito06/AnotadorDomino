@@ -1,3 +1,71 @@
 <resources>
+    <!-- Setup Screen  -->
     <string name="app_name">Anotador Domino</string>
+
+    <string name="setup_season_label">CURRENT SEASON</string>
+    <string name="setup_season_name">KINETIC MASTERS</string>
+    <string name="setup_game_mode">GAME MODE</string>
+    <string name="setup_mode_pairs">PAIRS</string>
+    <string name="setup_mode_individual">INDIVIDUAL</string>
+    <string name="setup_point_goal">POINT GOAL</string>
+    <string name="setup_quick_add_players">QUICK ADD PLAYERS</string>
+    <string name="setup_btn_new">NEW</string>
+    <string name="setup_empty_players">No players yet — tap + NEW</string>
+    <string name="setup_btn_start_match">START MATCH</string>
+    <string name="setup_wins_label">WINS: %1$d</string>
+    <string name="setup_tutorial_add_players">Add players here!</string>
+    <string name="setup_tutorial_scroll">Ready! Swipe down\nto start the match</string>
+
+    <string name="setup_hint_add_teams">Add 2 teams to start</string>
+    <string name="setup_hint_add_1_team">Add 1 more team to start</string>
+    <string name="setup_hint_ready_teams">✓ Ready! 2 teams set</string>
+    <string name="setup_hint_add_players">Add 2 to 4 players to start</string>
+    <string name="setup_hint_add_1_player">Add at least 1 more player</string>
+    <string name="setup_hint_ready_add_more">✓ Ready! You can add %1$d more</string>
+    <string name="setup_hint_max_players">Max players reached (4)</string>
+
+    <string name="dialog_recruit_label">RECRUIT</string>
+    <string name="dialog_recruit_title">New Player</string>
+    <string name="dialog_player_name_default">Player Name</string>
+    <string name="dialog_custom_photo">Custom photo</string>
+    <string name="dialog_select_avatar">Select avatar</string>
+    <string name="dialog_identity_tag">IDENTITY TAG</string>
+    <string name="dialog_enter_name">Enter name...</string>
+    <string name="dialog_visual_signature">VISUAL SIGNATURE</string>
+    <string name="dialog_options_count">%1$d OPTIONS</string>
+    <string name="dialog_photo_label">PHOTO</string>
+    <string name="dialog_status_label">STATUS</string>
+    <string name="dialog_status_desc">New Challenger detected. Assigning initial kinetic ranking...</string>
+    <string name="dialog_rank_label">RANK</string>
+    <string name="dialog_rank_na">N/A</string>
+    <string name="dialog_btn_add">ADD PLAYER</string>
+
+    <!-- Settings Screen  -->
+    <string name="settings_title">SETTINGS</string>
+
+    <string name="settings_general_rules">GENERAL RULES</string>
+    <string name="settings_capicua_points">Capicua Points</string>
+    <string name="settings_capicua_desc">Earn double points when the match ends with the same tile on both ends</string>
+    <string name="settings_tranque_penalties">Tranque Penalties</string>
+    <string name="settings_tranque_desc">Automatic point deduction for causing a locked board state</string>
+
+    <string name="settings_appearance">VISUALS</string>
+    <string name="settings_dark_mode">Dark / Light Mode</string>
+    <string name="settings_dark_mode_desc">Optimize for night-time kinetic precision</string>
+    <string name="settings_themes">Themes &amp; Tile Skins</string>
+    <string name="settings_themes_active">Active: </string>
+
+    <string name="settings_localization">LOCALIZATION</string>
+    <string name="settings_language">APP LANGUAGE</string>
+
+    <string name="settings_data_management">DATA MANAGEMENT</string>
+    <string name="settings_export_history">Export Match History</string>
+    <string name="settings_export_desc">Download all rounds in CSV format</string>
+    <string name="settings_reset_data">Reset Local Data</string>
+    <string name="settings_reset_desc">Irreversible. Deletes all local match history.</string>
+
+    <string name="settings_dialog_reset_title">Reset All Data?</string>
+    <string name="settings_dialog_reset_body">This will permanently delete ALL match history, scores and rounds. This action cannot be undone.</string>
+    <string name="settings_dialog_reset_confirm">RESET</string>
+    <string name="settings_dialog_reset_cancel">CANCEL</string>
 </resources>

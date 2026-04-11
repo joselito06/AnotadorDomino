@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,8 +46,10 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.domain.model.AvatarType
 import com.jbncode.anotadordomino.ui.theme.kineticColors
+import com.jbncode.anotadordomino.ui.util.UiText
 
 // ── Avatar preset definitions ──────────────────────────────────────────────────
 
@@ -150,9 +153,10 @@ fun RecruitPlayerDialog(
                     verticalAlignment     = Alignment.Top
                 ) {
                     Column {
-                        Text("RECRUIT", color = colors.cyanAccent,
+                        Text(
+                            stringResource(R.string.dialog_recruit_label), color = colors.cyanAccent,
                             style = MaterialTheme.typography.labelMedium)
-                        Text("New Player", color = MaterialTheme.colorScheme.onBackground,
+                        Text(stringResource(R.string.dialog_recruit_title), color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.headlineLarge)
                     }
                     Box(
@@ -181,7 +185,7 @@ fun RecruitPlayerDialog(
                 Spacer(Modifier.height(20.dp))
 
                 // ── Identity tag ──────────────────────────────────────────
-                Text("IDENTITY TAG", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Text(stringResource(R.string.dialog_identity_tag), color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelMedium)
                 Spacer(Modifier.height(8.dp))
                 IdentityTagInput(
@@ -198,9 +202,9 @@ fun RecruitPlayerDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment     = Alignment.CenterVertically
                 ) {
-                    Text("VISUAL SIGNATURE", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    Text(stringResource(R.string.dialog_visual_signature), color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.labelMedium)
-                    Text("${presets.size + 1} OPTIONS", color = colors.cyanAccent,
+                    Text(UiText.StringResource(R.string.dialog_options_count, presets.size + 1).asString(context), color = colors.cyanAccent,
                         style = MaterialTheme.typography.labelSmall)
                 }
 
@@ -251,7 +255,7 @@ fun RecruitPlayerDialog(
                         Icon(Icons.Default.PersonAdd, null,
                             tint = MaterialTheme.colorScheme.background, modifier = Modifier.size(20.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("ADD PLAYER",
+                        Text(stringResource(R.string.dialog_btn_add),
                             color = MaterialTheme.colorScheme.background,
                             style = MaterialTheme.typography.titleMedium)
                     }
@@ -330,7 +334,7 @@ private fun AvatarPreview(
 
             Column {
                 Text(
-                    text  = if (playerName.isBlank()) "Player Name" else playerName,
+                    text  = if (playerName.isBlank()) stringResource(R.string.dialog_player_name_default) else playerName,
                     color = if (playerName.isBlank()) MaterialTheme.colorScheme.onSurfaceVariant
                     else MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
@@ -338,9 +342,9 @@ private fun AvatarPreview(
                 Spacer(Modifier.height(2.dp))
                 Text(
                     text  = if (selectedType == AvatarType.GALLERY && galleryUri != null)
-                        "Custom photo"
+                        stringResource(R.string.dialog_custom_photo)
                     else preset?.type?.name?.replace("PRESET_", "")?.lowercase()
-                        ?.replaceFirstChar { it.uppercase() } ?: "Select avatar",
+                        ?.replaceFirstChar { it.uppercase() } ?: stringResource(R.string.dialog_select_avatar),
                     color = colors.cyanAccent,
                     style = MaterialTheme.typography.labelSmall
                 )
@@ -470,7 +474,7 @@ private fun GalleryCell(
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(Modifier.height(4.dp))
-                    Text("PHOTO", color = colors.cyanAccent,
+                    Text(stringResource(R.string.dialog_photo_label), color = colors.cyanAccent,
                         style = MaterialTheme.typography.labelSmall.copy(fontSize = 8.sp))
                 }
             }
@@ -528,7 +532,7 @@ private fun IdentityTagInput(value: String, onValueChange: (String) -> Unit, mod
                 decorationBox = { inner ->
                     Box(Modifier.padding(vertical = 16.dp)) {
                         if (value.isEmpty()) {
-                            Text("Enter name...",
+                            Text(stringResource(R.string.dialog_enter_name),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                 style = MaterialTheme.typography.bodyLarge)
                         }
@@ -564,9 +568,9 @@ private fun StatusCard() {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("STATUS", color = colors.cyanAccent, style = MaterialTheme.typography.labelSmall)
+                Text(stringResource(R.string.dialog_status_label), color = colors.cyanAccent, style = MaterialTheme.typography.labelSmall)
                 Spacer(Modifier.height(4.dp))
-                Text("New Challenger detected. Assigning initial kinetic ranking...",
+                Text(stringResource(R.string.dialog_status_desc),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f),
                     style = MaterialTheme.typography.bodySmall)
             }
@@ -577,9 +581,9 @@ private fun StatusCard() {
                 .background(MaterialTheme.colorScheme.outline))
             Spacer(Modifier.width(16.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("RANK", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Text(stringResource(R.string.dialog_rank_label), color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall)
-                Text("N/A", color = colors.cyanAccent,
+                Text(stringResource(R.string.dialog_rank_na), color = colors.cyanAccent,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
             }
         }
