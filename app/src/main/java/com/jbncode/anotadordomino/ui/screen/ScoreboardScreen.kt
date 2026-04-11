@@ -12,6 +12,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Backspace
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,6 +26,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,6 +36,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.domain.model.WinType
 import com.jbncode.anotadordomino.ui.ScoreboardUiState
 import com.jbncode.anotadordomino.ui.viewmodel.HandLogUi
@@ -42,6 +47,7 @@ import com.jbncode.anotadordomino.ui.components.AvatarDisplay
 import com.jbncode.anotadordomino.ui.components.AvatarSquare
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
+import com.jbncode.anotadordomino.ui.util.UiText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -120,9 +126,10 @@ fun ScoreboardScreen(
                     Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment     = Alignment.CenterVertically) {
-                        Text("LOG OF HANDS", color = MaterialTheme.colorScheme.onBackground,
+                        Text(
+                            stringResource(R.string.scoreboard_log_hands), color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.titleMedium)
-                        Text("${state.handLog.size} ROUNDS",
+                        Text(stringResource(R.string.scoreboard_rounds_count, state.handLog.size),
                             color = MaterialTheme.kineticColors.cyanAccent,
                             style = MaterialTheme.typography.labelMedium)
                     }
@@ -132,7 +139,7 @@ fun ScoreboardScreen(
                     if (state.handLog.isEmpty()) {
                         Box(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp),
                             contentAlignment = Alignment.Center) {
-                            Text("No hands played yet.\nTap ADD POINTS to start.",
+                            Text(stringResource(R.string.scoreboard_no_hands),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                 style = MaterialTheme.typography.bodySmall,
                                 textAlign = TextAlign.Center)
@@ -253,7 +260,7 @@ private fun WinnerScreen(
         ) {
             // Label top
             Text(
-                "K I N E T I C   M A S T E R S",
+                stringResource(R.string.scoreboard_kinetic_masters),
                 color = colors.cyanAccent.copy(alpha = 0.7f),
                 style = MaterialTheme.typography.labelSmall,
                 letterSpacing = 3.sp
@@ -348,7 +355,7 @@ private fun WinnerScreen(
                     .padding(horizontal = 20.dp, vertical = 4.dp)
             ) {
                 Text(
-                    "WINS THE MATCH",
+                    stringResource(R.string.scoreboard_wins_match),
                     color = Color(0xFF080808),
                     style = MaterialTheme.typography.labelLarge
                 )
@@ -362,23 +369,23 @@ private fun WinnerScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 WinnerStatChip(
-                    label = "FINAL SCORE",
+                    label = stringResource(R.string.scoreboard_final_score),
                     value = "${winner.totalScore}",
-                    unit  = "pts",
+                    unit  = stringResource(R.string.scoreboard_unit_pts_lower),
                     color = colors.neonGreen,
                     modifier = Modifier.weight(1f)
                 )
                 WinnerStatChip(
-                    label = "ROUNDS",
+                    label = stringResource(R.string.scoreboard_rounds),
                     value = "${handLog.size}",
-                    unit  = "played",
+                    unit  = stringResource(R.string.scoreboard_played),
                     color = colors.cyanAccent,
                     modifier = Modifier.weight(1f)
                 )
                 WinnerStatChip(
-                    label = "GOAL",
+                    label = stringResource(R.string.scoreboard_goal),
                     value = "${winner.targetScore}",
-                    unit  = "pts",
+                    unit  = stringResource(R.string.scoreboard_unit_pts_lower),
                     color = Color(0xFF7B61FF),
                     modifier = Modifier.weight(1f)
                 )
@@ -414,7 +421,7 @@ private fun WinnerScreen(
                     )
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        "BACK TO HOME",
+                        stringResource(R.string.scoreboard_back_home),
                         color = Color(0xFF080808),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.ExtraBold
@@ -426,7 +433,7 @@ private fun WinnerScreen(
             Spacer(Modifier.height(16.dp))
 
             Text(
-                "Tap to return to the main screen",
+                stringResource(R.string.scoreboard_return_hint),
                 color = Color.White.copy(alpha = 0.3f),
                 style = MaterialTheme.typography.labelSmall
             )
@@ -539,7 +546,7 @@ private fun ConfettiCanvas() {
                 else             -> 1f
             }
 
-            val paintColor = androidx.compose.ui.graphics.Color(
+            val paintColor = Color(
                 red   = ((p.color shr 16) and 0xFF) / 255f,
                 green = ((p.color shr 8)  and 0xFF) / 255f,
                 blue  = (p.color          and 0xFF) / 255f,
@@ -573,27 +580,6 @@ private fun ConfettiCanvas() {
     }
 }
 
-// ── Top Bar ────────────────────────────────────────────────────────────────────
-
-@Composable
-private fun ScoreboardTopBar(onBackClick: () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth().statusBarsPadding()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment     = Alignment.CenterVertically
-    ) {
-        Icon(Icons.Default.ArrowBack, "Back",
-            tint     = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(28.dp).clickable(onClick = onBackClick))
-        Text("DOMINO KINETIC",
-            color = MaterialTheme.kineticColors.cyanAccent,
-            style = MaterialTheme.typography.titleLarge)
-        Icon(Icons.Default.Settings, "Settings",
-            tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(28.dp))
-    }
-}
-
 // ── Leave Dialog ───────────────────────────────────────────────────────────────
 
 @Composable
@@ -605,18 +591,18 @@ private fun LeaveGameDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(Modifier.size(64.dp).clip(RoundedCornerShape(18.dp))
                     .background(colors.neonGreen.copy(alpha = 0.12f)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.ExitToApp, null, tint = colors.neonGreen, modifier = Modifier.size(32.dp))
+                    Icon(Icons.AutoMirrored.Filled.ExitToApp, null, tint = colors.neonGreen, modifier = Modifier.size(32.dp))
                 }
                 Spacer(Modifier.height(20.dp))
-                Text("Leave the match?", color = MaterialTheme.colorScheme.onSurface,
+                Text(stringResource(R.string.dialog_leave_title), color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(10.dp))
                 Box(Modifier.clip(RoundedCornerShape(20.dp)).background(MaterialTheme.colorScheme.surface)
                     .padding(horizontal = 16.dp, vertical = 6.dp)) {
-                    Text("GAME WILL BE PAUSED", color = colors.cyanAccent, style = MaterialTheme.typography.labelMedium)
+                    Text(stringResource(R.string.dialog_leave_paused), color = colors.cyanAccent, style = MaterialTheme.typography.labelMedium)
                 }
                 Spacer(Modifier.height(16.dp))
-                Text("Your progress is saved. You can resume this match anytime from the home screen.",
+                Text(stringResource(R.string.dialog_leave_desc),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(28.dp))
@@ -624,13 +610,13 @@ private fun LeaveGameDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
                     .border(1.5.dp, colors.neonGreen, RoundedCornerShape(14.dp))
                     .clickable(onClick = onConfirm), contentAlignment = Alignment.Center) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.ExitToApp, null, tint = colors.neonGreen, modifier = Modifier.size(18.dp))
+                        Icon(Icons.AutoMirrored.Filled.ExitToApp, null, tint = colors.neonGreen, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("SAVE & LEAVE", color = colors.neonGreen, style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.dialog_leave_save), color = colors.neonGreen, style = MaterialTheme.typography.labelLarge)
                     }
                 }
                 Spacer(Modifier.height(16.dp))
-                Text("KEEP PLAYING", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Text(stringResource(R.string.dialog_leave_keep_playing), color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onDismiss)
                         .padding(horizontal = 20.dp, vertical = 8.dp))
@@ -806,11 +792,12 @@ private fun ScoreboardActions(canUndo: Boolean, isLoading: Boolean,
             .background(if (canUndo) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
             .clickable(enabled = canUndo && !isLoading, onClick = onUndo), contentAlignment = Alignment.Center) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Undo, "Undo",
+                Icon(
+                    Icons.AutoMirrored.Filled.Undo, "Undo",
                     tint = if (canUndo) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                     modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(6.dp))
-                Text("UNDO", color = if (canUndo) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                Text(stringResource(R.string.scoreboard_undo), color = if (canUndo) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                     style = MaterialTheme.typography.labelLarge)
             }
         }
@@ -821,7 +808,7 @@ private fun ScoreboardActions(canUndo: Boolean, isLoading: Boolean,
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.AddCircleOutline, "Add Points", tint = MaterialTheme.colorScheme.background, modifier = Modifier.size(20.dp))
                 Spacer(Modifier.width(6.dp))
-                Text("ADD POINTS", color = MaterialTheme.colorScheme.background, style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.scoreboard_add_points), color = MaterialTheme.colorScheme.background, style = MaterialTheme.typography.labelLarge)
             }
         }
     }
@@ -843,9 +830,9 @@ private fun AddPointsSheet(participants: List<ParticipantScoreUi>, isLoading: Bo
         shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
         Column(Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 20.dp, vertical = 24.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text("AWARD POINTS TO:", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelMedium)
+                Text(stringResource(R.string.scoreboard_award_points), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelMedium)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("CAPICUA", color = if (isCapicua) colors.cyanAccent else MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
+                    Text(stringResource(R.string.scoreboard_capicua), color = if (isCapicua) colors.cyanAccent else MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
                     Spacer(Modifier.width(6.dp))
                     Switch(checked = isCapicua, onCheckedChange = { isCapicua = it },
                         colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colorScheme.background,
@@ -873,13 +860,14 @@ private fun AddPointsSheet(participants: List<ParticipantScoreUi>, isLoading: Bo
             Spacer(Modifier.height(16.dp))
             Box(Modifier.fillMaxWidth().height(100.dp).clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surfaceVariant), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("ENTERING HAND VALUE", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
+                    Text(stringResource(R.string.scoreboard_entering_value), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
                     Spacer(Modifier.height(4.dp))
                     Row(verticalAlignment = Alignment.Bottom) {
-                        Text(if (input.isEmpty()) "0" else input, color = if (isCapicua) colors.cyanAccent else colors.neonGreen,
+                        Text(
+                            input.ifEmpty { "0" }, color = if (isCapicua) colors.cyanAccent else colors.neonGreen,
                             style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.ExtraBold, fontSize = 52.sp))
                         Spacer(Modifier.width(4.dp))
-                        Text(if (isCapicua) "pts ×2" else "pts", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(bottom = 8.dp))
+                        Text(if (isCapicua) stringResource(R.string.scoreboard_pts_x2) else "pts", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(bottom = 8.dp))
                     }
                 }
             }
@@ -892,7 +880,7 @@ private fun AddPointsSheet(participants: List<ParticipantScoreUi>, isLoading: Bo
                 .clickable(enabled = canConfirm) { onConfirm(participants[selectedIdx].participantId, input.toIntOrNull() ?: 0, isCapicua) },
                 contentAlignment = Alignment.Center) {
                 if (isLoading) CircularProgressIndicator(color = MaterialTheme.colorScheme.background, modifier = Modifier.size(22.dp), strokeWidth = 2.dp)
-                else Text("CONFIRM POINTS", color = MaterialTheme.colorScheme.background, style = MaterialTheme.typography.titleMedium)
+                else Text(stringResource(R.string.scoreboard_confirm_points), color = MaterialTheme.colorScheme.background, style = MaterialTheme.typography.titleMedium)
             }
         }
     }
@@ -911,7 +899,7 @@ private fun NumPad(onDigit: (String) -> Unit, onDelete: () -> Unit) {
                     Box(Modifier.weight(1f).height(64.dp).clip(RoundedCornerShape(14.dp))
                         .background(if (key == "DEL") MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.25f) else MaterialTheme.colorScheme.surfaceVariant)
                         .clickable { if (key == "DEL") onDelete() else onDigit(key) }, contentAlignment = Alignment.Center) {
-                        if (key == "DEL") Icon(Icons.Default.Backspace, "Delete", tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(22.dp))
+                        if (key == "DEL") Icon(Icons.AutoMirrored.Filled.Backspace, "Delete", tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(22.dp))
                         else Text(key, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Normal))
                     }
                 }
@@ -931,24 +919,24 @@ private fun UndoConfirmDialog(lastHand: HandLogUi, onDismiss: () -> Unit, onConf
                     Icon(Icons.Default.History, null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(32.dp))
                 }
                 Spacer(Modifier.height(20.dp))
-                Text("Undo the last hand?", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.dialog_undo_title), color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(10.dp))
                 Box(Modifier.clip(RoundedCornerShape(20.dp)).background(MaterialTheme.colorScheme.surface).padding(horizontal = 16.dp, vertical = 6.dp)) {
-                    Text("(+${lastHand.pointsScored} FOR ${lastHand.winnerName.uppercase()})", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.labelMedium)
+                    Text(UiText.StringResource(R.string.dialog_undo_points, lastHand.pointsScored, lastHand.winnerName.uppercase()).asString(), color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.labelMedium)
                 }
                 Spacer(Modifier.height(16.dp))
-                Text("This action will revert the score to the previous state. This cannot be undone once confirmed.",
+                Text(stringResource(R.string.dialog_undo_desc),
                     color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(28.dp))
                 Box(Modifier.fillMaxWidth().height(54.dp).clip(RoundedCornerShape(14.dp)).border(1.5.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(14.dp)).clickable(onClick = onConfirm), contentAlignment = Alignment.Center) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Undo, null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(18.dp))
+                        Icon(Icons.AutoMirrored.Filled.Undo, null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("CONFIRM UNDO", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.dialog_undo_confirm), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelLarge)
                     }
                 }
                 Spacer(Modifier.height(16.dp))
-                Text("CANCEL", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelMedium,
+                Text(stringResource(R.string.dialog_undo_cancel), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onDismiss).padding(horizontal = 20.dp, vertical = 8.dp))
             }
         }

@@ -68,4 +68,82 @@
     <string name="settings_dialog_reset_body">This will permanently delete ALL match history, scores and rounds. This action cannot be undone.</string>
     <string name="settings_dialog_reset_confirm">RESET</string>
     <string name="settings_dialog_reset_cancel">CANCEL</string>
+
+    <string name="history_title">Match History</string>
+    <string name="history_sessions">%1$d SESSIONS</string>
+    <string name="history_no_matches_title">No matches yet</string>
+    <string name="history_no_matches_desc">Start a new game and your match history will appear here.</string>
+    <string name="history_game_number">Game #%1$d</string>
+    <string name="history_resume_session">RESUME SESSION</string>
+    <string name="history_status_active">ACTIVE</string>
+    <string name="history_status_finished">FINISHED</string>
+    <string name="history_status_paused">PAUSED</string>
+    <string name="history_winner">WINNER</string>
+    <string name="history_leading">LEADING</string>
+    <string name="history_runner_up">RUNNER UP</string>
+
+    <string name="stats_no_stats_title">No stats yet</string>
+    <string name="stats_no_stats_desc">Play your first match and your stats will appear here.</string>
+    <string name="stats_performance_core">PERFORMANCE CORE</string>
+    <string name="stats_efficiency">EFFICIENCY</string>
+    <string name="stats_win_rate">WIN RATE</string>
+    <string name="stats_win_rate_desc">Dominating the table with precision kinetic movements across %1$d professional sessions.</string>
+    <string name="stats_current_level">CURRENT LEVEL</string>
+    <string name="stats_capicuas">CAPICÚAS</string>
+    <string name="stats_record_high">RECORD HIGH</string>
+    <string name="stats_total_rounds">TOTAL ROUNDS</string>
+    <string name="stats_tranques">TRANQUES</string>
+    <string name="stats_unit_pts">PTS</string>
+    <string name="stats_unit_rds">RDS</string>
+    <string name="stats_unit_win">WIN</string>
+    <string name="stats_unit_x">X</string>
+    <string name="stats_momentum">7-DAY MOMENTUM</string>
+    <string name="stats_next_milestone">NEXT MILESTONE</string>
+    <string name="stats_momentum_today">TODAY</string>
+
+    <string name="stats_level_novice">Novice Challenger</string>
+    <string name="stats_level_apprentice">Apprentice Kinetic</string>
+    <string name="stats_level_warrior">Domino Warrior</string>
+    <string name="stats_level_king">The King of Capicúa</string>
+    <string name="stats_level_master">Kinetic Master</string>
+    <string name="stats_level_grandmaster">Grandmaster Kinetic</string>
+    <string name="stats_level_grandmaster_done">Grandmaster ✓</string>
+    <string name="stats_milestone_play_5">Play 5 matches to unlock this rank.</string>
+    <string name="stats_milestone_play_more">Play %1$d more matches to rank up.</string>
+    <string name="stats_milestone_max">You have reached the highest rank!</string>
+
+    <string name="scoreboard_log_hands">LOG OF HANDS</string>
+    <string name="scoreboard_rounds_count">%1$d ROUNDS</string>
+    <string name="scoreboard_no_hands">No hands played yet.\nTap ADD POINTS to start.</string>
+    <string name="scoreboard_kinetic_masters">K I N E T I C   M A S T E R S</string>
+    <string name="scoreboard_wins_match">WINS THE MATCH</string>
+    <string name="scoreboard_final_score">FINAL SCORE</string>
+    <string name="scoreboard_unit_pts_lower">pts</string>
+    <string name="scoreboard_rounds">ROUNDS</string>
+    <string name="scoreboard_played">played</string>
+    <string name="scoreboard_goal">GOAL</string>
+    <string name="scoreboard_back_home">BACK TO HOME</string>
+    <string name="scoreboard_return_hint">Tap to return to the main screen</string>
+    <string name="scoreboard_title">DOMINO KINETIC</string>
+
+    <string name="scoreboard_undo">UNDO</string>
+    <string name="scoreboard_add_points">ADD POINTS</string>
+    <string name="scoreboard_award_points">AWARD POINTS TO:</string>
+    <string name="scoreboard_capicua">CAPICUA</string>
+    <string name="scoreboard_entering_value">ENTERING HAND VALUE</string>
+    <string name="scoreboard_pts_x2">pts ×2</string>
+    <string name="scoreboard_confirm_points">CONFIRM POINTS</string>
+
+    <string name="dialog_leave_title">Leave the match?</string>
+    <string name="dialog_leave_paused">GAME WILL BE PAUSED</string>
+    <string name="dialog_leave_desc">Your progress is saved. You can resume this match anytime from the home screen.</string>
+    <string name="dialog_leave_save">SAVE &amp; LEAVE</string>
+    <string name="dialog_leave_keep_playing">KEEP PLAYING</string>
+
+    <string name="dialog_undo_title">Undo the last hand?</string>
+    <string name="dialog_undo_points">(+%1$d FOR %2$s)</string>
+    <string name="dialog_undo_desc">This action will revert the score to the previous state. This cannot be undone once confirmed.</string>
+    <string name="dialog_undo_confirm">CONFIRM UNDO</string>
+    <string name="dialog_undo_cancel">CANCEL</string>
+
 </resources>

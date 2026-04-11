@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -24,9 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.domain.model.GameStats
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
+import com.jbncode.anotadordomino.ui.util.UiText
 import com.jbncode.anotadordomino.ui.viewmodel.StatsUiState
 import com.jbncode.anotadordomino.ui.viewmodel.StatsViewModel
 
@@ -68,11 +72,12 @@ fun StatsScreen(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
                             modifier = Modifier.size(64.dp))
                         Spacer(Modifier.height(16.dp))
-                        Text("No stats yet",
+                        Text(
+                            stringResource(R.string.stats_no_stats_title),
                             color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.titleMedium)
                         Spacer(Modifier.height(8.dp))
-                        Text("Play your first match and your stats will appear here.",
+                        Text(stringResource(R.string.stats_no_stats_desc),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center)
@@ -103,7 +108,7 @@ private fun StatsContent(stats: GameStats) {
             .padding(24.dp)
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-            Text("PERFORMANCE CORE", color = colors.neonGreen, style = MaterialTheme.typography.labelMedium)
+            Text(stringResource(R.string.stats_performance_core), color = colors.neonGreen, style = MaterialTheme.typography.labelMedium)
             Spacer(Modifier.height(20.dp))
 
             // Circular progress con el win rate real
@@ -122,17 +127,17 @@ private fun StatsContent(stats: GameStats) {
                         fontWeight = FontWeight.ExtraBold,
                         fontFamily = MaterialTheme.typography.displayLarge.fontFamily
                     )
-                    Text("EFFICIENCY", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    Text(stringResource(R.string.stats_efficiency), color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.labelSmall)
                 }
             }
 
             Spacer(Modifier.height(20.dp))
-            Text("WIN RATE", color = MaterialTheme.colorScheme.onBackground,
+            Text(stringResource(R.string.stats_win_rate), color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(8.dp))
             Text(
-                "Dominating the table with precision kinetic movements across ${stats.totalGames} professional sessions.",
+                UiText.StringResource(R.string.stats_win_rate_desc, stats.totalGames).asString(),
                 color     = MaterialTheme.colorScheme.onSurfaceVariant,
                 style     = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center
@@ -153,12 +158,12 @@ private fun StatsContent(stats: GameStats) {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("CURRENT LEVEL", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Text(stringResource(R.string.stats_current_level), color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall)
                 Spacer(Modifier.height(4.dp))
                 // Nivel dinámico basado en partidas jugadas
                 Text(
-                    text  = getLevelTitle(stats.totalGames),
+                    text  = getLevelTitle(stats.totalGames).asString(),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -168,7 +173,7 @@ private fun StatsContent(stats: GameStats) {
                         color = colors.cyanAccent,
                         style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
                     Spacer(Modifier.width(4.dp))
-                    Text("CAPICÚAS", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    Text(stringResource(R.string.stats_capicuas), color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.labelSmall)
                 }
             }
@@ -187,14 +192,15 @@ private fun StatsContent(stats: GameStats) {
 
     // ── 2×2 Stat cards ────────────────────────────────────────────────────
     val statCards = listOf(
-        StatCardData(Icons.Default.TrendingUp, "RECORD HIGH",
-            stats.recordHighScore.toString(), "PTS", Color(0xFF7B61FF)),
-        StatCardData(Icons.Default.Casino, "TOTAL ROUNDS",
-            stats.totalRounds.toString(), "RDS", MaterialTheme.kineticColors.neonGreen),
-        StatCardData(Icons.Default.Star, "CAPICÚAS",
-            stats.capicuaCount.toString(), "WIN", MaterialTheme.kineticColors.cyanAccent),
-        StatCardData(Icons.Default.Block, "TRANQUES",
-            stats.blockedCount.toString(), "X", Color(0xFFFF5C5C)),
+        StatCardData(
+            Icons.AutoMirrored.Filled.TrendingUp, stringResource(R.string.stats_record_high),
+            stats.recordHighScore.toString(), stringResource(R.string.stats_unit_pts), Color(0xFF7B61FF)),
+        StatCardData(Icons.Default.Casino, stringResource(R.string.stats_total_rounds),
+            stats.totalRounds.toString(), stringResource(R.string.stats_unit_rds), MaterialTheme.kineticColors.neonGreen),
+        StatCardData(Icons.Default.Star, stringResource(R.string.stats_capicuas),
+            stats.capicuaCount.toString(), stringResource(R.string.stats_unit_win), MaterialTheme.kineticColors.cyanAccent),
+        StatCardData(Icons.Default.Block, stringResource(R.string.stats_tranques),
+            stats.blockedCount.toString(), stringResource(R.string.stats_unit_x), Color(0xFFFF5C5C)),
     )
 
     Column(
@@ -222,7 +228,7 @@ private fun StatsContent(stats: GameStats) {
             .padding(16.dp)
     ) {
         Column {
-            Text("7-DAY MOMENTUM", color = MaterialTheme.colorScheme.onBackground,
+            Text(stringResource(R.string.stats_momentum), color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleSmall)
             Spacer(Modifier.height(16.dp))
             MomentumBar(activity = stats.last7DaysActivity)
@@ -252,11 +258,11 @@ private fun StatsContent(stats: GameStats) {
             }
             Spacer(Modifier.width(12.dp))
             Column {
-                Text("NEXT MILESTONE", color = MaterialTheme.kineticColors.neonGreen,
+                Text(stringResource(R.string.stats_next_milestone), color = MaterialTheme.kineticColors.neonGreen,
                     style = MaterialTheme.typography.labelSmall)
-                Text(milestoneTitle, color = MaterialTheme.colorScheme.onBackground,
+                Text(milestoneTitle.asString(), color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleSmall)
-                Text(milestoneDesc, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Text(milestoneDesc.asString(), color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall)
             }
         }
@@ -265,21 +271,21 @@ private fun StatsContent(stats: GameStats) {
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-private fun getLevelTitle(games: Int): String = when {
-    games == 0  -> "Novice Challenger"
-    games < 5   -> "Apprentice Kinetic"
-    games < 15  -> "Domino Warrior"
-    games < 30  -> "The King of Capicúa"
-    games < 50  -> "Kinetic Master"
-    else        -> "Grandmaster Kinetic"
+private fun getLevelTitle(games: Int): UiText = when {
+    games == 0  -> UiText.StringResource(R.string.stats_level_novice)
+    games < 5   -> UiText.StringResource(R.string.stats_level_apprentice)
+    games < 15  -> UiText.StringResource(R.string.stats_level_warrior)
+    games < 30  -> UiText.StringResource(R.string.stats_level_king)
+    games < 50  -> UiText.StringResource(R.string.stats_level_master)
+    else        -> UiText.StringResource(R.string.stats_level_grandmaster)
 }
 
-private fun getNextMilestone(games: Int): Pair<String, String> = when {
-    games < 5  -> "Apprentice Kinetic"  to "Play 5 matches to unlock this rank."
-    games < 15 -> "Domino Warrior"      to "Play ${15 - games} more matches to rank up."
-    games < 30 -> "King of Capicúa"     to "Play ${30 - games} more matches to rank up."
-    games < 50 -> "Kinetic Master"      to "Play ${50 - games} more matches to rank up."
-    else       -> "Grandmaster ✓"       to "You have reached the highest rank!"
+private fun getNextMilestone(games: Int): Pair<UiText, UiText> = when {
+    games < 5  -> UiText.StringResource(R.string.stats_level_apprentice)  to UiText.StringResource(R.string.stats_milestone_play_5)
+    games < 15 -> UiText.StringResource(R.string.stats_level_warrior)      to UiText.StringResource(R.string.stats_milestone_play_more, 15 - games)
+    games < 30 -> UiText.StringResource(R.string.stats_level_king)     to UiText.StringResource(R.string.stats_milestone_play_more, 30 - games)
+    games < 50 -> UiText.StringResource(R.string.stats_level_master)      to UiText.StringResource(R.string.stats_milestone_play_more, 50 - games)
+    else       -> UiText.StringResource(R.string.stats_level_grandmaster_done) to UiText.StringResource(R.string.stats_milestone_max)
 }
 
 // ── Stat card data ─────────────────────────────────────────────────────────────
@@ -366,7 +372,7 @@ private fun MomentumBar(activity: List<Int>) {
                 }
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text  = if (isTodayIdx) "TODAY" else days[i],
+                    text  = if (isTodayIdx) stringResource(R.string.stats_momentum_today) else days[i],
                     color = if (isTodayIdx) colors.neonGreen
                     else MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall.copy(

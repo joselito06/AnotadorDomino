@@ -70,4 +70,82 @@
     <string name="settings_dialog_reset_body">Esto eliminará permanentemente TODO el historial de partidas, puntuaciones y rondas. Esta acción no se puede deshacer.</string>
     <string name="settings_dialog_reset_confirm">BORRAR</string>
     <string name="settings_dialog_reset_cancel">CANCELAR</string>
+
+    <string name="history_title">Historial de Partidas</string>
+    <string name="history_sessions">%1$d SESIONES</string>
+    <string name="history_no_matches_title">No hay partidas aún</string>
+    <string name="history_no_matches_desc">Inicia un nuevo juego y tu historial aparecerá aquí.</string>
+    <string name="history_game_number">Partida #%1$d</string>
+    <string name="history_resume_session">REANUDAR SESIÓN</string>
+    <string name="history_status_active">ACTIVA</string>
+    <string name="history_status_finished">FINALIZADA</string>
+    <string name="history_status_paused">PAUSADA</string>
+    <string name="history_winner">GANADOR</string>
+    <string name="history_leading">LÍDER</string>
+    <string name="history_runner_up">SEGUNDO LUGAR</string>
+
+    <string name="stats_no_stats_title">No hay estadísticas aún</string>
+    <string name="stats_no_stats_desc">Juega tu primera partida y tus estadísticas aparecerán aquí.</string>
+    <string name="stats_performance_core">NÚCLEO DE RENDIMIENTO</string>
+    <string name="stats_efficiency">EFICIENCIA</string>
+    <string name="stats_win_rate">TASA DE VICTORIAS</string>
+    <string name="stats_win_rate_desc">Dominando la mesa con movimientos cinéticos de precisión a lo largo de %1$d sesiones profesionales.</string>
+    <string name="stats_current_level">NIVEL ACTUAL</string>
+    <string name="stats_capicuas">CAPICÚAS</string>
+    <string name="stats_record_high">RÉCORD ALTO</string>
+    <string name="stats_total_rounds">RONDAS TOTALES</string>
+    <string name="stats_tranques">TRANQUES</string>
+    <string name="stats_unit_pts">PTS</string>
+    <string name="stats_unit_rds">RDS</string>
+    <string name="stats_unit_win">VIC</string>
+    <string name="stats_unit_x">X</string>
+    <string name="stats_momentum">IMPULSO DE 7 DÍAS</string>
+    <string name="stats_next_milestone">PRÓXIMO LOGRO</string>
+    <string name="stats_momentum_today">HOY</string>
+
+    <string name="stats_level_novice">Retador Novato</string>
+    <string name="stats_level_apprentice">Aprendiz Cinético</string>
+    <string name="stats_level_warrior">Guerrero del Dominó</string>
+    <string name="stats_level_king">Rey de la Capicúa</string>
+    <string name="stats_level_master">Maestro Cinético</string>
+    <string name="stats_level_grandmaster">Gran Maestro Cinético</string>
+    <string name="stats_level_grandmaster_done">Gran Maestro ✓</string>
+    <string name="stats_milestone_play_5">Juega 5 partidas para desbloquear este rango.</string>
+    <string name="stats_milestone_play_more">Juega %1$d partidas más para subir de rango.</string>
+    <string name="stats_milestone_max">¡Has alcanzado el rango más alto!</string>
+
+    <string name="scoreboard_log_hands">REGISTRO DE MANOS</string>
+    <string name="scoreboard_rounds_count">%1$d RONDAS</string>
+    <string name="scoreboard_no_hands">Aún no se han jugado manos.\nToca AÑADIR PUNTOS para iniciar.</string>
+    <string name="scoreboard_kinetic_masters">M A E S T R O S   C I N É T I C O S</string>
+    <string name="scoreboard_wins_match">GANA LA PARTIDA</string>
+    <string name="scoreboard_final_score">PUNTUACIÓN FINAL</string>
+    <string name="scoreboard_unit_pts_lower">pts</string>
+    <string name="scoreboard_rounds">RONDAS</string>
+    <string name="scoreboard_played">jugadas</string>
+    <string name="scoreboard_goal">META</string>
+    <string name="scoreboard_back_home">VOLVER AL INICIO</string>
+    <string name="scoreboard_return_hint">Toca para volver a la pantalla principal</string>
+    <string name="scoreboard_title">DOMINÓ CINÉTICO</string>
+
+    <string name="scoreboard_undo">DESHACER</string>
+    <string name="scoreboard_add_points">AÑADIR PUNTOS</string>
+    <string name="scoreboard_award_points">OTORGAR PUNTOS A:</string>
+    <string name="scoreboard_capicua">CAPICÚA</string>
+    <string name="scoreboard_entering_value">INGRESANDO VALOR DE MANO</string>
+    <string name="scoreboard_pts_x2">pts ×2</string>
+    <string name="scoreboard_confirm_points">CONFIRMAR PUNTOS</string>
+
+    <string name="dialog_leave_title">¿Abandonar la partida?</string>
+    <string name="dialog_leave_paused">LA PARTIDA SE PAUSARÁ</string>
+    <string name="dialog_leave_desc">Tu progreso está guardado. Puedes reanudar esta partida en cualquier momento desde la pantalla de inicio.</string>
+    <string name="dialog_leave_save">GUARDAR Y SALIR</string>
+    <string name="dialog_leave_keep_playing">SEGUIR JUGANDO</string>
+
+    <string name="dialog_undo_title">¿Deshacer la última mano?</string>
+    <string name="dialog_undo_points">(+%1$d PARA %2$s)</string>
+    <string name="dialog_undo_desc">Esta acción revertirá la puntuación al estado anterior. No se puede deshacer una vez confirmada.</string>
+    <string name="dialog_undo_confirm">CONFIRMAR DESHACER</string>
+    <string name="dialog_undo_cancel">CANCELAR</string>
+
 </resources>

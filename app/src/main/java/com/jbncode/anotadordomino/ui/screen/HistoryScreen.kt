@@ -16,17 +16,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.domain.model.GameModality
 import com.jbncode.anotadordomino.domain.model.GameStatus
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.components.AvatarDisplay
 import com.jbncode.anotadordomino.ui.theme.kineticColors
+import com.jbncode.anotadordomino.ui.util.UiText
 import com.jbncode.anotadordomino.ui.viewmodel.HistoryUiState
 import com.jbncode.anotadordomino.ui.viewmodel.HistoryViewModel
 import com.jbncode.anotadordomino.ui.viewmodel.MatchHistoryUi
@@ -60,7 +63,7 @@ fun HistoryScreen(
         ) {
             Column {
                 Text(
-                    text  = "Match History",
+                    text  = stringResource(R.string.history_title),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.headlineLarge
                 )
@@ -75,7 +78,7 @@ fun HistoryScreen(
             if (uiState is HistoryUiState.Success) {
                 val count = (uiState as HistoryUiState.Success).matches.size
                 Text(
-                    text  = "$count SESSIONS",
+                    text  = UiText.StringResource(R.string.history_sessions,count).asString(),
                     color = colors.neonGreen,
                     style = MaterialTheme.typography.labelMedium
                 )
@@ -109,13 +112,13 @@ fun HistoryScreen(
                         )
                         Spacer(Modifier.height(16.dp))
                         Text(
-                            text      = "No matches yet",
+                            text      = stringResource(R.string.history_no_matches_title),
                             color     = MaterialTheme.colorScheme.onSurface,
                             style     = MaterialTheme.typography.titleMedium
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            text      = "Start a new game and your match history will appear here.",
+                            text      = stringResource(R.string.history_no_matches_desc),
                             color     = MaterialTheme.colorScheme.onSurfaceVariant,
                             style     = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center
@@ -186,7 +189,7 @@ private fun MatchHistoryCard(match: MatchHistoryUi, onResume: () -> Unit) {
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text  = "Game #${match.gameId}",
+                        text  = UiText.StringResource(R.string.history_game_number, match.gameId).asString(),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
@@ -218,7 +221,7 @@ private fun MatchHistoryCard(match: MatchHistoryUi, onResume: () -> Unit) {
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text  = "RESUME SESSION",
+                            text  = stringResource(R.string.history_resume_session),
                             color = MaterialTheme.colorScheme.background,
                             style = MaterialTheme.typography.labelLarge
                         )
@@ -241,9 +244,9 @@ private fun MatchHistoryCard(match: MatchHistoryUi, onResume: () -> Unit) {
 private fun StatusBadge(status: GameStatus, isActive: Boolean) {
     val colors = MaterialTheme.kineticColors
     val (label, borderColor, textColor) = when {
-        isActive                       -> Triple("ACTIVE",   colors.cyanAccent,                           colors.cyanAccent)
-        status == GameStatus.FINISHED  -> Triple("FINISHED", MaterialTheme.colorScheme.outline,           MaterialTheme.colorScheme.onSurfaceVariant)
-        else                           -> Triple("PAUSED",   colors.neonGreen.copy(alpha = 0.5f),         colors.neonGreen)
+        isActive                       -> Triple(stringResource(R.string.history_status_active),   colors.cyanAccent,                           colors.cyanAccent)
+        status == GameStatus.FINISHED  -> Triple(stringResource(R.string.history_status_finished), MaterialTheme.colorScheme.outline,           MaterialTheme.colorScheme.onSurfaceVariant)
+        else                           -> Triple(stringResource(R.string.history_status_paused),   colors.neonGreen.copy(alpha = 0.5f),         colors.neonGreen)
     }
 
     Box(
@@ -351,7 +354,7 @@ private fun IndividualScoreRow(
         if (winner != null && runnerUp != null) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 ParticipantBox(
-                    label      = if (status == GameStatus.FINISHED) "WINNER" else "LEADING",
+                    label      = if (status == GameStatus.FINISHED) stringResource(R.string.history_winner) else stringResource(R.string.history_leading),
                     name       = winner.name,
                     score      = winner.score,
                     accent     = colors.neonGreen,
@@ -360,7 +363,7 @@ private fun IndividualScoreRow(
                     modifier   = Modifier.weight(1f)
                 )
                 ParticipantBox(
-                    label      = "RUNNER UP",
+                    label      = stringResource(R.string.history_runner_up),
                     name       = runnerUp.name,
                     score      = runnerUp.score,
                     accent     = MaterialTheme.colorScheme.onSurfaceVariant,
