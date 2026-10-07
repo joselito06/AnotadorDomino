@@ -20,6 +20,7 @@ materialIcons = "1.7.5"
 datastorePreferences = "1.1.1"
 coil = "2.6.0"
 appcompat = "1.7.1"
+lifecycleProcess = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -63,6 +64,7 @@ androidx-compose-material-icons-extended = { group = "androidx.compose.material"
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 io-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycleProcess" }
 
 
 [plugins]

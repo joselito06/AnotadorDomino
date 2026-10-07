@@ -86,6 +86,7 @@ dependencies {
     implementation(libs.datastore.preferences)
 
     implementation(libs.io.coil.compose)
+    implementation(libs.androidx.lifecycle.process)
 
     // Firebase
     implementation(platform(libs.firebase.bom))

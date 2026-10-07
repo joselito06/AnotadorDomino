@@ -1,5 +1,6 @@
 package com.jbncode.anotadordomino.ui.screen
 
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
@@ -26,6 +27,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -48,6 +50,7 @@ import com.jbncode.anotadordomino.ui.components.AvatarSquare
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 import com.jbncode.anotadordomino.ui.util.UiText
+import com.jbncode.anotadordomino.util.AdMobManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,6 +59,14 @@ fun ScoreboardScreen(
     onNavigateHome: () -> Unit = {},          // único callback — para Home
     viewModel: ScoreboardViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    val activity = context as? Activity
+    val interstitialId = stringResource(id = R.string.interstitial_ad_id)
+
+    LaunchedEffect(Unit) {
+        AdMobManager.loadInterstitial(context, interstitialId)
+    }
+
     LaunchedEffect(gameId) { viewModel.init(gameId) }
 
     // FIX Bug 1: escuchar SharedFlow en lugar de callback directo
@@ -202,6 +213,13 @@ private fun WinnerScreen(
     onGoHome: () -> Unit
 ) {
     val colors = MaterialTheme.kineticColors
+    val context = LocalContext.current
+    val activity = context as? Activity
+    val interstitialId = stringResource(id = R.string.interstitial_ad_id)
+
+    LaunchedEffect(Unit) {
+        AdMobManager.loadInterstitial(context, interstitialId)
+    }
 
     // ── Entry animation ────────────────────────────────────────────────────
     var visible by remember { mutableStateOf(false) }
@@ -410,7 +428,17 @@ private fun WinnerScreen(
                             listOf(colors.neonGreen, Color(0xFF80C000))
                         )
                     )
-                    .clickable(onClick = onGoHome),
+                    .clickable(
+                        onClick = {
+                            if (activity != null) {
+                                AdMobManager.showInterstitial(activity) {
+                                    onGoHome()
+                                }
+                            } else {
+                                onGoHome()
+                            }
+                        }
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
