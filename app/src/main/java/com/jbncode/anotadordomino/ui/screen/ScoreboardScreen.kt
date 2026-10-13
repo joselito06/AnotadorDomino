@@ -48,6 +48,7 @@ import com.jbncode.anotadordomino.ui.viewmodel.ScoreboardViewModel
 import com.jbncode.anotadordomino.ui.components.AvatarDisplay
 import com.jbncode.anotadordomino.ui.components.AvatarSquare
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
+import com.jbncode.anotadordomino.ui.components.PipScanControl
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 import com.jbncode.anotadordomino.ui.util.UiText
 import com.jbncode.anotadordomino.util.AdMobManager
@@ -898,6 +899,10 @@ private fun AddPointsSheet(participants: List<ParticipantScoreUi>, isLoading: Bo
                         Text(if (isCapicua) stringResource(R.string.scoreboard_pts_x2) else "pts", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(bottom = 8.dp))
                     }
                 }
+                PipScanControl(
+                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = 12.dp),
+                    onTotal = { total -> input = total.toString() }
+                )
             }
             Spacer(Modifier.height(16.dp))
             NumPad(onDigit = { d -> if (input.length < 4) input += d }, onDelete = { if (input.isNotEmpty()) input = input.dropLast(1) })

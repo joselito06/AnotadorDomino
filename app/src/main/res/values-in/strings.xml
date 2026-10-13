@@ -163,4 +163,14 @@
     <string name="dialog_undo_desc">Tindakan ini akan mengembalikan skor ke keadaan sebelumnya. Tidak dapat dibatalkan setelah dikonfirmasi.</string>
     <string name="dialog_undo_confirm">KONFIRMASI BATAL</string>
     <string name="dialog_undo_cancel">BATAL</string>
+
+    <string name="scan_take_photo">AMBIL FOTO</string>
+    <string name="scan_from_gallery">DARI GALERI</string>
+    <string name="scan_processing">Menghitung titik…</string>
+    <string name="scan_review_hint">Ketuk kotak untuk menghapusnya. Ketuk area kosong untuk menambah titik.</string>
+    <string name="scan_use_total">GUNAKAN %1$d POIN</string>
+    <string name="scan_cancel">BATAL</string>
+    <string name="scan_error">Tidak dapat membaca foto. Coba lagi.</string>
+    <string name="scan_error_too_many">Terlalu banyak titik terdeteksi (%1$d). Ambil foto lebih dekat ke kartu.</string>
+
 </resources>

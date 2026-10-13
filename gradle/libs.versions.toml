@@ -21,6 +21,7 @@ datastorePreferences = "1.1.1"
 coil = "2.6.0"
 appcompat = "1.7.1"
 lifecycleProcess = "2.7.0"
+onnxruntime = "1.20.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -66,6 +67,7 @@ io-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycleProcess" }
 
+onnxruntime-android = { group = "com.microsoft.onnxruntime", name = "onnxruntime-android", version.ref = "onnxruntime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

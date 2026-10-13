@@ -163,4 +163,14 @@
     <string name="dialog_undo_desc">Esta ação reverterá a pontuação para o estado anterior. Não pode ser desfeita após a confirmação.</string>
     <string name="dialog_undo_confirm">CONFIRMAR DESFAZER</string>
     <string name="dialog_undo_cancel">CANCELAR</string>
+
+    <string name="scan_take_photo">TIRAR FOTO</string>
+    <string name="scan_from_gallery">DA GALERIA</string>
+    <string name="scan_processing">Contando pontos…</string>
+    <string name="scan_review_hint">Toque em uma caixa para removê-la. Toque em um espaço vazio para adicionar um ponto.</string>
+    <string name="scan_use_total">USAR %1$d PONTOS</string>
+    <string name="scan_cancel">CANCELAR</string>
+    <string name="scan_error">Não foi possível ler a foto. Tente novamente.</string>
+    <string name="scan_error_too_many">Pontos demais detectados (%1$d). Tire a foto mais perto das peças.</string>
+
 </resources>

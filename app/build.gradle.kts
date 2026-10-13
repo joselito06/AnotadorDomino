@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,6 +11,9 @@ plugins {
 }
 
 android {
+
+    androidResources { noCompress += "onnx" }   // evita comprimir el modelo
+
     namespace = "com.jbncode.anotadordomino"
     compileSdk {
         version = release(36)
@@ -25,6 +30,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val localProps = Properties().apply {
+        val f = rootProject.file("local.properties")
+        if (f.exists()) f.inputStream().use { load(it) }
+    }
+    fun secret(key: String, fallback: String) =
+        localProps.getProperty(key) ?: System.getenv(key) ?: fallback
+
     buildTypes {
         debug {
             isMinifyEnabled = false
@@ -32,7 +44,7 @@ android {
             isDebuggable = true
 
             manifestPlaceholders["admob_app_id"] = "ca-app-pub-3940256099942544~3347511713"
-            resValue("string", "banner_ad_id", "ca-app-pub-3940256099942544/6300978111")
+            resValue("string", "banner_ad_id", "ca-app-pub-3940256099942544/1033173712")
             resValue("string", "interstitial_ad_id", "ca-app-pub-3940256099942544/1033173712")
             resValue("string", "app_loaded_ad_id", "ca-app-pub-3940256099942544/9257395921")
             resValue("string", "native_ad_id", "ca-app-pub-3940256099942544/9257395921")
@@ -47,11 +59,11 @@ android {
                 "proguard-rules.pro"
             )
 
-            manifestPlaceholders["admob_app_id"] = "ca-app-pub-7091067576578095~2682004896"
-            resValue("string", "banner_ad_id", "ca-app-pub-7091067576578095/7742759889")
-            resValue("string", "interstitial_ad_id", "ca-app-pub-7091067576578095/9497593639")
-            resValue("string", "app_loaded_ad_id", "ca-app-pub-7091067576578095/6871430292")
-            resValue("string", "native_ad_id", "ca-app-pub-7091067576578095/7607028518")
+            manifestPlaceholders["admob_app_id"] = secret("ADMOB_APP_ID","ca-app-pub-3940256099942544~3347511713")
+            resValue("string", "banner_ad_id", secret("ADMOB_BANNER", "ca-app-pub-3940256099942544/1033173712"))
+            resValue("string", "interstitial_ad_id", secret("ADMOB_INTERSTITIAL","ca-app-pub-3940256099942544/1033173712"))
+            resValue("string", "app_loaded_ad_id", secret("ADMOB_APP_OPEN","ca-app-pub-3940256099942544/9257395921"))
+            resValue("string", "native_ad_id", secret("ADMOB_NATIVE","ca-app-pub-3940256099942544/9257395921"))
         }
     }
     compileOptions {
@@ -94,6 +106,8 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.config)
+
+    implementation(libs.onnxruntime.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

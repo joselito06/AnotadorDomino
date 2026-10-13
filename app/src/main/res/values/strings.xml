@@ -165,4 +165,13 @@
     <string name="dialog_undo_confirm">CONFIRM UNDO</string>
     <string name="dialog_undo_cancel">CANCEL</string>
 
+    <string name="scan_take_photo">TAKE PHOTO</string>
+    <string name="scan_from_gallery">FROM GALLERY</string>
+    <string name="scan_processing">Counting dots…</string>
+    <string name="scan_review_hint">Tap a box to remove it. Tap an empty spot to add a dot.</string>
+    <string name="scan_use_total">USE %1$d POINTS</string>
+    <string name="scan_cancel">CANCEL</string>
+    <string name="scan_error">Could not read the photo. Try again.</string>
+    <string name="scan_error_too_many">Too many dots detected (%1$d). Retake the photo closer to the tiles.</string>
+
 </resources>

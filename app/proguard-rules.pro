@@ -13,6 +13,8 @@
 -keep @androidx.room.Entity class * { *; }
 -keep @androidx.room.Dao interface * { *; }
 
+-keep class ai.onnxruntime.** { *; }
+
 # 3. REGLAS PARA ADMOB (GOOGLE MOBILE ADS)
 # Necesario para que los anuncios Banner, Intersticiales y Nativos carguen correctamente.
 -keep public class com.google.android.gms.ads.** {

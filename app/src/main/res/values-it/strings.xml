@@ -163,4 +163,14 @@
     <string name="dialog_undo_desc">Questa azione riporterà il punteggio allo stato precedente. Non può essere annullata una volta confermata.</string>
     <string name="dialog_undo_confirm">CONFERMA ANNULLAMENTO</string>
     <string name="dialog_undo_cancel">ANNULLA</string>
+
+    <string name="scan_take_photo">SCATTA FOTO</string>
+    <string name="scan_from_gallery">DALLA GALLERIA</string>
+    <string name="scan_processing">Conteggio dei punti…</string>
+    <string name="scan_review_hint">Tocca un riquadro per rimuoverlo. Tocca uno spazio vuoto per aggiungere un punto.</string>
+    <string name="scan_use_total">USA %1$d PUNTI</string>
+    <string name="scan_cancel">ANNULLA</string>
+    <string name="scan_error">Impossibile leggere la foto. Riprova.</string>
+    <string name="scan_error_too_many">Troppi punti rilevati (%1$d). Scatta la foto più vicino alle tessere.</string>
+
 </resources>

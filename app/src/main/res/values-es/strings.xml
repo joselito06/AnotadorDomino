@@ -167,4 +167,13 @@
     <string name="dialog_undo_confirm">CONFIRMAR DESHACER</string>
     <string name="dialog_undo_cancel">CANCELAR</string>
 
+    <string name="scan_take_photo">TOMAR FOTO</string>
+    <string name="scan_from_gallery">DESDE GALERÍA</string>
+    <string name="scan_processing">Contando puntos…</string>
+    <string name="scan_review_hint">Toca un recuadro para quitarlo. Toca un espacio vacío para añadir un punto.</string>
+    <string name="scan_use_total">USAR %1$d PUNTOS</string>
+    <string name="scan_cancel">CANCELAR</string>
+    <string name="scan_error">No se pudo leer la foto. Inténtalo de nuevo.</string>
+    <string name="scan_error_too_many">Demasiados puntos detectados (%1$d). Toma la foto más cerca de las fichas.</string>
+
 </resources>

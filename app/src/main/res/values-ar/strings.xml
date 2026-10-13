@@ -163,4 +163,14 @@
     <string name="dialog_undo_desc">سيؤدي هذا الإجراء إلى إعادة النتيجة للحالة السابقة. لا يمكن التراجع بمجرد التأكيد.</string>
     <string name="dialog_undo_confirm">تأكيد التراجع</string>
     <string name="dialog_undo_cancel">إلغاء</string>
+
+    <string name="scan_take_photo">التقاط صورة</string>
+    <string name="scan_from_gallery">من المعرض</string>
+    <string name="scan_processing">جاري عدّ النقاط…</string>
+    <string name="scan_review_hint">اضغط على مربع لإزالته. اضغط على مكان فارغ لإضافة نقطة.</string>
+    <string name="scan_use_total">استخدام %1$d نقطة</string>
+    <string name="scan_cancel">إلغاء</string>
+    <string name="scan_error">تعذّرت قراءة الصورة. حاول مرة أخرى.</string>
+    <string name="scan_error_too_many">تم اكتشاف نقاط كثيرة جدًا (%1$d). التقط الصورة أقرب إلى القطع.</string>
+
 </resources>

@@ -163,4 +163,14 @@
     <string name="dialog_undo_desc">Cette action rétablira le score à l\'état précédent. Elle ne peut pas être annulée une fois confirmée.</string>
     <string name="dialog_undo_confirm">CONFIRMER L\'ANNULATION</string>
     <string name="dialog_undo_cancel">ANNULER</string>
+
+    <string name="scan_take_photo">PRENDRE UNE PHOTO</string>
+    <string name="scan_from_gallery">DEPUIS LA GALERIE</string>
+    <string name="scan_processing">Comptage des points…</string>
+    <string name="scan_review_hint">Touchez un cadre pour le retirer. Touchez un espace vide pour ajouter un point.</string>
+    <string name="scan_use_total">UTILISER %1$d POINTS</string>
+    <string name="scan_cancel">ANNULER</string>
+    <string name="scan_error">Impossible de lire la photo. Réessayez.</string>
+    <string name="scan_error_too_many">Trop de points détectés (%1$d). Reprenez la photo plus près des tuiles.</string>
+
 </resources>
