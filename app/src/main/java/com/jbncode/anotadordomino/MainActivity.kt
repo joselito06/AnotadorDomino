@@ -13,8 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.ads.MobileAds
 import com.jbncode.anotadordomino.ui.DominoComposeApp
 import com.jbncode.anotadordomino.ui.theme.AnotadorDominoTheme
+import com.jbncode.anotadordomino.ui.util.AdsBootstrap
 import com.jbncode.anotadordomino.ui.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -26,6 +28,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        AdsBootstrap.start(this)
+        //MobileAds.initialize(this)
         setContent {
             // Observar isDarkMode desde SettingsViewModel
             val isDarkMode by settingsViewModel.isDarkMode.collectAsStateWithLifecycle()

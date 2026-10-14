@@ -173,5 +173,15 @@
     <string name="scan_cancel">CANCEL</string>
     <string name="scan_error">Could not read the photo. Try again.</string>
     <string name="scan_error_too_many">Too many dots detected (%1$d). Retake the photo closer to the tiles.</string>
+    <string name="scan_mode_move">MOVE</string>
+    <string name="scan_mode_add">ADD</string>
+    <string name="scan_mode_erase">ERASE</string>
+    <string name="scan_mode_crop">CROP</string>
+    <string name="scan_hint_move">Pinch to zoom, drag to move.</string>
+    <string name="scan_hint_add">Tap an empty spot to add a dot.</string>
+    <string name="scan_hint_erase">Tap a box to remove it, or drag a rectangle to remove every box inside.</string>
+    <string name="scan_hint_crop">Drag to select the area to keep, then tap the button.</string>
+    <string name="scan_crop_apply">CROP &amp; RECOUNT</string>
+    <string name="scan_restore_original">RESTORE ORIGINAL PHOTO</string>
 
 </resources>

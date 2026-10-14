@@ -8,15 +8,15 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class DominoApp : Application() {
-    private lateinit var appOpenAdManager: AppOpenAdManager
+    //private lateinit var appOpenAdManager: AppOpenAdManager
 
     override fun onCreate() {
         super.onCreate()
 
-        MobileAds.initialize(this)
+        //MobileAds.initialize(this)
 
-        appOpenAdManager = AppOpenAdManager(this)
+        //appOpenAdManager = AppOpenAdManager(this)
 
-        appOpenAdManager.loadAd(this)
+        //appOpenAdManager.loadAd(this)
     }
 }

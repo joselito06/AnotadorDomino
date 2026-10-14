@@ -172,5 +172,15 @@
     <string name="scan_cancel">BATAL</string>
     <string name="scan_error">Tidak dapat membaca foto. Coba lagi.</string>
     <string name="scan_error_too_many">Terlalu banyak titik terdeteksi (%1$d). Ambil foto lebih dekat ke kartu.</string>
+    <string name="scan_mode_move">GESER</string>
+    <string name="scan_mode_add">TAMBAH</string>
+    <string name="scan_mode_erase">HAPUS</string>
+    <string name="scan_mode_crop">POTONG</string>
+    <string name="scan_hint_move">Cubit untuk memperbesar, seret untuk menggeser.</string>
+    <string name="scan_hint_add">Ketuk area kosong untuk menambah titik.</string>
+    <string name="scan_hint_erase">Ketuk kotak untuk menghapusnya, atau seret persegi panjang untuk menghapus semua kotak di dalamnya.</string>
+    <string name="scan_hint_crop">Seret untuk memilih area yang dipertahankan, lalu ketuk tombol.</string>
+    <string name="scan_crop_apply">POTONG &amp; HITUNG ULANG</string>
+    <string name="scan_restore_original">PULIHKAN FOTO ASLI</string>
 
 </resources>

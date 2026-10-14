@@ -14,6 +14,8 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.jbncode.anotadordomino.R
+import com.jbncode.anotadordomino.ui.util.AdGate
+import com.jbncode.anotadordomino.ui.util.AdLog
 import java.util.Date
 
 class AppOpenAdManager(private val myApplication: Application) : Application.ActivityLifecycleCallbacks, DefaultLifecycleObserver {
@@ -22,16 +24,29 @@ class AppOpenAdManager(private val myApplication: Application) : Application.Act
     private var isShowingAd = false
     private var loadTime: Long = 0
     private var currentActivity: Activity? = null
+    private var lastStopTime = 0L
+    private val minAwayMs = 10 * 60 * 1000L   // 10 minutos fuera
+
 
     init {
         myApplication.registerActivityLifecycleCallbacks(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
+    override fun onStop(owner: LifecycleOwner) {
+        lastStopTime = android.os.SystemClock.elapsedRealtime()
+    }
+
     // Se dispara cuando la app vuelve al primer plano
     override fun onStart(owner: LifecycleOwner) {
-        super.onStart(owner)
-        showAdIfAvailable()
+        if (AdGate.suppressNextAppOpen) {
+            AdGate.suppressNextAppOpen = false
+            AdLog.skipped("AppOpen", "vuelta de cámara/galería")
+            return
+        }
+        val away = android.os.SystemClock.elapsedRealtime() - lastStopTime
+        if (lastStopTime == 0L || away >= minAwayMs) showAdIfAvailable()
+        else { AdLog.skipped("AppOpen", "solo ${away / 1000}s fuera (mín ${minAwayMs / 1000}s)"); loadAd(myApplication) }
     }
 
     fun loadAd(context: Context) {
@@ -39,15 +54,17 @@ class AppOpenAdManager(private val myApplication: Application) : Application.Act
 
         val request = AdRequest.Builder().build()
         val adUnitId = context.getString(R.string.app_loaded_ad_id)
+        AdLog.d("[AppOpen] solicitando... id=...${adUnitId.takeLast(10)}")
 
         AppOpenAd.load(context, adUnitId, request, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
             object : AppOpenAd.AppOpenAdLoadCallback() {
                 override fun onAdLoaded(ad: AppOpenAd) {
+                    AdLog.loaded("AppOpen", adUnitId)
                     appOpenAd = ad
                     loadTime = Date().time
                 }
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    Log.d("AppOpenAd", "Fallo al cargar: ${loadAdError.message}")
+                    AdLog.failedLoad("AppOpen", adUnitId, loadAdError)
                 }
             })
     }
@@ -58,16 +75,19 @@ class AppOpenAdManager(private val myApplication: Application) : Application.Act
                 override fun onAdDismissedFullScreenContent() {
                     appOpenAd = null
                     isShowingAd = false
+                    AdLog.dismissed("AppOpen")
                     loadAd(myApplication) // Cargamos el siguiente para la próxima vez
                 }
-                override fun onAdFailedToShowFullScreenContent(adError: AdError) {}
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) { AdLog.failedShow("AppOpen", adError.message) }
                 override fun onAdShowedFullScreenContent() {
                     isShowingAd = true
+                    AdLog.shown("AppOpen")
                 }
             }
             appOpenAd?.fullScreenContentCallback = fullScreenContentCallback
             currentActivity?.let { appOpenAd?.show(it) }
         } else {
+            AdLog.skipped("AppOpen", "aún no cargado")
             loadAd(myApplication)
         }
     }

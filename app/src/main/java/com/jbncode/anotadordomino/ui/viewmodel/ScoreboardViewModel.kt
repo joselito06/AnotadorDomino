@@ -245,10 +245,10 @@ class ScoreboardViewModel @Inject constructor(
     fun onBackPressed() {
         val state = _uiState.value
         if (state is ScoreboardUiState.Active && !state.isFinished) {
-            viewModelScope.launch { _navEvent.emit(ScoreboardNavEvent.NavigateHome) }
+            _showLeaveDialog.value = true
             return
         }
-        _showLeaveDialog.value = true
+        viewModelScope.launch { _navEvent.emit(ScoreboardNavEvent.NavigateHome) }
     }
 
     fun dismissLeaveDialog() {

@@ -172,5 +172,15 @@
     <string name="scan_cancel">ANNULLA</string>
     <string name="scan_error">Impossibile leggere la foto. Riprova.</string>
     <string name="scan_error_too_many">Troppi punti rilevati (%1$d). Scatta la foto più vicino alle tessere.</string>
+    <string name="scan_mode_move">SPOSTA</string>
+    <string name="scan_mode_add">AGGIUNGI</string>
+    <string name="scan_mode_erase">CANCELLA</string>
+    <string name="scan_mode_crop">RITAGLIA</string>
+    <string name="scan_hint_move">Pizzica per ingrandire, trascina per spostare.</string>
+    <string name="scan_hint_add">Tocca uno spazio vuoto per aggiungere un punto.</string>
+    <string name="scan_hint_erase">Tocca un riquadro per rimuoverlo, oppure trascina un rettangolo per rimuovere tutti quelli al suo interno.</string>
+    <string name="scan_hint_crop">Trascina per scegliere l\'area da mantenere, poi tocca il pulsante.</string>
+    <string name="scan_crop_apply">RITAGLIA E RICONTA</string>
+    <string name="scan_restore_original">RIPRISTINA FOTO ORIGINALE</string>
 
 </resources>

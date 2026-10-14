@@ -1,6 +1,8 @@
 package com.jbncode.anotadordomino.ui.screen
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
@@ -47,6 +49,7 @@ import com.jbncode.anotadordomino.ui.viewmodel.ScoreboardNavEvent
 import com.jbncode.anotadordomino.ui.viewmodel.ScoreboardViewModel
 import com.jbncode.anotadordomino.ui.components.AvatarDisplay
 import com.jbncode.anotadordomino.ui.components.AvatarSquare
+import com.jbncode.anotadordomino.ui.components.BannerAd
 import com.jbncode.anotadordomino.ui.components.KineticTopBar
 import com.jbncode.anotadordomino.ui.components.PipScanControl
 import com.jbncode.anotadordomino.ui.theme.kineticColors
@@ -125,7 +128,7 @@ fun ScoreboardScreen(
                         showBack = true,
                         onBackClick = { viewModel.onBackPressed() })
                     //ScoreboardTopBar(onBackClick = { viewModel.onBackPressed() })
-
+                    BannerAd(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
                     ParticipantsScoreRow(
                         participants = state.participants,
                         modifier     = Modifier
@@ -170,7 +173,9 @@ fun ScoreboardScreen(
                         isLoading   = actionLoading,
                         onUndo      = { showUndo = true },
                         onAddPoints = { showAdd  = true },
-                        modifier    = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 24.dp)
+                        modifier    = Modifier
+                            .navigationBarsPadding()
+                            .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp)
                     )
                 }
 
@@ -213,14 +218,25 @@ private fun WinnerScreen(
     handLog: List<HandLogUi>,
     onGoHome: () -> Unit
 ) {
+    fun Context.findActivity(): Activity? {
+        var c = this
+        while (c is ContextWrapper) {
+            if (c is Activity) return c
+            c = c.baseContext
+        }
+        return null
+    }
+
     val colors = MaterialTheme.kineticColors
     val context = LocalContext.current
-    val activity = context as? Activity
+    val activity = context.findActivity()
     val interstitialId = stringResource(id = R.string.interstitial_ad_id)
 
     LaunchedEffect(Unit) {
         AdMobManager.loadInterstitial(context, interstitialId)
     }
+
+
 
     // ── Entry animation ────────────────────────────────────────────────────
     var visible by remember { mutableStateOf(false) }
@@ -810,8 +826,13 @@ private fun HandLogRow(hand: HandLogUi) {
 // ── Scoreboard Actions ─────────────────────────────────────────────────────────
 
 @Composable
-private fun ScoreboardActions(canUndo: Boolean, isLoading: Boolean,
-                              onUndo: () -> Unit, onAddPoints: () -> Unit, modifier: Modifier = Modifier) {
+private fun ScoreboardActions(
+    canUndo: Boolean,
+    isLoading: Boolean,
+    onUndo: () -> Unit,
+    onAddPoints: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val colors = MaterialTheme.kineticColors
     val pulse  = rememberInfiniteTransition(label = "glow")
     val glow   by pulse.animateFloat(0.5f, 1f, label = "glow",

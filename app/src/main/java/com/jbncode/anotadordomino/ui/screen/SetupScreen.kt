@@ -45,6 +45,7 @@ import com.jbncode.anotadordomino.ui.viewmodel.SetupViewModel
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 import com.jbncode.anotadordomino.ui.viewmodel.SetupTutorialStep
 import androidx.core.net.toUri
+import com.jbncode.anotadordomino.ui.components.BannerAd
 import com.jbncode.anotadordomino.ui.util.UiText
 
 @Composable
@@ -82,6 +83,7 @@ fun SetupScreen(
                 .padding(bottom = 100.dp)
         ) {
             KineticTopBar(onSettingsClick = onSettingsClick)
+            BannerAd(Modifier.padding(horizontal = 16.dp))
             SetupSeasonBanner()
             Spacer(Modifier.height(24.dp))
 
@@ -294,7 +296,7 @@ private fun SetupSeasonBanner() {
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
-            .padding(horizontal = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 12.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(
                 Brush.linearGradient(

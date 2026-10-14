@@ -172,5 +172,15 @@
     <string name="scan_cancel">إلغاء</string>
     <string name="scan_error">تعذّرت قراءة الصورة. حاول مرة أخرى.</string>
     <string name="scan_error_too_many">تم اكتشاف نقاط كثيرة جدًا (%1$d). التقط الصورة أقرب إلى القطع.</string>
+    <string name="scan_mode_move">تحريك</string>
+    <string name="scan_mode_add">إضافة</string>
+    <string name="scan_mode_erase">مسح</string>
+    <string name="scan_mode_crop">قص</string>
+    <string name="scan_hint_move">اضغط بإصبعين للتكبير واسحب للتحريك.</string>
+    <string name="scan_hint_add">اضغط على مكان فارغ لإضافة نقطة.</string>
+    <string name="scan_hint_erase">اضغط على مربع لإزالته، أو اسحب مستطيلاً لإزالة كل المربعات بداخله.</string>
+    <string name="scan_hint_crop">اسحب لتحديد المنطقة المراد الاحتفاظ بها ثم اضغط على الزر.</string>
+    <string name="scan_crop_apply">قص وإعادة العد</string>
+    <string name="scan_restore_original">استعادة الصورة الأصلية</string>
 
 </resources>

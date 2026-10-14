@@ -24,7 +24,7 @@ import javax.inject.Inject
 sealed interface PipScanState {
     data object Idle : PipScanState
     data object Processing : PipScanState
-    data class Review(val bitmap: Bitmap, val detections: List<PipDetection>) : PipScanState
+    data class Review(val bitmap: Bitmap, val detections: List<PipDetection>, val isCropped: Boolean = false) : PipScanState
     data class Error(val message: UiText) : PipScanState
 }
 
@@ -41,7 +41,9 @@ class PipScanViewModel @Inject constructor(
     private val _state = MutableStateFlow<PipScanState>(PipScanState.Idle)
     val state: StateFlow<PipScanState> = _state.asStateFlow()
 
-    fun onImageReady(uri: Uri) {
+    private var original: Bitmap? = null
+
+    /*fun onImageReady(uri: Uri) {
         _state.value = PipScanState.Processing
         viewModelScope.launch {
             try {
@@ -58,7 +60,63 @@ class PipScanViewModel @Inject constructor(
                 _state.value = PipScanState.Error(UiText.StringResource(R.string.scan_error))
             }
         }
+    }*/
+
+    fun onImageReady(uri: Uri) {
+        _state.value = PipScanState.Processing
+        viewModelScope.launch {
+            try {
+                val bitmap = withContext(Dispatchers.IO) { BitmapLoader.load(context, uri) }
+                original = bitmap
+                runCount(bitmap, cropped = false)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _state.value = PipScanState.Error(UiText.StringResource(R.string.scan_error))
+            }
+        }
     }
 
-    fun reset() { _state.value = PipScanState.Idle }
+    fun onCropped(cropped: Bitmap) {
+        _state.value = PipScanState.Processing
+        viewModelScope.launch {
+            try {
+                runCount(cropped, cropped = true)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _state.value = PipScanState.Error(UiText.StringResource(R.string.scan_error))
+            }
+        }
+    }
+
+    fun restoreOriginal() {
+        val bmp = original ?: return
+        _state.value = PipScanState.Processing
+        viewModelScope.launch {
+            try {
+                runCount(bmp, cropped = false)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _state.value = PipScanState.Error(UiText.StringResource(R.string.scan_error))
+            }
+        }
+    }
+
+    private suspend fun runCount(bitmap: Bitmap, cropped: Boolean) {
+        val result = countPips(bitmap)
+        _state.value =
+            if (result.total > MAX_PIPS)
+                PipScanState.Error(UiText.StringResource(R.string.scan_error_too_many, result.total))
+            else
+                PipScanState.Review(bitmap, result.pips, isCropped = cropped)
+    }
+
+    fun reset() {
+        original = null
+        _state.value = PipScanState.Idle
+    }
+
+
 }

@@ -44,7 +44,7 @@ android {
             isDebuggable = true
 
             manifestPlaceholders["admob_app_id"] = "ca-app-pub-3940256099942544~3347511713"
-            resValue("string", "banner_ad_id", "ca-app-pub-3940256099942544/1033173712")
+            resValue("string", "banner_ad_id", "ca-app-pub-3940256099942544/6300978111")
             resValue("string", "interstitial_ad_id", "ca-app-pub-3940256099942544/1033173712")
             resValue("string", "app_loaded_ad_id", "ca-app-pub-3940256099942544/9257395921")
             resValue("string", "native_ad_id", "ca-app-pub-3940256099942544/9257395921")
@@ -60,7 +60,7 @@ android {
             )
 
             manifestPlaceholders["admob_app_id"] = secret("ADMOB_APP_ID","ca-app-pub-3940256099942544~3347511713")
-            resValue("string", "banner_ad_id", secret("ADMOB_BANNER", "ca-app-pub-3940256099942544/1033173712"))
+            resValue("string", "banner_ad_id", secret("ADMOB_BANNER", "ca-app-pub-3940256099942544/6300978111"))
             resValue("string", "interstitial_ad_id", secret("ADMOB_INTERSTITIAL","ca-app-pub-3940256099942544/1033173712"))
             resValue("string", "app_loaded_ad_id", secret("ADMOB_APP_OPEN","ca-app-pub-3940256099942544/9257395921"))
             resValue("string", "native_ad_id", secret("ADMOB_NATIVE","ca-app-pub-3940256099942544/9257395921"))

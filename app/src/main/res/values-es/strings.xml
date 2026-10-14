@@ -175,5 +175,15 @@
     <string name="scan_cancel">CANCELAR</string>
     <string name="scan_error">No se pudo leer la foto. Inténtalo de nuevo.</string>
     <string name="scan_error_too_many">Demasiados puntos detectados (%1$d). Toma la foto más cerca de las fichas.</string>
+    <string name="scan_mode_move">MOVER</string>
+    <string name="scan_mode_add">AÑADIR</string>
+    <string name="scan_mode_erase">BORRAR</string>
+    <string name="scan_mode_crop">RECORTAR</string>
+    <string name="scan_hint_move">Pellizca para hacer zoom y arrastra para mover.</string>
+    <string name="scan_hint_add">Toca un espacio vacío para añadir un punto.</string>
+    <string name="scan_hint_erase">Toca un recuadro para quitarlo, o arrastra un rectángulo para quitar todos los de dentro.</string>
+    <string name="scan_hint_crop">Arrastra para elegir la zona a conservar y toca el botón.</string>
+    <string name="scan_crop_apply">RECORTAR Y RECONTAR</string>
+    <string name="scan_restore_original">RESTAURAR FOTO ORIGINAL</string>
 
 </resources>

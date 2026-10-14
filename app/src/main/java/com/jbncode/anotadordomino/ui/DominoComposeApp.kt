@@ -5,6 +5,8 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
@@ -24,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jbncode.anotadordomino.ui.components.AnotadorDomBottomBar
+import com.jbncode.anotadordomino.ui.components.BannerAd
 import com.jbncode.anotadordomino.ui.screen.HistoryScreen
 import com.jbncode.anotadordomino.ui.screen.ScoreboardScreen
 import com.jbncode.anotadordomino.ui.screen.SettingsScreen
@@ -71,36 +74,42 @@ fun DominoComposeApp(
     val navigateToSettings = { navController.navigate(Screen.Settings.route) }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0,0,0,0),
         bottomBar = {
             AnimatedVisibility(
                 visible = showBottomBar,
                 enter   = slideInVertically(initialOffsetY = { it }),
                 exit    = slideOutVertically(targetOffsetY = { it })
             ) {
-                AnotadorDomBottomBar(
-                    currentRoute = currentRoute,       // ← para resaltar el ítem activo
-                    onHistoryClick = {
-                        navController.navigate(Screen.History.route) {
-                            popUpTo(Screen.Setup.route)
-                            launchSingleTop = true
-                        }
-                    },
-                    onPlayClick = {
-                        // Si ya estamos en Setup, no navegar de nuevo
-                        if (currentRoute != Screen.Setup.route) {
-                            navController.navigate(Screen.Setup.route) {
-                                popUpTo(Screen.Setup.route) { inclusive = true }
+                Column {
+                    if (currentRoute == Screen.History.route || currentRoute == Screen.Stats.route) {
+                        BannerAd()
+                    }
+                    AnotadorDomBottomBar(
+                        currentRoute = currentRoute,       // ← para resaltar el ítem activo
+                        onHistoryClick = {
+                            navController.navigate(Screen.History.route) {
+                                popUpTo(Screen.Setup.route)
+                                launchSingleTop = true
+                            }
+                        },
+                        onPlayClick = {
+                            // Si ya estamos en Setup, no navegar de nuevo
+                            if (currentRoute != Screen.Setup.route) {
+                                navController.navigate(Screen.Setup.route) {
+                                    popUpTo(Screen.Setup.route) { inclusive = true }
+                                    launchSingleTop = true
+                                }
+                            }
+                        },
+                        onStatsClick = {
+                            navController.navigate(Screen.Stats.route) {
+                                popUpTo(Screen.Setup.route)
                                 launchSingleTop = true
                             }
                         }
-                    },
-                    onStatsClick = {
-                        navController.navigate(Screen.Stats.route) {
-                            popUpTo(Screen.Setup.route)
-                            launchSingleTop = true
-                        }
-                    }
-                )
+                    )
+                }
             }
         }
     ) { innerPadding ->

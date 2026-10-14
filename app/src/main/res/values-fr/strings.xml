@@ -172,5 +172,15 @@
     <string name="scan_cancel">ANNULER</string>
     <string name="scan_error">Impossible de lire la photo. Réessayez.</string>
     <string name="scan_error_too_many">Trop de points détectés (%1$d). Reprenez la photo plus près des tuiles.</string>
+    <string name="scan_mode_move">DÉPLACER</string>
+    <string name="scan_mode_add">AJOUTER</string>
+    <string name="scan_mode_erase">EFFACER</string>
+    <string name="scan_mode_crop">RECADRER</string>
+    <string name="scan_hint_move">Pincez pour zoomer, glissez pour déplacer.</string>
+    <string name="scan_hint_add">Touchez un espace vide pour ajouter un point.</string>
+    <string name="scan_hint_erase">Touchez un cadre pour le retirer, ou tracez un rectangle pour retirer tous ceux qu\'il contient.</string>
+    <string name="scan_hint_crop">Tracez la zone à conserver, puis touchez le bouton.</string>
+    <string name="scan_crop_apply">RECADRER ET RECOMPTER</string>
+    <string name="scan_restore_original">RESTAURER LA PHOTO D\'ORIGINE</string>
 
 </resources>
