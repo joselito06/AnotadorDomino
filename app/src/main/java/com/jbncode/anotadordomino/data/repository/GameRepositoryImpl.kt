@@ -167,4 +167,8 @@ class GameRepositoryImpl @Inject constructor(
         photoUri = photoUri
     )
 
+    override suspend fun updateParticipantName(participantId: Int, name: String) {
+        dao.updateParticipantName(participantId, name)
+    }
+
 }

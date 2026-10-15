@@ -111,6 +111,9 @@ interface DominoDao {
 
     @Query("SELECT * FROM rounds WHERE gameId = :gameId ORDER BY id DESC")
     fun observeRoundScores(gameId: Int): Flow<List<RoundEntity>>
+
+    @Query("UPDATE participants SET name = :name WHERE id = :participantId")
+    suspend fun updateParticipantName(participantId: Int, name: String)
 }
 
 /** Helper para query de momentum */

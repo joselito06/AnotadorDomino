@@ -29,6 +29,11 @@
     <string name="setup_hint_ready_add_more">✓ Pronto! Você pode adicionar mais %1$d</string>
     <string name="setup_hint_max_players">Limite de jogadores atingido (4)</string>
 
+    <string name="setup_default_player_name">Jogador</string>
+    <string name="setup_default_team_name">Equipe</string>
+    <string name="dialog_edit_title">Editar Jogador</string>
+    <string name="dialog_btn_save">SALVAR ALTERAÇÕES</string>
+
     <string name="dialog_recruit_label">RECRUTAR</string>
     <string name="dialog_recruit_title">Novo Jogador</string>
     <string name="dialog_player_name_default">Nome do Jogador</string>
@@ -151,6 +156,10 @@
     <string name="scoreboard_entering_value">INSERINDO VALOR DA MÃO</string>
     <string name="scoreboard_pts_x2">pts ×2</string>
     <string name="scoreboard_confirm_points">CONFIRMAR PONTOS</string>
+
+    <string name="player_name_taken">Esse nome já está em uso.</string>
+    <string name="scoreboard_edit_name_title">Editar nome</string>
+    <string name="scoreboard_name_label">Nome</string>
 
     <string name="dialog_leave_title">Abandonar a partida?</string>
     <string name="dialog_leave_paused">A PARTIDA SERÁ PAUSADA</string>

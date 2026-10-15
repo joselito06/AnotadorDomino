@@ -50,6 +50,7 @@ import com.jbncode.anotadordomino.R
 import com.jbncode.anotadordomino.domain.model.AvatarType
 import com.jbncode.anotadordomino.ui.theme.kineticColors
 import com.jbncode.anotadordomino.ui.util.UiText
+import androidx.core.net.toUri
 
 // ── Avatar preset definitions ──────────────────────────────────────────────────
 
@@ -97,15 +98,19 @@ private fun avatarPresets(): List<AvatarPreset> {
 @Composable
 fun RecruitPlayerDialog(
     onDismiss: () -> Unit,
-    onAddPlayer: (name: String, avatarType: AvatarType, photoUri: String?) -> Unit = { _, _, _ -> }
+    onAddPlayer: (name: String, avatarType: AvatarType, photoUri: String?) -> Unit = { _, _, _ -> },
+    initialName: String = "",
+    initialAvatarType: AvatarType = AvatarType.PRESET_STAR,
+    initialPhotoUri: String? = null,
+    isEdit: Boolean = false
 ) {
     val colors     = MaterialTheme.kineticColors
     val presets    = avatarPresets()
     val context    = LocalContext.current
 
-    var playerName    by remember { mutableStateOf("") }
-    var selectedType  by remember { mutableStateOf(AvatarType.PRESET_STAR) }
-    var galleryUri    by remember { mutableStateOf<Uri?>(null) }
+    var playerName    by remember { mutableStateOf(initialName) }
+    var selectedType  by remember { mutableStateOf(initialAvatarType) }
+    var galleryUri    by remember { mutableStateOf(initialPhotoUri?.toUri()) }
 
     var inputBounds by remember { mutableStateOf(Rect.Zero) }
     var addBtnBounds by remember { mutableStateOf(Rect.Zero) }
@@ -156,7 +161,10 @@ fun RecruitPlayerDialog(
                         Text(
                             stringResource(R.string.dialog_recruit_label), color = colors.cyanAccent,
                             style = MaterialTheme.typography.labelMedium)
-                        Text(stringResource(R.string.dialog_recruit_title), color = MaterialTheme.colorScheme.onBackground,
+                        //Text(stringResource(R.string.dialog_recruit_title), color = MaterialTheme.colorScheme.onBackground,
+                        //    style = MaterialTheme.typography.headlineLarge)
+                        Text(stringResource(if (isEdit) R.string.dialog_edit_title else R.string.dialog_recruit_title),
+                            color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.headlineLarge)
                     }
                     Box(
@@ -255,17 +263,22 @@ fun RecruitPlayerDialog(
                         Icon(Icons.Default.PersonAdd, null,
                             tint = MaterialTheme.colorScheme.background, modifier = Modifier.size(20.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.dialog_btn_add),
+                        //Text(stringResource(R.string.dialog_btn_add),
+                        //    color = MaterialTheme.colorScheme.background,
+                        //    style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(if (isEdit) R.string.dialog_btn_save else R.string.dialog_btn_add),
                             color = MaterialTheme.colorScheme.background,
                             style = MaterialTheme.typography.titleMedium)
                     }
                 }
             }
-            DialogTutorialOverlay(
-                name = playerName,
-                inputBounds = inputBounds,
-                addBtnBounds = addBtnBounds
-            )
+            if (!isEdit) {
+                DialogTutorialOverlay(
+                    name = playerName,
+                    inputBounds = inputBounds,
+                    addBtnBounds = addBtnBounds
+                )
+            }
         }
     }
 }

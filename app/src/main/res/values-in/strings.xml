@@ -29,6 +29,11 @@
     <string name="setup_hint_ready_add_more">✓ Siap! Anda dapat menambah %1$d lagi</string>
     <string name="setup_hint_max_players">Batas pemain tercapai (4)</string>
 
+    <string name="setup_default_player_name">Pemain</string>
+    <string name="setup_default_team_name">Tim</string>
+    <string name="dialog_edit_title">Edit Pemain</string>
+    <string name="dialog_btn_save">SIMPAN PERUBAHAN</string>
+
     <string name="dialog_recruit_label">REKRUT</string>
     <string name="dialog_recruit_title">Pemain Baru</string>
     <string name="dialog_player_name_default">Nama Pemain</string>
@@ -151,6 +156,10 @@
     <string name="scoreboard_entering_value">MEMASUKKAN NILAI TANGAN</string>
     <string name="scoreboard_pts_x2">pts ×2</string>
     <string name="scoreboard_confirm_points">KONFIRMASI POIN</string>
+
+    <string name="player_name_taken">Nama itu sudah digunakan.</string>
+    <string name="scoreboard_edit_name_title">Edit nama</string>
+    <string name="scoreboard_name_label">Nama</string>
 
     <string name="dialog_leave_title">Tinggalkan pertandingan?</string>
     <string name="dialog_leave_paused">PERMAINAN AKAN DITUNDA</string>

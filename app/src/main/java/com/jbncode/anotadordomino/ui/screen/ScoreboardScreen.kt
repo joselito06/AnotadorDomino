@@ -64,7 +64,7 @@ fun ScoreboardScreen(
     viewModel: ScoreboardViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val activity = context as? Activity
+    //val activity = context as? Activity
     val interstitialId = stringResource(id = R.string.interstitial_ad_id)
 
     LaunchedEffect(Unit) {
@@ -88,6 +88,7 @@ fun ScoreboardScreen(
 
     var showAdd  by remember { mutableStateOf(false) }
     var showUndo by remember { mutableStateOf(false) }
+    var editingParticipant by remember { mutableStateOf<ParticipantScoreUi?>(null) }
 
     BackHandler { viewModel.onBackPressed() }
 
@@ -128,9 +129,10 @@ fun ScoreboardScreen(
                         showBack = true,
                         onBackClick = { viewModel.onBackPressed() })
                     //ScoreboardTopBar(onBackClick = { viewModel.onBackPressed() })
-                    BannerAd(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+                    BannerAd(Modifier.padding(horizontal = 0.dp, vertical = 4.dp))
                     ParticipantsScoreRow(
                         participants = state.participants,
+                        onEditName   = { editingParticipant = it },
                         modifier     = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -203,6 +205,19 @@ fun ScoreboardScreen(
                     LeaveGameDialog(
                         onDismiss = { viewModel.dismissLeaveDialog() },
                         onConfirm = { viewModel.confirmLeave() }   // FIX: sin lambda de navegación
+                    )
+                }
+
+                editingParticipant?.let { ep ->
+                    EditNameDialog(
+                        currentName = ep.name,
+                        takenNames  = state.participants
+                            .filter { it.participantId != ep.participantId }.map { it.name },
+                        onDismiss   = { editingParticipant = null },
+                        onSave      = {
+                            viewModel.renameParticipant(ep.participantId, it)
+                            editingParticipant = null
+                        }
                     )
                 }
             }
@@ -675,6 +690,7 @@ private fun LeaveGameDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
 @Composable
 private fun ParticipantsScoreRow(
     participants: List<ParticipantScoreUi>,
+    onEditName: (ParticipantScoreUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val count = participants.size
@@ -683,7 +699,7 @@ private fun ParticipantsScoreRow(
         count <= 2 -> {
             Row(modifier, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 participants.forEach { p ->
-                    ParticipantScoreCard(p, count = count, modifier = Modifier.weight(1f))
+                    ParticipantScoreCard(p, count = count, onEditName = onEditName, modifier = Modifier.weight(1f))
                 }
             }
         }
@@ -693,7 +709,7 @@ private fun ParticipantsScoreRow(
                 participants.chunked(2).forEach { row ->
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         row.forEach { p ->
-                            ParticipantScoreCard(p, count = count, modifier = Modifier.weight(1f))
+                            ParticipantScoreCard(p, count = count, onEditName = onEditName, modifier = Modifier.weight(1f))
                         }
                         if (row.size == 1) Spacer(Modifier.weight(1f))
                     }
@@ -709,6 +725,7 @@ private fun ParticipantsScoreRow(
 private fun ParticipantScoreCard(
     p: ParticipantScoreUi,
     count: Int = 2,
+    onEditName: (ParticipantScoreUi) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val colors    = MaterialTheme.kineticColors
@@ -734,7 +751,7 @@ private fun ParticipantScoreCard(
         )
         Column(Modifier.fillMaxSize().padding(12.dp)) {
             Row(
-                Modifier.fillMaxWidth(),
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).clickable { onEditName(p) },
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment     = Alignment.CenterVertically
             ) {
@@ -754,6 +771,10 @@ private fun ParticipantScoreCard(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
                 )
+                Icon(Icons.Default.Edit, null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    modifier = Modifier.size(12.dp))
+                Spacer(Modifier.width(4.dp))
                 if (p.isLeading) Box(Modifier.size(6.dp).clip(CircleShape).background(colors.neonGreen))
             }
             Spacer(Modifier.height(4.dp))
@@ -995,4 +1016,49 @@ private fun UndoConfirmDialog(lastHand: HandLogUi, onDismiss: () -> Unit, onConf
             }
         }
     }
+}
+
+@Composable
+private fun EditNameDialog(
+    currentName: String,
+    takenNames: List<String>,
+    onDismiss: () -> Unit,
+    onSave: (String) -> Unit
+) {
+    var text by remember { mutableStateOf(currentName) }
+    val trimmed = text.trim()
+    val taken = takenNames.any { it.equals(trimmed, ignoreCase = true) }
+    val canSave = trimmed.isNotEmpty() && !taken
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        title = {
+            Text(stringResource(R.string.scoreboard_edit_name_title),
+                color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold)
+        },
+        text = {
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it.take(20) },
+                singleLine = true,
+                label = { Text(stringResource(R.string.scoreboard_name_label)) },
+                isError = taken,
+                supportingText = { if (taken) Text(stringResource(R.string.player_name_taken)) }
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = { onSave(trimmed) }, enabled = canSave) {
+                Text(stringResource(R.string.dialog_btn_save),
+                    color = if (canSave) MaterialTheme.kineticColors.cyanAccent
+                    else MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.settings_dialog_reset_cancel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+    )
 }

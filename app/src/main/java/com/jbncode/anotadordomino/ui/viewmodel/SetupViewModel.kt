@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 data class PlayerUiState(
@@ -26,12 +27,14 @@ data class PlayerUiState(
     val wins: Int = 0,
     val avatarType: AvatarType = AvatarType.PRESET_STAR,
     /** URI de la foto elegida desde galería (solo válido cuando avatarType == GALLERY) */
-    val photoUri: String? = null
+    val photoUri: String? = null,
+    val id: String = UUID.randomUUID().toString()
 )
 //data class PlayerLimits(val min: Int, val max: Int)
 
 // NUEVO: Enum para saber en qué paso del tutorial estamos
 enum class SetupTutorialStep { ADD_PLAYERS, START_MATCH }
+enum class PlayerResult { OK, NAME_TAKEN, INVALID, FULL }
 
 @HiltViewModel
 class SetupViewModel @Inject constructor(
@@ -39,6 +42,8 @@ class SetupViewModel @Inject constructor(
 ) : ViewModel() {
 
     // ── Configuración de la partida ────────────────────────────────────────
+    private val maxPlayers get() = if (_isPairsMode.value) 2 else 4
+
     private val _targetScore = MutableStateFlow(200)
     val targetScore: StateFlow<Int> = _targetScore.asStateFlow()
 
@@ -57,14 +62,13 @@ class SetupViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    // ── Derived state (combine isPairsMode + quickPlayers) ─────────────────
+    private val autoAvatars = listOf(
+        AvatarType.PRESET_STAR, AvatarType.PRESET_BOLT, AvatarType.PRESET_CROWN,
+        AvatarType.PRESET_FIRE, AvatarType.PRESET_DIAMOND, AvatarType.PRESET_SHIELD,
+        AvatarType.PRESET_ROBOT, AvatarType.PRESET_WIZARD
+    )
 
-    /** Límites calculados según la modalidad activa. */
-    /*val playerLimits: StateFlow<PlayerLimits> =
-        _isPairsMode.combine(_quickPlayers) { isPairs, _ ->
-            if (isPairs) PlayerLimits(min = 2, max = 2)
-            else         PlayerLimits(min = 2, max = 4)
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PlayerLimits(2, 2))*/
+    // ── Derived state (combine isPairsMode + quickPlayers) ─────────────────
 
     /**
      * Habilita el botón START MATCH.
@@ -83,16 +87,6 @@ class SetupViewModel @Inject constructor(
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SetupTutorialStep.ADD_PLAYERS)
 
     /**
-     * Habilita el botón "+ NEW".
-     *  - PAIRS      → solo si hay menos de 2
-     *  - INDIVIDUAL → solo si hay menos de 4
-     */
-    val canAddPlayer: StateFlow<Boolean> =
-        _isPairsMode.combine(_quickPlayers) { isPairs, players ->
-            if (isPairs) players.size < 2 else players.size < 4
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
-
-    /**
      * Texto de ayuda contextual bajo el grid de jugadores.
      */
     val playerHint: StateFlow<UiText> =
@@ -101,22 +95,78 @@ class SetupViewModel @Inject constructor(
             when {
                 isPairs  && n == 0 -> UiText.StringResource(R.string.setup_hint_add_teams)
                 isPairs  && n == 1 -> UiText.StringResource(R.string.setup_hint_add_1_team)
-                isPairs  && n >= 2 -> UiText.StringResource(R.string.setup_hint_ready_teams)
+                isPairs  && n == 2 -> UiText.StringResource(R.string.setup_hint_ready_teams)
                 !isPairs && n == 0 -> UiText.StringResource(R.string.setup_hint_add_players)
                 !isPairs && n == 1 -> UiText.StringResource(R.string.setup_hint_add_1_player)
                 !isPairs && n in 2..3 -> UiText.StringResource(R.string.setup_hint_ready_add_more, 4 - n)
-                !isPairs && n >= 4 -> UiText.StringResource(R.string.setup_hint_max_players)
+                !isPairs && n == 4 -> UiText.StringResource(R.string.setup_hint_max_players)
                 else -> UiText.DynamicString("")
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UiText.StringResource(R.string.setup_hint_add_teams))
+
+    private fun nameTaken(name: String, exceptId: String? = null) =
+        _quickPlayers.value.any { it.id != exceptId && it.name.equals(name, ignoreCase = true) }
+
+    private fun canStartNow(): Boolean {
+        val n = _quickPlayers.value.size
+        return if (_isPairsMode.value) n == 2 else n in 2..4
+    }
 
     fun updateTargetScore(score: Float) {
         _targetScore.value = score.toInt()
     }
 
-    fun updateGameMode(isPairs: Boolean) {
+    /*fun updateGameMode(isPairs: Boolean) {
         _isPairsMode.value = isPairs
         _quickPlayers.value = emptyList()
+    }*/
+
+    /**
+     * Cambia de modo sin borrar jugadores y renombra los nombres automáticos:
+     * "Equipo N" <-> "Jugador N". Los nombres personalizados no se tocan.
+     */
+    fun updateGameMode(isPairs: Boolean, teamPrefix: String, playerPrefix: String) {
+        if (_isPairsMode.value == isPairs) return
+        _isPairsMode.value = isPairs
+
+        val oldPrefix = if (isPairs) playerPrefix else teamPrefix
+        val newPrefix = if (isPairs) teamPrefix else playerPrefix
+        val kept = _quickPlayers.value.take(if (isPairs) 2 else 4)
+
+        val pattern = Regex("^${Regex.escape(oldPrefix)} (\\d+)$", RegexOption.IGNORE_CASE)
+        val used = kept.filterNot { pattern.matches(it.name) }.map { it.name.lowercase() }.toMutableSet()
+
+        _quickPlayers.value = kept.map { p ->
+            val m = pattern.find(p.name) ?: return@map p
+            var n = m.groupValues[1].toIntOrNull() ?: 1
+            while ("$newPrefix $n".lowercase() in used) n++
+            val newName = "$newPrefix $n"
+            used += newName.lowercase()
+            p.copy(name = newName)
+        }
+    }
+
+    /** Añade un jugador con nombre y avatar automáticos. [namePrefix] viene de strings.xml. */
+    fun quickAddPlayer(namePrefix: String): PlayerResult {
+        val current = _quickPlayers.value
+        if (current.size >= maxPlayers) return PlayerResult.FULL
+        var n = current.size + 1
+        while (nameTaken("$namePrefix $n")) n++
+        val usedAvatars = current.map { it.avatarType }.toSet()
+        val avatar = autoAvatars.firstOrNull { it !in usedAvatars } ?: AvatarType.PRESET_STAR
+        _quickPlayers.value = current + PlayerUiState(name = "$namePrefix $n", avatarType = avatar)
+        return PlayerResult.OK
+    }
+
+    /** Edita nombre y avatar de un jugador existente (se identifica por su nombre actual). */
+    fun updatePlayer(id: String, newName: String, avatarType: AvatarType, photoUri: String?): PlayerResult {
+        val trimmed = newName.trim()
+        if (trimmed.isBlank()) return PlayerResult.INVALID
+        if (nameTaken(trimmed, exceptId = id)) return PlayerResult.NAME_TAKEN
+        _quickPlayers.value = _quickPlayers.value.map {
+            if (it.id == id) it.copy(name = trimmed, avatarType = avatarType, photoUri = photoUri) else it
+        }
+        return PlayerResult.OK
     }
 
     /**
@@ -127,25 +177,20 @@ class SetupViewModel @Inject constructor(
         name: String,
         avatarType: AvatarType = AvatarType.PRESET_STAR,
         photoUri: String? = null
-    ) {
+    ): PlayerResult {
         val trimmed = name.trim()
-        if (trimmed.isBlank()) return
-        // Rechaza si ya se alcanzó el límite
-        if (!canAddPlayer.value) return
-        // Evita duplicados (mismo nombre, case-insensitive)
-        if (_quickPlayers.value.any { it.name.equals(trimmed, ignoreCase = true) }) return
-        _quickPlayers.value = _quickPlayers.value + PlayerUiState(
-            name = trimmed,
-            avatarType = avatarType,
-            photoUri   = photoUri
-        )
+        if (trimmed.isBlank()) return PlayerResult.INVALID
+        if (_quickPlayers.value.size >= maxPlayers) return PlayerResult.FULL
+        if (nameTaken(trimmed)) return PlayerResult.NAME_TAKEN
+        _quickPlayers.value += PlayerUiState(name = trimmed, avatarType = avatarType, photoUri = photoUri)
+        return PlayerResult.OK
     }
 
     /**
      * Elimina un jugador de la lista Quick Add por nombre.
      */
-    fun removeQuickPlayer(name: String) {
-        _quickPlayers.value = _quickPlayers.value.filter { it.name != name }
+    fun removeQuickPlayer(id: String) {
+        _quickPlayers.value = _quickPlayers.value.filter { it.id != id  }
     }
 
     /**
@@ -155,7 +200,8 @@ class SetupViewModel @Inject constructor(
      * o con los valores por defecto (Nosotros / Ellos) en modo TEAM sin jugadores.
      */
     fun startGame(onGameCreated: (Int) -> Unit) {
-        if (!canStartGame.value) return   // guardia extra por si la UI falla
+        //if (!canStartGame.value) return   // guardia extra por si la UI falla
+        if (!canStartNow()) return
         viewModelScope.launch {
             _isLoading.value = true
             try {

@@ -1,5 +1,6 @@
 package com.jbncode.anotadordomino.ui.screen
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
@@ -8,6 +9,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,6 +50,8 @@ import com.jbncode.anotadordomino.ui.viewmodel.SetupTutorialStep
 import androidx.core.net.toUri
 import com.jbncode.anotadordomino.ui.components.BannerAd
 import com.jbncode.anotadordomino.ui.util.UiText
+import com.jbncode.anotadordomino.ui.viewmodel.PlayerResult
+import kotlinx.coroutines.delay
 
 @Composable
 fun SetupScreen(
@@ -54,13 +59,14 @@ fun SetupScreen(
     onGameStarted: (Int) -> Unit,
     viewModel: SetupViewModel = hiltViewModel()
 ) {
+
     val colors      = MaterialTheme.kineticColors
     val targetScore by viewModel.targetScore.collectAsStateWithLifecycle()
     val isPairsMode by viewModel.isPairsMode.collectAsStateWithLifecycle()
     val players     by viewModel.quickPlayers.collectAsStateWithLifecycle()
     val isLoading   by viewModel.isLoading.collectAsStateWithLifecycle()
-    val canStart    by viewModel.canStartGame.collectAsStateWithLifecycle()
-    val canAdd      by viewModel.canAddPlayer.collectAsStateWithLifecycle()
+    //val canStart    by viewModel.canStartGame.collectAsStateWithLifecycle()
+    //val canAdd      by viewModel.canAddPlayer.collectAsStateWithLifecycle()
     val hint        by viewModel.playerHint.collectAsStateWithLifecycle()
 
     val tutorialStep by viewModel.tutorialStep.collectAsStateWithLifecycle()
@@ -70,6 +76,36 @@ fun SetupScreen(
 
     var newBtnBounds by remember { mutableStateOf(Rect.Zero) }
     var startBtnBounds by remember { mutableStateOf(Rect.Zero) }
+
+    val maxPlayers = if (isPairsMode) 2 else 4
+    val canAdd     = players.size < maxPlayers
+    val canStart   = if (isPairsMode) players.size == 2 else players.size in 2..4
+
+    var editingPlayerId by remember { mutableStateOf<String?>(null) }
+    val teamName          = stringResource(R.string.setup_default_team_name)
+    val defaultPlayerName = stringResource(R.string.setup_default_player_name)
+    val namePrefix        = if (isPairsMode) teamName else defaultPlayerName
+    val takenMsg          = stringResource(R.string.player_name_taken)
+    val context           = LocalContext.current
+    val startRequester    = remember { BringIntoViewRequester() }
+    var prevCount         by remember { mutableIntStateOf(players.size) }
+
+    //var editingPlayer by remember { mutableStateOf<PlayerUiState?>(null) }
+    //val namePrefix = stringResource(
+    //    if (isPairsMode) R.string.setup_default_team_name else R.string.setup_default_player_name
+    //)
+
+    LaunchedEffect(players.size, isPairsMode, showDialog, editingPlayerId) {
+        if (showDialog || editingPlayerId != null) return@LaunchedEffect
+        val grew = players.size > prevCount
+        //prevCount = players.size
+        if (!grew || !canStart) return@LaunchedEffect
+
+        // Límite alcanzado: no hay nada más que añadir, ir enseguida.
+        // Individual con 2 o 3: dar tiempo a añadir otro antes de moverse.
+        delay(if (players.size >= maxPlayers) 350L else 1500L)
+        startRequester.bringIntoView()
+    }
 
     Box(
         modifier = Modifier
@@ -83,7 +119,7 @@ fun SetupScreen(
                 .padding(bottom = 100.dp)
         ) {
             KineticTopBar(onSettingsClick = onSettingsClick)
-            BannerAd(Modifier.padding(horizontal = 16.dp))
+            BannerAd(Modifier.padding(horizontal = 0.dp))
             SetupSeasonBanner()
             Spacer(Modifier.height(24.dp))
 
@@ -91,7 +127,7 @@ fun SetupScreen(
             Spacer(Modifier.height(10.dp))
             SetupGameModeToggle(
                 isPairs  = isPairsMode,
-                onSelect = { viewModel.updateGameMode(it) },
+                onSelect = { viewModel.updateGameMode(it, teamName, defaultPlayerName) },
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
             Spacer(Modifier.height(24.dp))
@@ -126,25 +162,37 @@ fun SetupScreen(
                     SetupSectionLabel(stringResource(R.string.setup_quick_add_players))
                     Spacer(Modifier.width(8.dp))
                     // Contador: ej. "2/2" o "1/4"
-                    val limits = if (isPairsMode) "/${2}" else "/${4}"
+                    //val limits = if (isPairsMode) "/${2}" else "/${4}"
                     Text(
-                        text  = "${players.size}$limits",
+                        text  = "${players.size}$maxPlayers",
                         color = if (canStart) colors.neonGreen
                         else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
-                SetupNewButton(
+                /*SetupNewButton(
                     enabled = canAdd,
                     modifier = Modifier.onGloballyPositioned { newBtnBounds = it.boundsInRoot() },
                     onClick = { showDialog = true }
-                )
+                )*/
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    SetupQuickAddButton(
+                        enabled = canAdd,
+                        onClick = { viewModel.quickAddPlayer(namePrefix) }
+                    )
+                    SetupNewButton(
+                        enabled = canAdd,
+                        modifier = Modifier.onGloballyPositioned { newBtnBounds = it.boundsInRoot() },
+                        onClick = { showDialog = true }
+                    )
+                }
             }
             Spacer(Modifier.height(12.dp))
 
             SetupPlayersGrid(
                 players  = players,
                 onRemove = { viewModel.removeQuickPlayer(it) },
+                onEdit   = { editingPlayerId = it },
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
 
@@ -172,17 +220,38 @@ fun SetupScreen(
                 isLoading = isLoading,
                 modifier  = Modifier
                     .padding(horizontal = 20.dp)
-                    .onGloballyPositioned { startBtnBounds = it.boundsInRoot() },
+                    .onGloballyPositioned { startBtnBounds = it.boundsInRoot() }
+                    .bringIntoViewRequester(startRequester),
                 onClick   = { viewModel.startGame(onGameStarted) }
             )
         }
 
         if (showDialog) {
             RecruitPlayerDialog(
-                onDismiss  = { showDialog = false },
+                onDismiss   = { showDialog = false },
                 onAddPlayer = { name, avatarType, photoUri ->
-                    viewModel.addQuickPlayer(name, avatarType, photoUri)
-                    showDialog = false
+                    when (viewModel.addQuickPlayer(name, avatarType, photoUri)) {
+                        PlayerResult.NAME_TAKEN ->
+                            Toast.makeText(context, takenMsg, Toast.LENGTH_SHORT).show()
+                        else -> showDialog = false
+                    }
+                }
+            )
+        }
+
+        players.firstOrNull { it.id == editingPlayerId }?.let { p ->
+            RecruitPlayerDialog(
+                onDismiss = { editingPlayerId = null },
+                initialName = p.name,
+                initialAvatarType = p.avatarType,
+                initialPhotoUri = p.photoUri,
+                isEdit = true,
+                onAddPlayer = { name, type, uri ->
+                    when (viewModel.updatePlayer(p.id, name, type, uri)) {
+                        PlayerResult.NAME_TAKEN ->
+                            Toast.makeText(context, takenMsg, Toast.LENGTH_SHORT).show()
+                        else -> editingPlayerId = null
+                    }
                 }
             )
         }
@@ -470,6 +539,7 @@ private fun SetupNewButton(enabled: Boolean, modifier: Modifier = Modifier, onCl
 private fun SetupPlayersGrid(
     players: List<PlayerUiState>,
     onRemove: (String) -> Unit,
+    onEdit: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (players.isEmpty()) {
@@ -496,7 +566,8 @@ private fun SetupPlayersGrid(
                 row.forEach { player ->
                     SetupPlayerCard(
                         player   = player,
-                        onRemove = { onRemove(player.name) },
+                        onRemove = { onRemove(player.id) },
+                        onEdit   = { onEdit(player.id) },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -510,6 +581,7 @@ private fun SetupPlayersGrid(
 private fun SetupPlayerCard(
     player: PlayerUiState,
     onRemove: () -> Unit,
+    onEdit: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.kineticColors
@@ -553,6 +625,7 @@ private fun SetupPlayerCard(
         modifier = modifier
             .clip(RoundedCornerShape(14.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
+            .clickable(onClick = onEdit)
             .padding(start = 12.dp, end = 8.dp, top = 10.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -666,5 +739,24 @@ private fun SetupStartMatchButton(
                     modifier = Modifier.size(20.dp))
             }
         }
+    }
+}
+
+@Composable
+private fun SetupQuickAddButton(enabled: Boolean, onClick: () -> Unit) {
+    val colors = MaterialTheme.kineticColors
+    val tint = if (enabled) colors.neonGreen else colors.neonGreen.copy(alpha = 0.3f)
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(
+                if (enabled) colors.neonGreen.copy(alpha = 0.15f)
+                else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+            )
+            .clickable(enabled = enabled, onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(Icons.Default.FlashOn, contentDescription = "Quick add", tint = tint, modifier = Modifier.size(16.dp))
     }
 }

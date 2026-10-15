@@ -41,4 +41,7 @@ interface  GameRepository {
     fun observeRoundScores(gameId: Int): Flow<List<RoundScore>>
     /** Emite todas las partidas ordenadas más reciente primero. */
     fun observeAllGames(): Flow<List<Game>>
+
+    suspend fun updateParticipantName(participantId: Int, name: String)
+
 }

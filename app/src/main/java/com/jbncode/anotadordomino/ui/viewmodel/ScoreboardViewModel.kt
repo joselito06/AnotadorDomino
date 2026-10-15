@@ -53,7 +53,7 @@ class ScoreboardViewModel @Inject constructor(
     private var gameId: Int = -1
 
     // ── Internal state ─────────────────────────────────────────────────────
-
+    private var lastRounds: List<RoundScore> = emptyList()
     private val _uiState = MutableStateFlow<ScoreboardUiState>(ScoreboardUiState.Loading)
     val uiState: StateFlow<ScoreboardUiState> = _uiState.asStateFlow()
 
@@ -134,27 +134,40 @@ class ScoreboardViewModel @Inject constructor(
         }
     }
 
+    private fun buildHandLog(): List<HandLogUi> = lastRounds.mapIndexed { index, round ->
+        val winner = participants.firstOrNull { it.id == round.winnerId }
+        HandLogUi(
+            roundNumber  = lastRounds.size - index,
+            roundScoreId = round.id,
+            winnerName   = winner?.name ?: "?",
+            winnerId     = round.winnerId,
+            pointsScored = round.pointsScored,
+            winType      = round.winType,
+            avatarType   = winner?.avatarType ?: "PRESET_STAR",
+            photoUri     = winner?.photoUri
+        )
+    }
+
     private fun observeHandLog() {
         viewModelScope.launch {
             repository.observeRoundScores(gameId).collect { rounds ->
-                _handLog.value = rounds.mapIndexed { index, round ->
-                    val winnerName = participants
-                        .firstOrNull { it.id == round.winnerId }
-                    HandLogUi(
-                        roundNumber  = rounds.size - index,   // más reciente = R más alto
-                        roundScoreId = round.id,
-                        winnerName   = winnerName?.name ?: "?",
-                        winnerId     = round.winnerId,
-                        pointsScored = round.pointsScored,
-                        winType      = round.winType,
-                        avatarType   = winnerName?.avatarType ?: "PRESET_STAR",
-                        photoUri     = winnerName?.photoUri
-                    )
-                }
-                // Reconstruir estado con el log actualizado
+                lastRounds = rounds
+                _handLog.value = buildHandLog()
                 val currentGame = (_uiState.value as? ScoreboardUiState.Active)?.game
                 if (currentGame != null) rebuildState(currentGame)
             }
+        }
+    }
+
+    fun renameParticipant(participantId: Int, newName: String) {
+        val name = newName.trim().take(20)
+        if (name.isBlank()) return
+        if (participants.any { it.id != participantId && it.name.equals(name, ignoreCase = true) }) return
+        viewModelScope.launch {
+            repository.updateParticipantName(participantId, name)
+            participants = participants.map { if (it.id == participantId) it.copy(name = name) else it }
+            _handLog.value = buildHandLog()
+            (_uiState.value as? ScoreboardUiState.Active)?.game?.let { rebuildState(it) }
         }
     }
 

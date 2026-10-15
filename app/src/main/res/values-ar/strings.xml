@@ -29,6 +29,11 @@
     <string name="setup_hint_ready_add_more">✓ جاهز! يمكنك إضافة %1$d آخرين</string>
     <string name="setup_hint_max_players">تم الوصول للحد الأقصى (4)</string>
 
+    <string name="setup_default_player_name">لاعب</string>
+    <string name="setup_default_team_name">فريق</string>
+    <string name="dialog_edit_title">تعديل اللاعب</string>
+    <string name="dialog_btn_save">حفظ التغييرات</string>
+
     <string name="dialog_recruit_label">تجنيد</string>
     <string name="dialog_recruit_title">لاعب جديد</string>
     <string name="dialog_player_name_default">اسم اللاعب</string>
@@ -151,6 +156,10 @@
     <string name="scoreboard_entering_value">إدخال قيمة اليد</string>
     <string name="scoreboard_pts_x2">نقاط ×2</string>
     <string name="scoreboard_confirm_points">تأكيد النقاط</string>
+
+    <string name="player_name_taken">هذا الاسم مستخدم بالفعل.</string>
+    <string name="scoreboard_edit_name_title">تعديل الاسم</string>
+    <string name="scoreboard_name_label">الاسم</string>
 
     <string name="dialog_leave_title">مغادرة المباراة؟</string>
     <string name="dialog_leave_paused">سيتم إيقاف المباراة مؤقتاً</string>

@@ -28,6 +28,11 @@
     <string name="setup_hint_ready_add_more">✓ Ready! You can add %1$d more</string>
     <string name="setup_hint_max_players">Max players reached (4)</string>
 
+    <string name="setup_default_player_name">Player</string>
+    <string name="setup_default_team_name">Team</string>
+    <string name="dialog_edit_title">Edit Player</string>
+    <string name="dialog_btn_save">SAVE CHANGES</string>
+
     <string name="dialog_recruit_label">RECRUIT</string>
     <string name="dialog_recruit_title">New Player</string>
     <string name="dialog_player_name_default">Player Name</string>
@@ -152,6 +157,10 @@
     <string name="scoreboard_entering_value">ENTERING HAND VALUE</string>
     <string name="scoreboard_pts_x2">pts ×2</string>
     <string name="scoreboard_confirm_points">CONFIRM POINTS</string>
+
+    <string name="player_name_taken">That name is already used.</string>
+    <string name="scoreboard_edit_name_title">Edit name</string>
+    <string name="scoreboard_name_label">Name</string>
 
     <string name="dialog_leave_title">Leave the match?</string>
     <string name="dialog_leave_paused">GAME WILL BE PAUSED</string>
